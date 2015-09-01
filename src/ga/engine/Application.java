@@ -6,6 +6,7 @@
 
 package ga.engine;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -15,14 +16,32 @@ import javafx.stage.Stage;
  */
 public class Application extends javafx.application.Application {
     
-    private Stage window;
-    private Scene scene;
+    private static AnimationTimer gameloop;
+    private static Stage window;
+    private static Scene scene;
     
     @Override
     public void start(Stage primaryStage) {
-        this.window = primaryStage;
-        window.setTitle("GA Engine");
+        init(primaryStage);
+        start();
+    }
+    
+    public static void init(Stage window) {
+        Application.window = window;
+        Application.scene = null;
+        gameloop = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                //INSERT GAME LOOP HERE! UPDATE / RENDER SCENE!
+            }
+        };
+    }
+    
+    public static void start() {
+        gameloop.start();
         window.setResizable(false);
+        window.setTitle("Ga Engine");
         window.show();
     }
     
