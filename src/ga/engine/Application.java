@@ -27,7 +27,7 @@ public class Application extends javafx.application.Application {
     }
     
     public static void main(String[] args) {
-        System.out.println("Programmet körs!");
+        System.out.println("Programmet körs! Kanske? Om det inte finns buggar...");
         launch(args);
     }
 }
