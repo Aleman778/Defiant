@@ -22,6 +22,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage primaryStage) {
         this.window = primaryStage;
         window.setTitle("GA Engine");
+        window.setResizable(false);
         window.show();
     }
     
