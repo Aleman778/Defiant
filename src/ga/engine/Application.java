@@ -26,6 +26,7 @@ public class Application extends javafx.application.Application {
     }
     
     public static void main(String[] args) {
+        System.out.println("Programmet körs!");
         launch(args);
     }
 }
