@@ -6,6 +6,7 @@
 
 package ga.engine;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -14,8 +15,14 @@ import javafx.stage.Stage;
  */
 public class Application extends javafx.application.Application {
     
+    private Stage window;
+    private Scene scene;
+    
     @Override
     public void start(Stage primaryStage) {
+        this.window = primaryStage;
+        window.setTitle("GA Engine");
+        window.show();
     }
     
     public static void main(String[] args) {
