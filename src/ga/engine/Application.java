@@ -40,7 +40,6 @@ public class Application extends javafx.application.Application {
     
     public static void start() {
         gameloop.start();
-        window.setResizable(false);
         window.setTitle("Ga Engine");
         window.show();
     }
