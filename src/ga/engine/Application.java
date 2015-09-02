@@ -2,9 +2,6 @@ package ga.engine;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
@@ -23,18 +20,16 @@ public class Application extends javafx.application.Application {
     
     public static void init(Stage window) {
         Application.window = window;
-        Application.scene = new GameScene(root);
-        window.setScene(scene);
-        final ImageView background = new ImageView(new Image(Application.class.getResourceAsStream("Placeholder Grass.png")));
-        root.getChildren().add(background);
-        scene.setOnKeyPressed(keyboard);
-        scene.setOnKeyReleased(keyboard);
+        Application.scene = new GameScene("WRITE XML PATH LATER");
+        window.setScene(scene.get());
         gameloop = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
-                //INSERT GAME LOOP HERE! UPDATE / RENDER SCENE!
-                background.setVisible(!keyboard.getPressed(KeyCode.SPACE));
+                if (scene != null) {
+                    scene.update();
+                    scene.render();
+                }
             }
         };
     }
