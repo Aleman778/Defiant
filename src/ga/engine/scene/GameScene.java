@@ -1,5 +1,6 @@
-package ga.engine;
+package ga.engine.scene;
 
+import ga.engine.input.KeyboardHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 

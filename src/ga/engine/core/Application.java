@@ -1,5 +1,7 @@
-package ga.engine;
+package ga.engine.core;
 
+import ga.engine.scene.GameScene;
+import ga.engine.input.KeyboardHandler;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.stage.Stage;

@@ -1,4 +1,4 @@
-package ga.engine;
+package ga.engine.input;
 
 import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
