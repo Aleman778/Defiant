@@ -7,6 +7,7 @@ public class GameScene {
 
     private Scene scene;
     private AnchorPane node;
+    private KeyboardHandler keyboard;
     
     /**
      * Constructs a Scene from filepath scene
@@ -15,6 +16,9 @@ public class GameScene {
     public GameScene(String filepath) {
         node = new AnchorPane();
         scene = new Scene(node);
+        keyboard = new KeyboardHandler();
+        scene.setOnKeyPressed(keyboard);
+        scene.setOnKeyReleased(keyboard);
     }
     
     public javafx.scene.Scene get() {
