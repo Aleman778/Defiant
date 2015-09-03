@@ -22,4 +22,18 @@ public class GameObject {
         components.add(component);
         return this;
     }
+    
+    public void update() {
+        for (GameObject object: children) {
+             object.update();
+        }
+        
+        for (GameComponent component: components) {
+            component.update();
+        }
+    }
+    
+    public void render() {
+        
+    }
 }
