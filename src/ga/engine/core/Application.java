@@ -1,9 +1,7 @@
 package ga.engine.core;
 
 import ga.engine.scene.GameScene;
-import ga.engine.input.KeyboardHandler;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Group;
 import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
@@ -11,8 +9,6 @@ public class Application extends javafx.application.Application {
     private static AnimationTimer gameloop;
     private static Stage window;
     private static GameScene scene;
-    private static final Group root = new Group();
-    private static final KeyboardHandler keyboard = new KeyboardHandler();
     
     @Override
     public void start(Stage primaryStage) {
