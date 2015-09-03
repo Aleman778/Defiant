@@ -24,16 +24,14 @@ public class GameObject {
     }
     
     public void update() {
-        for (GameObject object: children) {
-             object.update();
-        }
-        
         for (GameComponent component: components) {
             component.update();
         }
     }
     
     public void render() {
-        
+        for (GameComponent component: components) {
+            component.render();
+        }
     }
 }
