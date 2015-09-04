@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<scene width="1280" height="720">
+    <gameobjects>
+        <object name="object" tag="object" tx="0" ty="0">
+            <component name="ADD COMPONENT NAME HERE" />
+        </object>
+        <object name="camera" tag="camera" tx="0" ty="0">
+            <component name="ADD COMPONENT NAME HERE" />
+        </object>
+    </gameobjects>
+</scene>
