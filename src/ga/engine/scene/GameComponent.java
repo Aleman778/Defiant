@@ -1,6 +1,6 @@
 package ga.engine.scene;
 
-public class GameComponent {
+public abstract class GameComponent {
     
     public float x, y;
     
@@ -9,9 +9,10 @@ public class GameComponent {
         this.y = y;
     }
     
+    //EVENTS
+    public void awoke() {}
     public void start() {}
-    
+    public void fixedUpdate() {}
     public void update() {}
-    
-    public void render() {}
+    public void lateUpdate() {}
 }
