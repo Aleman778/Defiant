@@ -25,9 +25,25 @@ public class GameObject {
         return object;
     }
     
+    public List<GameObject> getChildren() {
+        return children;
+    }
+    
+    public List<GameObject> getGameObjects(List<GameObject> result) {
+        result.addAll(children);
+        for (GameObject child: children) {
+            child.getGameObjects(result);
+        }
+        return result;
+    }
+    
     public GameObject addComponent(GameComponent component) {
         components.add(component);
         return this;
+    }
+    
+    public List<GameComponent> getAllComponents() {
+        return components;
     }
     
     public void update() {
