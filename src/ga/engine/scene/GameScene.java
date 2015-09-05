@@ -40,6 +40,7 @@ public final class GameScene {
     }
     
     public void render() {
+        group.getChildren().clear();
         root.render(group);
     }
 }
