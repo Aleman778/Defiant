@@ -2,7 +2,7 @@ package ga.engine.physics;
 
 public class Vector3D {
     
-    private double dX = 0, dY = 0, dZ = 0;
+    public double dX = 0, dY = 0, dZ = 0;
 
     public Vector3D(double dX, double dY, double dZ) {
         this.dX = dX;
