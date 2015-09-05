@@ -16,7 +16,7 @@ public class Transform {
         this.scale = scale;
     }
     
-    public Transform(GameObject object, float x, float y, float z) {
+    public Transform(GameObject object, double x, double y, double z) {
         this(object, new Vector3D(x, y, z), new Vector3D(), new Vector3D(1, 1, 1));
     }
     
