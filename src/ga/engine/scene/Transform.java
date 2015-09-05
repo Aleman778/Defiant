@@ -29,7 +29,7 @@ public class Transform {
     }
     
     public void translate(Vector3D vector3) {
-        position.add(vector3);
+        position = position.add(vector3);
     }
     
     public void translate(double x, double y, double z) {
@@ -37,7 +37,7 @@ public class Transform {
     }
     
     public void rotate(Vector3D vector3) {
-        rotation.add(vector3);
+        rotation = rotation.add(vector3);
     }
     
     public void rotate(double x, double y, double z) {
@@ -45,7 +45,7 @@ public class Transform {
     }
     
     public void scale(Vector3D vector3) {
-        scale.add(vector3);
+        scale = scale.add(vector3);
     }
     
     public void scale(double x, double y, double z) {

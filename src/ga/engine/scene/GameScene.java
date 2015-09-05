@@ -22,11 +22,12 @@ public final class GameScene {
     public GameScene(String filepath) {
         group = new Group();
         scene = new Scene(group);
-        root = new GameObject(0, 0);
+        root = new GameObject(new Transform(null));
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
-        GameObject object = new GameObject(32, 32)
+        GameObject object = new GameObject(new Transform(null, 32.0, 32.0, 0.0))
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+        object.transform.rotate(45, 45, 45);
         root.addChild(object);
         GameObject box1 = new GameObject(200, 100)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));

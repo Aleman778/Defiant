@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.transform.Rotate;
 
 public final class GameObject {
 
-    public float x, y;
-    
+    public Transform transform;
     private final List<GameObject> children;
     private final List<GameComponent> components;
     
     private Renderable renderable;
     
-    public GameObject(float x, float y) {
-        this.x = x;
-        this.y = y;
-        children = new ArrayList<>();
-        components = new ArrayList<>();
+    public GameObject(Transform transform) {
+        this.transform = new Transform(this, transform);
+        this.children = new ArrayList<>();
+        this.components = new ArrayList<>();
     }
     
     public GameObject addChild(GameObject object) {
@@ -52,6 +51,10 @@ public final class GameObject {
         return components;
     }
     
+    public Transform getTransform() {
+        return transform;
+    }
+    
     public void update() {
         for (GameComponent component: components) {
             component.update();
@@ -66,8 +69,17 @@ public final class GameObject {
         if (renderable != null) {
             renderable.render(group);
             Node node = renderable.getNode();
-            node.setTranslateX(x);
-            node.setTranslateY(y);
+            node.getTransforms().clear();
+            Rotate rx = new Rotate(transform.rotation.dX, 0, 0, 0, Rotate.X_AXIS);
+            Rotate ry = new Rotate(transform.rotation.dY, 0, 0, 0, Rotate.Y_AXIS);
+            Rotate rz = new Rotate(transform.rotation.dZ, 0, 0, 0, Rotate.Z_AXIS);
+            node.getTransforms().addAll(rx, ry, rz);
+            node.setTranslateX(transform.position.dX);
+            node.setTranslateY(transform.position.dY);
+            node.setTranslateZ(transform.position.dZ);
+            node.setScaleX(transform.scale.dX);
+            node.setScaleY(transform.scale.dY);
+            node.setScaleZ(transform.scale.dZ);
         }
             
         for (GameObject child: children) {
