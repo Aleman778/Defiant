@@ -4,7 +4,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class Camera extends GameComponent {
     
-    public static Camera mainCamera;
+    public static Camera mainCamera = null;
     
     public float viewportX, viewportY;
     public float viewportW, viewportH;
@@ -16,6 +16,11 @@ public class Camera extends GameComponent {
         viewportY = 0.0f;
         viewportW = 1.0f;
         viewportH = 1.0f;
+    }
+    
+    public static void clearAll() {
+        mainCamera.clear();
+        mainCamera = null;
     }
     
     public AnchorPane getCanvas() {
