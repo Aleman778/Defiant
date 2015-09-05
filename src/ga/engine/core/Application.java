@@ -35,8 +35,8 @@ public class Application extends javafx.application.Application {
     public static void start() {
         gameloop.start();
         window.setTitle("Ga Engine");
-        window.setHeight(250);
-        window.setWidth(250);
+        window.setHeight(640);
+        window.setWidth(480);
         window.show();
     }
     
