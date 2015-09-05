@@ -3,6 +3,7 @@ package ga.engine.scene;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.Group;
 import javafx.scene.Node;
 
 public final class GameObject {
@@ -13,7 +14,6 @@ public final class GameObject {
     private final List<GameComponent> components;
     
     private Renderable renderable;
-    private Camera camera;
     
     public GameObject(float x, float y) {
         this.x = x;
@@ -43,9 +43,6 @@ public final class GameObject {
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
         }
-        if (component instanceof Camera) {
-            camera = (Camera) component;
-        }
         
         components.add(component);
         return this;
@@ -65,16 +62,16 @@ public final class GameObject {
         }
     }
     
-    public void render(Camera camera) {
+    public void render(Group group) {
         if (renderable != null) {
-            renderable.render(camera);
+            renderable.render(group);
             Node node = renderable.getNode();
             node.setTranslateX(x);
             node.setTranslateY(y);
         }
             
         for (GameObject child: children) {
-            child.render(camera);
+            child.render(group);
         }
     }
 }
