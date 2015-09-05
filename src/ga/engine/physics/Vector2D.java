@@ -31,4 +31,9 @@ public class Vector2D {
         return dX * vector.dX + dY * vector.dY;
     }
     
+    public Vector2D normalize(Vector2D vector) {
+        double length = length();
+        return new Vector2D(dX / length, dY / length);
+    }
+    
 }
