@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
 
-public class GameObject {
+public final class GameObject {
 
     public float x, y;
     
     private final List<GameObject> children;
     private final List<GameComponent> components;
+    
     private Renderable renderable;
+    private Camera camera;
     
     public GameObject(float x, float y) {
         this.x = x;
@@ -38,6 +40,13 @@ public class GameObject {
     }
     
     public GameObject addComponent(GameComponent component) {
+        if (component instanceof Renderable) {
+            renderable = (Renderable) component;
+        }
+        if (component instanceof Camera) {
+            camera = (Camera) component;
+        }
+        
         components.add(component);
         return this;
     }
