@@ -36,4 +36,8 @@ public class Vector2D {
         return new Vector2D(dX / length, dY / length);
     }
     
+    public Vector2D project(Vector2D vector) {
+        return new Vector2D((dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dX, (dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dY);
+    }
+    
 }
