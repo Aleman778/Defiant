@@ -88,7 +88,7 @@ public final class GameObject {
     }
     
     public void setTranslateX(double x) {
-        transform.position.dX += x;
+        transform.position.dX = x;
     }
     
     public double getTranslateX() {
@@ -96,7 +96,7 @@ public final class GameObject {
     }
     
     public void setTranslateY(double y) {
-        transform.position.dY += y;
+        transform.position.dY = y;
     }
     
     public double getTranslateY() {
@@ -104,7 +104,7 @@ public final class GameObject {
     }
     
     public void setTranslateZ(double z) {
-        transform.position.dZ += z;
+        transform.position.dZ = z;
     }
     
     public double getTranslateZ() {
