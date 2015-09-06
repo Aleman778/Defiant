@@ -74,9 +74,9 @@ public final class GameObject {
             Rotate ry = new Rotate(transform.rotation.dY, 0, 0, 0, Rotate.Y_AXIS);
             Rotate rz = new Rotate(transform.rotation.dZ, 0, 0, 0, Rotate.Z_AXIS);
             node.getTransforms().addAll(rx, ry, rz);
-            node.setTranslateX(transform.position.dX);
-            node.setTranslateY(transform.position.dY);
-            node.setTranslateZ(transform.position.dZ);
+            node.setTranslateX((int) transform.position.dX);
+            node.setTranslateY((int) transform.position.dY);
+            node.setTranslateZ((int) transform.position.dZ);
             node.setScaleX(transform.scale.dX);
             node.setScaleY(transform.scale.dY);
             node.setScaleZ(transform.scale.dZ);
