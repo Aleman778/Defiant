@@ -15,17 +15,17 @@ public class RigidBody extends Body {
         this.object = object;
         this.size = size;
         this.mass = mass;
-        position = new Vector2D(object.x, object.y);
+        position = new Vector2D(object.getTranslateX(), object.getTranslateY());
     }
 
     public void physicsUpdate() {
-        position = new Vector2D(object.x, object.y);
+        position = new Vector2D(object.getTranslateX(), object.getTranslateY());
         if (mass != 0) {
             velocity = velocity.add(GameScene.gravity);
         }
         position = position.add(velocity);
-        object.x = (float) position.dX;
-        object.y = (float) position.dY;
+        object.setTranslateX(position.dX);
+        object.setTranslateY(position.dY);
         if (velocity.dX + velocity.dY != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
                 for (GameComponent component : otherObject.getAllComponents()) {
