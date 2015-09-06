@@ -86,4 +86,28 @@ public final class GameObject {
             child.render(group);
         }
     }
+    
+    public void setTranslateX(double x) {
+        transform.position.dX += x;
+    }
+    
+    public double getTranslateX() {
+        return transform.position.dX;
+    }
+    
+    public void setTranslateY(double y) {
+        transform.position.dY += y;
+    }
+    
+    public double getTranslateY() {
+        return transform.position.dY;
+    }
+    
+    public void setTranslateZ(double z) {
+        transform.position.dZ += z;
+    }
+    
+    public double getTranslateZ() {
+        return transform.position.dZ;
+    }
 }
