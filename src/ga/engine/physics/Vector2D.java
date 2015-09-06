@@ -39,5 +39,11 @@ public class Vector2D {
     public Vector2D project(Vector2D vector) {
         return new Vector2D((dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dX, (dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dY);
     }
+
+    @Override
+    public String toString() {
+        return dX + ", " + dY;
+    }
+    
     
 }
