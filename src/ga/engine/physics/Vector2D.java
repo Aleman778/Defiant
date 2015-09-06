@@ -31,8 +31,11 @@ public class Vector2D {
         return dX * vector.dX + dY * vector.dY;
     }
     
-    public Vector2D normalize(Vector2D vector) {
+    public Vector2D normalize() {
         double length = length();
+        if (length == 0) {
+            return new Vector2D();
+        }
         return new Vector2D(dX / length, dY / length);
     }
     
