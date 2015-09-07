@@ -27,4 +27,9 @@ public class Vector3D {
     public Vector3D scale(double scale) {
         return new Vector3D(dX * scale, dY * scale, dZ * scale);
     }
+
+    @Override
+    public String toString() {
+        return "[x = " + dX + ", y = " + dY + ", z = " + dZ + "]";
+    }
 }
