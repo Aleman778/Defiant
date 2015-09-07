@@ -43,7 +43,7 @@ public class RigidBody extends Body {
                                         dir = new Vector2D(-1, 0);
                                     }
                                     else {
-                                        dir = new Vector2D(1, 0);
+                                        dir = new Vector2D(0, 0);
                                     }
                                     dist = overlapX;
                                 }
@@ -78,8 +78,8 @@ public class RigidBody extends Body {
                                 double totalMass = mass + body.mass;
                                 velocity = velocity.sub(impulseVector.scale(mass / totalMass));
                                 body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
-                                final double percent = 0.6;
-                                final double tolerance = 0.1;
+                                final double percent = 0.8;
+                                final double tolerance = 0.01;
                                 Vector2D correction = dir.scale(percent * Math.max(dist - tolerance, 0.0) / (invMass + otherInvMass));
                                 velocity = velocity.sub(correction.scale(invMass));
                                 body.velocity = body.velocity.add(correction.scale(otherInvMass));
