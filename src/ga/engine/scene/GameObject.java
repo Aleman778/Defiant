@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,18 @@ public final class GameObject {
     
     private Renderable renderable;
     
-    public GameObject(Transform transform) {
+    public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
         this.transform = new Transform(this, transform);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
+    }
+    
+    public GameObject(double x, double y, double z) {
+        this(new Vector3D(x, y, z), new Vector3D(), new Vector3D());
+    }
+    
+    public GameObject() {
+        this(new Vector3D(), new Vector3D(), new Vector3D());
     }
     
     public GameObject addChild(GameObject object) {
