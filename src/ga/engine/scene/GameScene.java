@@ -22,20 +22,29 @@ public final class GameScene {
     public GameScene(String filepath) {
         group = new Group();
         scene = new Scene(group);
-        root = new GameObject(new Transform(null));
+        root = new GameObject();
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
-        GameObject object = new GameObject(new Transform(null, 32.0, 32.0, 0.0))
+        GameObject object = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         object.transform.rotate(45, 45, 45);
         root.addChild(object);
-        GameObject box1 = new GameObject(new Transform(null, 200, 100, 0))
+        GameObject object2 = new GameObject(32.0, 32.0, 0.0)
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+        object2.transform.rotate(45, 45, 45);
+        object.addChild(object2);
+        GameObject object3 = new GameObject(32.0, 32.0, 0.0)
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+        object3.transform.rotate(45, 45, 45);
+        object2.addChild(object3);
+        
+        GameObject box1 = new GameObject(200, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         RigidBody body = new RigidBody(box1, this, new Vector2D(32, 32), 1.25);
         body.setVelocity(new Vector2D(1, 0));
         box1.addComponent(body);
         root.addChild(box1);
-        GameObject box2 = new GameObject(new Transform(null, 200, 200, 0))
+        GameObject box2 = new GameObject(200, 200, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         box2.getTransform().scale(10, 0, 0);
         RigidBody body2 = new RigidBody(box2, this, new Vector2D(320, 32), 0);
