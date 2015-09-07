@@ -11,6 +11,7 @@ import javafx.scene.transform.Rotate;
 public final class GameObject {
 
     public Transform transform;
+    public GameObject parent = null;
     private final List<GameObject> children;
     private final List<GameComponent> components;
     
@@ -31,12 +32,17 @@ public final class GameObject {
     }
     
     public GameObject addChild(GameObject object) {
+        object.parent = this;
         children.add(object);
         return object;
     }
     
     public List<GameObject> getChildren() {
         return children;
+    }
+    
+    public GameObject getParent() {
+        return parent;
     }
     
     public List<GameObject> getGameObjects(List<GameObject> result) {
