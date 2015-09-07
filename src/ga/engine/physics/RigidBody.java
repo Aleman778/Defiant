@@ -8,11 +8,9 @@ public class RigidBody extends Body {
 
     public Vector2D size;
     private final GameScene scene;
-    private final GameObject object;
 
-    public RigidBody(GameObject object, GameScene scene, Vector2D size, double mass) {
+    public RigidBody(GameScene scene, Vector2D size, double mass) {
         this.scene = scene;
-        this.object = object;
         this.size = size;
         this.mass = mass;
     }
@@ -21,6 +19,7 @@ public class RigidBody extends Body {
         if (mass != 0) {
             velocity = velocity.add(GameScene.gravity);
         }
+        
         transform.translate(velocity.dX, velocity.dY, 0);
         if (velocity.dX + velocity.dY != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
