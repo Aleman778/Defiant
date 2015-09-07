@@ -43,6 +43,8 @@ public final class GameObject {
             renderable = (Renderable) component;
         }
         
+        component.gameobject = this;
+        component.transform = transform;
         components.add(component);
         return this;
     }
