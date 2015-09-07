@@ -55,4 +55,18 @@ public class Transform {
     public Vector3D position2D() {
         return new Vector3D(position.dX, position.dY, 0.0);
     }
+    
+    public Vector3D localPosition() {
+        GameObject parent = gameobject.getParent();
+        if (parent != null)
+            return parent.getTransform().localPosition().add(position);
+        return position;
+    }
+    
+    public Vector3D localRotation() {
+        GameObject parent = gameobject.getParent();
+        if (parent != null)
+            return parent.getTransform().localRotation().add(rotation);
+        return rotation;
+    }
 }
