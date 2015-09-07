@@ -83,6 +83,9 @@ public class RigidBody extends Body {
                                 Vector2D correction = dir.scale(percent * Math.max(dist - tolerance, 0.0) / (invMass + otherInvMass));
                                 velocity = velocity.sub(correction.scale(invMass));
                                 body.velocity = body.velocity.add(correction.scale(otherInvMass));
+                                
+                                Vector2D frictionVector = vel.sub(dir.scale(vel.dot(dir))).scale(friction);
+                                velocity = velocity.add(frictionVector);
                             }
                         }
                     }

@@ -32,12 +32,13 @@ public final class GameScene {
         GameObject box1 = new GameObject(new Transform(null, 200, 100, 0))
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         RigidBody body = new RigidBody(box1, this, new Vector2D(32, 32), 1.25);
-        body.setVelocity(new Vector2D(0, 1));
+        body.setVelocity(new Vector2D(1, 0));
         box1.addComponent(body);
         root.addChild(box1);
         GameObject box2 = new GameObject(new Transform(null, 200, 200, 0))
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        RigidBody body2 = new RigidBody(box2, this, new Vector2D(32, 32), 0);
+        box2.getTransform().scale(10, 0, 0);
+        RigidBody body2 = new RigidBody(box2, this, new Vector2D(320, 32), 0);
         body2.setVelocity(new Vector2D(0, 0));
         body2.setSoftness(0.12);
         box1.addComponent(body2);
