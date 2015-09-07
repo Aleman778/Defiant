@@ -27,15 +27,12 @@ public final class GameScene {
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject object = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        object.transform.rotate(45, 45, 45);
         root.addChild(object);
         GameObject object2 = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        object2.transform.rotate(45, 45, 45);
         object.addChild(object2);
         GameObject object3 = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        object3.transform.rotate(45, 45, 45);
         object2.addChild(object3);
         
         GameObject box1 = new GameObject(200, 100, 0)
