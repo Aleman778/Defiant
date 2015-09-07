@@ -18,17 +18,17 @@ public final class GameObject {
     private Renderable renderable;
     
     public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
-        this.transform = new Transform(this, transform);
+        this.transform = new Transform(this, position, rotation, scale);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
     }
     
     public GameObject(double x, double y, double z) {
-        this(new Vector3D(x, y, z), new Vector3D(), new Vector3D());
+        this(new Vector3D(x, y, z), new Vector3D(), new Vector3D(1, 1, 1));
     }
     
     public GameObject() {
-        this(new Vector3D(), new Vector3D(), new Vector3D());
+        this(new Vector3D(), new Vector3D(), new Vector3D(1, 1, 1));
     }
     
     public GameObject addChild(GameObject object) {
