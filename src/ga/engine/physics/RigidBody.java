@@ -6,7 +6,7 @@ import ga.engine.scene.GameScene;
 
 public class RigidBody extends Body {
 
-    public Vector2D size, position;
+    public Vector2D size;
     private final GameScene scene;
     private final GameObject object;
 
@@ -15,23 +15,19 @@ public class RigidBody extends Body {
         this.object = object;
         this.size = size;
         this.mass = mass;
-        position = new Vector2D(object.getTranslateX(), object.getTranslateY());
     }
 
     public void physicsUpdate() {
-        position = new Vector2D(object.getTranslateX(), object.getTranslateY());
         if (mass != 0) {
             velocity = velocity.add(GameScene.gravity);
         }
-        position = position.add(velocity);
-        object.setTranslateX(position.dX);
-        object.setTranslateY(position.dY);
+        transform.translate(velocity.dX, velocity.dY, 0);
         if (velocity.dX + velocity.dY != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
-                        Vector2D diff = body.position.sub(position);
+                        Vector3D diff = body.transform.localPosition().sub(transform.localPosition());
                         double overlapX = (size.dX / 2) + body.size.dX / 2 - Math.abs(diff.dX);
                         if (overlapX > 0) {
                             double overlapY = (size.dY / 2) + body.size.dY / 2 - Math.abs(diff.dY);
