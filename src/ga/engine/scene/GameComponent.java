@@ -2,6 +2,9 @@ package ga.engine.scene;
 
 public abstract class GameComponent {
     
+    public Transform transform;
+    public GameObject gameobject;
+    
     public GameComponent() {
     }
     
