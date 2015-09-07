@@ -26,29 +26,32 @@ public final class GameScene {
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject object = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new RigidBody(this, new Vector2D(32, 32), 0));
         root.addChild(object);
         GameObject object2 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new RigidBody(this, new Vector2D(32, 32), 0));
         object.addChild(object2);
         GameObject object3 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new RigidBody(this, new Vector2D(32, 32), 0));
         object2.addChild(object3);
         
-        GameObject box1 = new GameObject(200, 100, 0)
+        GameObject box1 = new GameObject(64, 0, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        RigidBody body = new RigidBody(box1, this, new Vector2D(32, 32), 1.25);
+        RigidBody body = new RigidBody(this, new Vector2D(32, 32), 1.25);
         body.setVelocity(new Vector2D(1, 0));
-        box1.addComponent(body);
         root.addChild(box1);
+        box1.addComponent(body);
         GameObject box2 = new GameObject(200, 200, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         box2.getTransform().scale(10, 0, 0);
-        RigidBody body2 = new RigidBody(box2, this, new Vector2D(320, 32), 0);
+        RigidBody body2 = new RigidBody(this, new Vector2D(320, 32), 0);
+        root.addChild(box2);
         body2.setVelocity(new Vector2D(0, 0));
         body2.setSoftness(0.12);
-        box1.addComponent(body2);
-        root.addChild(box2);
+        box2.addComponent(body2);
     }
     
     public javafx.scene.Scene get() {
