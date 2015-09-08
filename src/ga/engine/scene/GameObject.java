@@ -82,16 +82,16 @@ public final class GameObject {
     
     public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
         for (GameComponent comp: components) {
-            if (component.getClass().equals(component) || component.isInstance(component))
+            if (comp.getClass().equals(component) || component.isInstance(comp))
                 return comp;
         }
         return null;
     }
     
-     public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
+    public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
         Set<GameComponent> result = new HashSet<>();
         for (GameComponent comp: components) {
-            if (component.getClass().equals(component) || component.isInstance(component))
+            if (comp.getClass().equals(component) || component.isInstance(comp))
                 result.add(comp);
         }
         return result;
