@@ -88,6 +88,22 @@ public class Input {
         keysReleased.clear();
     }
     
+    public static float getAxis(String name) {
+        InputAxis result = axis.get(name);
+        if (result != null)
+            return result.value;
+        else
+            return 0.0f;
+    }
+    
+    public static float getAxisSignum(String name) {
+        InputAxis result = axis.get(name);
+        if (result != null)
+            return Math.signum(result.value);
+        else
+            return 0.0f;
+    }
+    
     public static boolean getKeyPressed(KeyCode key) {
         return keysPressed.contains(key);
     }
