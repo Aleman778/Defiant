@@ -14,4 +14,7 @@ public abstract class GameComponent {
     public void fixedUpdate() {}
     public void update() {}
     public void lateUpdate() {}
+    public void onCollisionEnter() {}
+    public void onCollision() {}
+    public void onCollisionExit() {}
 }
