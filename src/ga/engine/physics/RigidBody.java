@@ -85,10 +85,9 @@ public class RigidBody extends Body {
     public void onCollisionEnter() {
         colliding = true;
     }
-    
+
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
-        colliding = true;
         Vector2D vel = body.velocity.sub(velocity);
         double e = Math.min(this.softness, body.softness);
         double velNorm = vel.dot(normal);
@@ -119,7 +118,5 @@ public class RigidBody extends Body {
 
         Vector2D frictionVector = vel.sub(normal.scale(vel.dot(normal))).scale(Math.max(friction, body.friction));
         velocity = velocity.add(frictionVector);
-    }
-
-    
+    }  
 }
