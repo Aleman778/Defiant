@@ -18,6 +18,10 @@ public abstract class Body extends GameComponent {
         velocity = vel;
     }
     
+    public Vector2D getVelocity() {
+        return velocity;
+    }
+    
     public void setSoftness(double softness) {
         this.softness = softness;
     }
