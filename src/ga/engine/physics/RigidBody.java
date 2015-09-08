@@ -7,6 +7,7 @@ import ga.engine.scene.GameScene;
 public class RigidBody extends Body {
 
     public Vector2D size;
+    private boolean colliding = false;
     private final GameScene scene;
 
     public RigidBody(GameScene scene, Vector2D size, double mass) {
@@ -31,58 +32,35 @@ public class RigidBody extends Body {
                         if (overlapX > 0) {
                             double overlapY = (size.y / 2) + body.size.y / 2 - Math.abs(diff.y);
                             if (overlapY > 0) {
-                                Vector2D dir;
-                                double dist;
+                                Vector2D normal;
+                                double penetration;
                                 if (overlapX < overlapY) {
                                     if (diff.x < 0) {
-                                        dir = new Vector2D(-1, 0);
+                                        normal = new Vector2D(-1, 0);
                                     }
                                     else {
-                                        dir = new Vector2D(0, 0);
+                                        normal = new Vector2D(0, 0);
                                     }
-                                    dist = overlapX;
+                                    penetration = overlapX;
                                 }
                                 else {
                                     if (diff.y < 0) {
-                                        dir = new Vector2D(0, -1);
+                                        normal = new Vector2D(0, -1);
                                     }
                                     else {
-                                        dir = new Vector2D(0, 1);
+                                        normal = new Vector2D(0, 1);
                                     }
-                                    dist = overlapY;
+                                    penetration = overlapY;
                                 }
-                                Vector2D vel = body.velocity.sub(velocity);
-                                double softness = Math.min(this.softness, body.softness);
-                                double velNorm = vel.dot(dir);
-                                double impulse = -(1 + softness) * velNorm;
-                                double invMass, otherInvMass;
-                                if (mass == 0) {
-                                    invMass = 0;
-                                }
-                                else {
-                                    invMass = 1 / mass;
-                                }
-                                if (body.mass == 0) {
-                                    otherInvMass = 0;
-                                }
-                                else {
-                                    otherInvMass = 1 / body.mass;
-                                }
-                                impulse = impulse / invMass + otherInvMass;
-                                Vector2D impulseVector = dir.scale(impulse);
-                                double totalMass = mass + body.mass;
-                                velocity = velocity.sub(impulseVector.scale(mass / totalMass));
-                                body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
-                                final double percent = 0.8;
-                                final double tolerance = 0.01;
-                                Vector2D correction = dir.scale(percent * Math.max(dist - tolerance, 0.0) / (invMass + otherInvMass));
-                                velocity = velocity.sub(correction.scale(invMass));
-                                body.velocity = body.velocity.add(correction.scale(otherInvMass));
-                                
-                                Vector2D frictionVector = vel.sub(dir.scale(vel.dot(dir))).scale(Math.max(friction, body.friction));
-                                velocity = velocity.add(frictionVector);
+                                if (colliding)
+                                    onCollisionEnter();
+                                onCollision(body, normal, penetration);
+                                continue;
                             }
                         }
+                        if (colliding)
+                            onCollisionExit();
+                        
                     }
                 }
             }
@@ -95,4 +73,45 @@ public class RigidBody extends Body {
         physicsUpdate();
     }
 
+    @Override
+    public void onCollisionExit() {
+        colliding = false;
+    }
+    
+    @Override
+    public void onCollision(Body body, Vector2D normal, double penetration) {
+        colliding = true;
+        Vector2D vel = body.velocity.sub(velocity);
+        double e = Math.min(this.softness, body.softness);
+        double velNorm = vel.dot(normal);
+        double impulse = -(1 + e) * velNorm;
+        double invMass, otherInvMass;
+        if (mass == 0) {
+            invMass = 0;
+        }
+        else {
+            invMass = 1 / mass;
+        }
+        if (body.mass == 0) {
+            otherInvMass = 0;
+        }
+        else {
+            otherInvMass = 1 / body.mass;
+        }
+        impulse = impulse / invMass + otherInvMass;
+        Vector2D impulseVector = normal.scale(impulse);
+        double totalMass = mass + body.mass;
+        velocity = velocity.sub(impulseVector.scale(mass / totalMass));
+        body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
+        final double percent = 0.8;
+        final double tolerance = 0.01;
+        Vector2D correction = normal.scale(percent * Math.max(penetration - tolerance, 0.0) / (invMass + otherInvMass));
+        velocity = velocity.sub(correction.scale(invMass));
+        body.velocity = body.velocity.add(correction.scale(otherInvMass));
+
+        Vector2D frictionVector = vel.sub(normal.scale(vel.dot(normal))).scale(Math.max(friction, body.friction));
+        velocity = velocity.add(frictionVector);
+    }
+
+    
 }
