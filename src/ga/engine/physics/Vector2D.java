@@ -2,33 +2,33 @@ package ga.engine.physics;
 
 public class Vector2D {
     
-    public double dX = 0, dY = 0;
+    public double x = 0, y = 0;
 
     public Vector2D(double dX, double dY) {
-        this.dX = dX;
-        this.dY = dY;
+        this.x = dX;
+        this.y = dY;
     }
     
     public Vector2D() {}
     
     public double length() {
-        return Math.sqrt(dX * dX + dY * dY);
+        return Math.sqrt(x * x + y * y);
     }
     
     public Vector2D add(Vector2D vector) {
-        return new Vector2D(dX + vector.dX, dY + vector.dY);
+        return new Vector2D(x + vector.x, y + vector.y);
     }
     
     public Vector2D sub(Vector2D vector) {
-        return new Vector2D(dX - vector.dX, dY - vector.dY);
+        return new Vector2D(x - vector.x, y - vector.y);
     }
     
     public Vector2D scale(double scale) {
-        return new Vector2D(dX * scale, dY * scale);
+        return new Vector2D(x * scale, y * scale);
     }
     
     public double dot(Vector2D vector) {
-        return dX * vector.dX + dY * vector.dY;
+        return x * vector.x + y * vector.y;
     }
     
     public Vector2D normalize() {
@@ -36,16 +36,16 @@ public class Vector2D {
         if (length == 0) {
             return new Vector2D();
         }
-        return new Vector2D(dX / length, dY / length);
+        return new Vector2D(x / length, y / length);
     }
     
     public Vector2D project(Vector2D vector) {
-        return new Vector2D((dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dX, (dot(vector) / (vector.dX * vector.dX + vector.dY * vector.dY)) * vector.dY);
+        return new Vector2D((dot(vector) / (vector.x * vector.x + vector.y * vector.y)) * vector.x, (dot(vector) / (vector.x * vector.x + vector.y * vector.y)) * vector.y);
     }
 
     @Override
     public String toString() {
-        return dX + ", " + dY;
+        return x + ", " + y;
     }
     
     

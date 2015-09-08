@@ -53,7 +53,7 @@ public class Transform {
     }
     
     public Vector3D position2D() {
-        return new Vector3D(position.dX, position.dY, 0.0);
+        return new Vector3D(position.x, position.y, 0.0);
     }
     
     public Vector3D localPosition() {

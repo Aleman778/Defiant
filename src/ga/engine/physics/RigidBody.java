@@ -20,21 +20,21 @@ public class RigidBody extends Body {
             velocity = velocity.add(GameScene.gravity);
         }
         
-        transform.translate(velocity.dX, velocity.dY, 0);
-        if (velocity.dX + velocity.dY != 0) {
+        transform.translate(velocity.x, velocity.y, 0);
+        if (velocity.x + velocity.y != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
                         Vector3D diff = body.transform.localPosition().sub(transform.localPosition());
-                        double overlapX = (size.dX / 2) + body.size.dX / 2 - Math.abs(diff.dX);
+                        double overlapX = (size.x / 2) + body.size.x / 2 - Math.abs(diff.x);
                         if (overlapX > 0) {
-                            double overlapY = (size.dY / 2) + body.size.dY / 2 - Math.abs(diff.dY);
+                            double overlapY = (size.y / 2) + body.size.y / 2 - Math.abs(diff.y);
                             if (overlapY > 0) {
                                 Vector2D dir;
                                 double dist;
                                 if (overlapX < overlapY) {
-                                    if (diff.dX < 0) {
+                                    if (diff.x < 0) {
                                         dir = new Vector2D(-1, 0);
                                     }
                                     else {
@@ -43,7 +43,7 @@ public class RigidBody extends Body {
                                     dist = overlapX;
                                 }
                                 else {
-                                    if (diff.dY < 0) {
+                                    if (diff.y < 0) {
                                         dir = new Vector2D(0, -1);
                                     }
                                     else {

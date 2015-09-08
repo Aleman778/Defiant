@@ -89,16 +89,16 @@ public final class GameObject {
             node.getTransforms().clear();
             Vector3D rotation = transform.localRotation();
             Vector3D position = transform.localPosition();
-            Rotate rx = new Rotate(rotation.dX, 0, 0, 0, Rotate.X_AXIS);
-            Rotate ry = new Rotate(rotation.dY, 0, 0, 0, Rotate.Y_AXIS);
-            Rotate rz = new Rotate(rotation.dZ, 0, 0, 0, Rotate.Z_AXIS);
+            Rotate rx = new Rotate(rotation.x, 0, 0, 0, Rotate.X_AXIS);
+            Rotate ry = new Rotate(rotation.y, 0, 0, 0, Rotate.Y_AXIS);
+            Rotate rz = new Rotate(rotation.z, 0, 0, 0, Rotate.Z_AXIS);
             node.getTransforms().addAll(rx, ry, rz);
-            node.setTranslateX((int) position.dX);
-            node.setTranslateY((int) position.dY);
-            node.setTranslateZ((int) position.dZ);
-            node.setScaleX(transform.scale.dX);
-            node.setScaleY(transform.scale.dY);
-            node.setScaleZ(transform.scale.dZ);
+            node.setTranslateX((int) position.x);
+            node.setTranslateY((int) position.y);
+            node.setTranslateZ((int) position.z);
+            node.setScaleX(transform.scale.x);
+            node.setScaleY(transform.scale.y);
+            node.setScaleZ(transform.scale.z);
         }
             
         for (GameObject child: children) {
@@ -107,26 +107,26 @@ public final class GameObject {
     }
     
     public void setTranslateX(double x) {
-        transform.position.dX = x;
+        transform.position.x = x;
     }
     
     public double getTranslateX() {
-        return transform.position.dX;
+        return transform.position.x;
     }
     
     public void setTranslateY(double y) {
-        transform.position.dY = y;
+        transform.position.y = y;
     }
     
     public double getTranslateY() {
-        return transform.position.dY;
+        return transform.position.y;
     }
     
     public void setTranslateZ(double z) {
-        transform.position.dZ = z;
+        transform.position.z = z;
     }
     
     public double getTranslateZ() {
-        return transform.position.dZ;
+        return transform.position.z;
     }
 }
