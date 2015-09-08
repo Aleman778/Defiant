@@ -68,11 +68,17 @@ public final class GameScene {
     }
     
     public void update() {
+        //Update Inputs
+        input.update();
+        
         root.update();
     }
     
     public void render() {
         group.getChildren().clear();
         root.render(group);
+        
+        //Clear Inputs
+        input.clear();
     }
 }
