@@ -24,6 +24,9 @@ public class RigidBody extends Body {
         transform.translate(velocity.x, velocity.y, 0);
         if (velocity.x + velocity.y != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
+                if (otherObject.equals(gameobject))
+                    continue;
+                
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
@@ -52,7 +55,7 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-                                if (colliding)
+                                if (!colliding)
                                     onCollisionEnter();
                                 onCollision(body, normal, penetration);
                                 continue;
@@ -76,6 +79,11 @@ public class RigidBody extends Body {
     @Override
     public void onCollisionExit() {
         colliding = false;
+    }
+
+    @Override
+    public void onCollisionEnter() {
+        colliding = true;
     }
     
     @Override
