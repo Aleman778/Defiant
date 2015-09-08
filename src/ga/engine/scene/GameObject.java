@@ -38,6 +38,10 @@ public final class GameObject {
             return null;
         
         object.parent = this;
+        for (GameComponent component: object.getAllComponents()) {
+            component.start();
+        }
+        
         children.add(object);
         return object;
     }
@@ -61,6 +65,10 @@ public final class GameObject {
     public GameObject addComponent(GameComponent component) {
         if (component.gameobject != null)
             return null;
+        
+        component.awoke();
+        if (parent != null)
+            component.start();
         
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
