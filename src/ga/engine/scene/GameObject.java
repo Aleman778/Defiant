@@ -3,7 +3,9 @@ package ga.engine.scene;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
@@ -32,6 +34,9 @@ public final class GameObject {
     }
     
     public GameObject addChild(GameObject object) {
+        if (object.parent != null)
+            return null;
+        
         object.parent = this;
         children.add(object);
         return object;
@@ -54,6 +59,9 @@ public final class GameObject {
     }
     
     public GameObject addComponent(GameComponent component) {
+        if (component.gameobject != null)
+            return null;
+        
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
         }
@@ -63,6 +71,24 @@ public final class GameObject {
         components.add(component);
         return this;
     }
+    
+    public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
+        for (GameComponent comp: components) {
+            if (component.getClass().equals(component) || component.isInstance(component))
+                return comp;
+        }
+        return null;
+    }
+    
+     public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
+        Set<GameComponent> result = new HashSet<>();
+        for (GameComponent comp: components) {
+            if (component.getClass().equals(component) || component.isInstance(component))
+                result.add(comp);
+        }
+        return result;
+    }
+    
     
     public List<GameComponent> getAllComponents() {
         return components;
