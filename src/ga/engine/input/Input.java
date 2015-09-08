@@ -16,7 +16,7 @@ public class Input {
     
     public static MouseButton mouseButton;
     public static Vector2D mousePosition;
-    public static float lerp = 0.2f;
+    public static double lerp = 0.2f;
     
     private static Set<KeyCode> keys;
     private static Set<KeyCode> keysPressed;
@@ -46,7 +46,7 @@ public class Input {
     public void update() {
         axis.forEach((String t, InputAxis u) -> {
             Iterator<KeyCode> it = keys.iterator();
-            float val = 0.0f;
+            double val = 0.0f;
             while (it.hasNext()) {
                 KeyCode key = it.next();
                 if (key.equals(u.getKeyPos()))
@@ -88,7 +88,7 @@ public class Input {
         keysReleased.clear();
     }
     
-    public static float getAxis(String name) {
+    public static double getAxis(String name) {
         InputAxis result = axis.get(name);
         if (result != null)
             return result.value;
@@ -96,7 +96,7 @@ public class Input {
             return 0.0f;
     }
     
-    public static float getAxisSignum(String name) {
+    public static double getAxisSignum(String name) {
         InputAxis result = axis.get(name);
         if (result != null)
             return Math.signum(result.value);

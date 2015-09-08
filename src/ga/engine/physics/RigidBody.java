@@ -111,17 +111,17 @@ public class RigidBody extends Body {
             otherInvMass = 1 / body.mass;
         }
         impulse = impulse / invMass + otherInvMass;
-        Vector2D impulseVector = normal.scale(impulse);
+        Vector2D impulseVector = normal.mul(impulse);
         double totalMass = mass + body.mass;
-        velocity = velocity.sub(impulseVector.scale(mass / totalMass));
-        body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
+        velocity = velocity.sub(impulseVector.mul(mass / totalMass));
+        body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
         final double percent = 0.8;
         final double tolerance = 0.01;
-        Vector2D correction = normal.scale(percent * Math.max(penetration - tolerance, 0.0) / (invMass + otherInvMass));
-        velocity = velocity.sub(correction.scale(invMass));
-        body.velocity = body.velocity.add(correction.scale(otherInvMass));
+        Vector2D correction = normal.mul(percent * Math.max(penetration - tolerance, 0.0) / (invMass + otherInvMass));
+        velocity = velocity.sub(correction.mul(invMass));
+        body.velocity = body.velocity.add(correction.mul(otherInvMass));
 
-        Vector2D frictionVector = vel.sub(normal.scale(vel.dot(normal))).scale(Math.max(friction, body.friction));
+        Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
         velocity = velocity.add(frictionVector);
     }  
 }

@@ -11,7 +11,7 @@ public final class InputAxis {
     
     private final KeyCode keyNeg, keyPos;
     
-    public float value;
+    public double value;
     
     public InputAxis(KeyCode keyNeg, KeyCode keyPos) {
         this.keyNeg = keyNeg;

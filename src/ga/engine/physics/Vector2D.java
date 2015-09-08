@@ -23,8 +23,12 @@ public class Vector2D {
         return new Vector2D(x - vector.x, y - vector.y);
     }
     
-    public Vector2D scale(double scale) {
+    public Vector2D mul(double scale) {
         return new Vector2D(x * scale, y * scale);
+    }
+    
+    public Vector2D mul(Vector2D vector) {
+        return new Vector2D(x * vector.x, y * vector.y);
     }
     
     public double dot(Vector2D vector) {
