@@ -55,14 +55,19 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-                                if (!colliding)
-                                    onCollisionEnter();
-                                onCollision(body, normal, penetration);
+                                for (GameComponent comp: gameobject.getAllComponents()) {
+                                    if (!colliding)
+                                        comp.onCollisionEnter();
+                                    comp.onCollision(body, normal, penetration);
+                                }
                                 continue;
                             }
                         }
-                        if (colliding)
-                            onCollisionExit();
+                        if (colliding) {
+                            for (GameComponent comp: gameobject.getAllComponents()) {
+                                onCollisionExit();
+                            }
+                        }
                         
                     }
                 }
