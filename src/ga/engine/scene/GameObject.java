@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import ga.engine.physics.Body;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public final class GameObject {
     private final List<GameObject> children;
     private final List<GameComponent> components;
     
-    private Renderable renderable;
+    private Renderable renderable = null;
+    private Body body = null;
     
     public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
         this.transform = new Transform(this, position, rotation, scale);
@@ -72,6 +74,10 @@ public final class GameObject {
         
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
+        }
+        
+        if (component instanceof Body) {
+            body = (Body) component;
         }
         
         component.gameobject = this;
