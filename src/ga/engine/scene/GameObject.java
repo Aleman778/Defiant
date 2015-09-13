@@ -108,8 +108,20 @@ public final class GameObject {
         return components;
     }
     
-    public Transform getTransform() {
-        return transform;
+    public boolean isRenderable() {
+        return (renderable != null);
+    }
+    
+    public Renderable getRenderable() {
+        return renderable;
+    }
+    
+    public boolean isBody() {
+        return (body != null);
+    }
+    
+    public Body getBody() {
+        return body;
     }
     
     public void update() {
@@ -144,6 +156,10 @@ public final class GameObject {
         for (GameObject child: children) {
             child.render(group);
         }
+    }
+    
+    public Transform getTransform() {
+        return transform;
     }
     
     public void setTranslateX(double x) {
