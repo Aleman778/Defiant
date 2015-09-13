@@ -17,7 +17,7 @@ public class RigidBody extends Body {
 
     public void physicsUpdate() {
         if (mass != 0) {
-            velocity = velocity.add(GameScene.gravity);
+            velocity = velocity.add(scene.gravity);
         }
         
         transform.translate(velocity.x, velocity.y, 0);
@@ -38,7 +38,7 @@ public class RigidBody extends Body {
                                         dir = new Vector2D(-1, 0);
                                     }
                                     else {
-                                        dir = new Vector2D(0, 0);
+                                        dir = new Vector2D(1, 0);
                                     }
                                     dist = overlapX;
                                 }
@@ -52,9 +52,9 @@ public class RigidBody extends Body {
                                     dist = overlapY;
                                 }
                                 Vector2D vel = body.velocity.sub(velocity);
-                                double softness = Math.min(this.softness, body.softness);
+                                double bounce = Math.min(softness, body.softness);
                                 double velNorm = vel.dot(dir);
-                                double impulse = -(1 + softness) * velNorm;
+                                double impulse = -(1 + bounce) * velNorm;
                                 double invMass, otherInvMass;
                                 if (mass == 0) {
                                     invMass = 0;
@@ -73,9 +73,10 @@ public class RigidBody extends Body {
                                 double totalMass = mass + body.mass;
                                 velocity = velocity.sub(impulseVector.scale(mass / totalMass));
                                 body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
+                                
                                 final double percent = 0.8;
                                 final double tolerance = 0.01;
-                                Vector2D correction = dir.scale(percent * Math.max(dist - tolerance, 0.0) / (invMass + otherInvMass));
+                                Vector2D correction = dir.scale(percent * dist - tolerance / (invMass + otherInvMass));
                                 velocity = velocity.sub(correction.scale(invMass));
                                 body.velocity = body.velocity.add(correction.scale(otherInvMass));
                                 
