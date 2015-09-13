@@ -13,7 +13,7 @@ public final class GameScene {
     private final Scene scene;
     private final Group group;
     private final GameObject root;
-    public static Vector2D gravity = new Vector2D(0, 0.2);
+    public Vector2D gravity = new Vector2D(0, 0.2);
     
     /**
      * Constructs a Scene from filepath scene
@@ -50,7 +50,6 @@ public final class GameScene {
         RigidBody body2 = new RigidBody(this, new Vector2D(320, 32), 0);
         root.addChild(box2);
         body2.setVelocity(new Vector2D(0, 0));
-        body2.setSoftness(0.12);
         box2.addComponent(body2);
     }
     
