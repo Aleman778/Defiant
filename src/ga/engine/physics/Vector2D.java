@@ -51,6 +51,8 @@ public class Vector2D {
     public String toString() {
         return x + ", " + y;
     }
-    
-    
+
+    public boolean equals(Vector2D vector) {
+        return (x == vector.x && y == vector.y);
+    }
 }
