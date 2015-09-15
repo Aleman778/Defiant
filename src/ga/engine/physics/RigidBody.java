@@ -14,6 +14,11 @@ public class RigidBody extends Body {
         this.size = size;
         this.mass = mass;
     }
+    
+    public RigidBody(GameScene scene, Vector2D size) {
+        this.scene = scene;
+        this.size = size;
+    }
 
     public void physicsUpdate() {
         if (mass != 0) {
