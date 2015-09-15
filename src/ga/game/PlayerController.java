@@ -22,11 +22,10 @@ public class PlayerController extends GameComponent {
 
     @Override
     public void fixedUpdate() {
-        Vector2D movement = new Vector2D(Input.getAxis("horizontal") * SPEED, 0.0);
-        if (isGrounded() && Input.getKeyPressed(KeyCode.SPACE)) {
-            movement = movement.add(new Vector2D(0, -JUMP_HEIGHT));
-        }
-        
+        int horizontal = (Input.getKey(KeyCode.A) == true ? -1 : 0) +
+                (Input.getKey(KeyCode.D) == true ? 1 : 0);
+        int jump = Input.getKeyPressed(KeyCode.SPACE) == true ? 1 : 0;
+        Vector2D movement = new Vector2D(horizontal * SPEED, -jump * JUMP_HEIGHT);
         body.setVelocity(body.getVelocity().add(movement));
     }
     
