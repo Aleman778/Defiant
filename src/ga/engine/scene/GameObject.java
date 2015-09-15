@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import ga.engine.core.Application;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
@@ -8,10 +9,11 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 
-public final class GameObject {
+public class GameObject {
 
     public Transform transform;
     public GameObject parent = null;
+    public GameScene scene = Application.getScene();
     private final List<GameObject> children;
     private final List<GameComponent> components;
     
