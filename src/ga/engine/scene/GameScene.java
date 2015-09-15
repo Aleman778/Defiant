@@ -54,7 +54,6 @@ public final class GameScene {
         box2.getTransform().scale(10, 0, 0);
         RigidBody body2 = new RigidBody(this, new Vector2D(320, 32), 0);
         body2.setVelocity(new Vector2D(0, 0));
-        body2.setSoftness(0.12);
         box2.addComponent(body2);
         root.addChild(box2);
     }

@@ -1,5 +1,6 @@
 package ga.engine.rendering;
 
+import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -16,6 +17,11 @@ public class ImageRenderer extends GameComponent implements Renderable {
     
     public ImageRenderer(String filepath) {
         this(new Image(filepath));
+    }
+    
+    public Vector2D getSize()
+    {
+        return new Vector2D(imageview.getImage().getWidth(), imageview.getImage().getHeight());
     }
 
     @Override
