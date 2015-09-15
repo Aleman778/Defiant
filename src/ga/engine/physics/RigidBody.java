@@ -60,7 +60,7 @@ public class RigidBody extends Body {
                                 if (!colliding) {
                                     colliding = true;
                                     for (GameComponent comp: gameobject.getAllComponents()) {
-                                            comp.onCollisionEnter();
+                                        comp.onCollisionEnter(body, normal, penetration);
                                     }
                                 }
                                 
@@ -95,7 +95,7 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public void onCollisionEnter() {
+    public void onCollisionEnter(Body body, Vector2D normal, double penetration) {
         colliding = true;
     }
 

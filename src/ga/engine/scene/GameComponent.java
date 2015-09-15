@@ -31,7 +31,7 @@ public abstract class GameComponent {
     public void fixedUpdate() {}
     public void update() {}
     public void lateUpdate() {}
-    public void onCollisionEnter() {}
+    public void onCollisionEnter(Body body, Vector2D normal, double penetration) {}
     public void onCollision(Body body, Vector2D normal, double penetration) {}
     public void onCollisionExit() {}
 }
