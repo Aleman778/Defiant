@@ -3,6 +3,7 @@ package ga.engine.scene;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -206,5 +207,11 @@ public final class GameObject {
     
     public double getTranslateZ() {
         return transform.position.z;
+    }
+    
+    public Rectangle computeAABB() {
+        if (isRenderable())
+            return renderable.computeAABB();
+        return new Rectangle();
     }
 }

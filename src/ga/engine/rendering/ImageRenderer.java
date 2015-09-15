@@ -2,6 +2,7 @@ package ga.engine.rendering;
 
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
+import java.awt.Rectangle;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -10,9 +11,11 @@ import javafx.scene.image.ImageView;
 public class ImageRenderer extends GameComponent implements Renderable {
     
     private ImageView imageview;
+    private Image image;
     
     public ImageRenderer(Image image) {
-        imageview = new ImageView(image);
+        this.image = image;
+        this.imageview = new ImageView(this.image);
     }
     
     public ImageRenderer(String filepath) {
@@ -32,5 +35,10 @@ public class ImageRenderer extends GameComponent implements Renderable {
     @Override
     public Node getNode() {
         return imageview;
+    }
+
+    @Override
+    public Rectangle computeAABB() {
+        return new Rectangle(0, 0, (int) (image.getWidth() * transform.scale.x), (int) (image.getHeight() * transform.scale.y));
     }
 }

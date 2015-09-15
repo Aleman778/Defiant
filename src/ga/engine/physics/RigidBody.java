@@ -3,16 +3,15 @@ package ga.engine.physics;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
+import java.awt.Rectangle;
 
 public class RigidBody extends Body {
 
-    public Vector2D size;
     private boolean colliding = false;
     private final GameScene scene;
 
-    public RigidBody(GameScene scene, Vector2D size, double mass) {
+    public RigidBody(GameScene scene, double mass) {
         this.scene = scene;
-        this.size = size;
         this.mass = mass;
     }
 
@@ -31,10 +30,13 @@ public class RigidBody extends Body {
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
-                        Vector3D diff = body.transform.localPosition().sub(transform.localPosition());
-                        double overlapX = (size.x / 2) + body.size.x / 2 - Math.abs(diff.x);
+                        Rectangle bounds = gameobject.computeAABB();
+                        Rectangle otherBounds = otherObject.computeAABB();
+                        Vector3D diff = (body.transform.localPosition().add(new Vector3D(otherBounds.x, otherBounds.y, 0))).
+                                sub(transform.localPosition().add(new Vector3D(bounds.x, bounds.y, 0)));
+                        double overlapX = (bounds.width / 2) + (otherBounds.width / 2) - Math.abs(diff.x);
                         if (overlapX > 0) {
-                            double overlapY = (size.y / 2) + body.size.y / 2 - Math.abs(diff.y);
+                            double overlapY = (bounds.height / 2) + (otherBounds.height / 2) - Math.abs(diff.y);
                             if (overlapY > 0) {
                                 Vector2D normal;
                                 double penetration;
