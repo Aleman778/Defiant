@@ -24,8 +24,12 @@ public class Vector3D {
         return new Vector3D(x - vector.x, y - vector.y, z - vector.z);
     }
     
-    public Vector3D scale(double scale) {
-        return new Vector3D(x * scale, y * scale, z * scale);
+    public Vector3D mul(double value) {
+        return new Vector3D(x * value, y * value, z * value);
+    }
+    
+    public Vector3D mul(Vector3D vector) {
+        return new Vector3D(x * vector.x, y * vector.y, z * vector.y);
     }
 
     @Override

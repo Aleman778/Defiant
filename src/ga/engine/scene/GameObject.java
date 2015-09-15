@@ -1,23 +1,25 @@
 package ga.engine.scene;
 
-import ga.engine.core.Application;
+import ga.engine.physics.Body;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 
-public class GameObject {
+public final class GameObject {
 
     public Transform transform;
     public GameObject parent = null;
-    public GameScene scene = Application.getScene();
     private final List<GameObject> children;
     private final List<GameComponent> components;
     
-    private Renderable renderable;
+    private Renderable renderable = null;
+    private Body body = null;
     
     public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
         this.transform = new Transform(this, position, rotation, scale);
@@ -34,7 +36,14 @@ public class GameObject {
     }
     
     public GameObject addChild(GameObject object) {
+        if (object.parent != null)
+            return null;
+        
         object.parent = this;
+        for (GameComponent component: object.getAllComponents()) {
+            component.start();
+        }
+        
         children.add(object);
         return object;
     }
@@ -56,8 +65,19 @@ public class GameObject {
     }
     
     public GameObject addComponent(GameComponent component) {
+        if (component.gameobject != null)
+            return null;
+        
+        component.awoke();
+        if (parent != null)
+            component.start();
+        
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
+        }
+        
+        if (component instanceof Body) {
+            body = (Body) component;
         }
         
         component.gameobject = this;
@@ -66,12 +86,54 @@ public class GameObject {
         return this;
     }
     
+    public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
+        for (GameComponent comp: components) {
+            if (comp.getClass().equals(component) || component.isInstance(comp))
+                return comp;
+        }
+        return null;
+    }
+    
+    public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
+        Set<GameComponent> result = new HashSet<>();
+        for (GameComponent comp: components) {
+            if (comp.getClass().equals(component) || component.isInstance(comp))
+                result.add(comp);
+        }
+        return result;
+    }
+    
     public List<GameComponent> getAllComponents() {
         return components;
     }
     
-    public Transform getTransform() {
-        return transform;
+    public boolean isRenderable() {
+        return (renderable != null);
+    }
+    
+    public Renderable getRenderable() {
+        return renderable;
+    }
+    
+    public boolean isBody() {
+        return (body != null);
+    }
+    
+    public Body getBody() {
+        return body;
+    }
+    
+    public void fixedUpdate() {
+        for (GameComponent component: components) {
+            component.fixedUpdate();
+        }
+        
+        if (isBody())
+            body.physicsUpdate();
+        
+        for (GameObject child: children) {
+            child.fixedUpdate();
+        }
     }
     
     public void update() {
@@ -81,6 +143,16 @@ public class GameObject {
         
         for (GameObject child: children) {
             child.update();
+        }
+    }
+    
+    public void lateUpdate() {
+        for (GameComponent component: components) {
+            component.lateUpdate();
+        }
+        
+        for (GameObject child: children) {
+            child.lateUpdate();
         }
     }
     
@@ -106,6 +178,10 @@ public class GameObject {
         for (GameObject child: children) {
             child.render(group);
         }
+    }
+    
+    public Transform getTransform() {
+        return transform;
     }
     
     public void setTranslateX(double x) {
