@@ -5,9 +5,9 @@ import ga.engine.scene.GameComponent;
 public abstract class Body extends GameComponent {
     
     protected double mass = 1;
-    protected double softness = 0.5;
+    protected double softness = 0;
     protected Vector2D velocity = new Vector2D();
-    protected double friction = 0.25;
+    protected double friction = 0.1;
 
     @Override
     public void update() {
@@ -26,4 +26,5 @@ public abstract class Body extends GameComponent {
         this.softness = softness;
     }
     
+    public abstract void physicsUpdate();
 }

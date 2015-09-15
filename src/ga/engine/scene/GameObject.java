@@ -103,7 +103,6 @@ public final class GameObject {
         return result;
     }
     
-    
     public List<GameComponent> getAllComponents() {
         return components;
     }
@@ -124,6 +123,19 @@ public final class GameObject {
         return body;
     }
     
+    public void fixedUpdate() {
+        for (GameComponent component: components) {
+            component.fixedUpdate();
+        }
+        
+        if (isBody())
+            body.physicsUpdate();
+        
+        for (GameObject child: children) {
+            child.fixedUpdate();
+        }
+    }
+    
     public void update() {
         for (GameComponent component: components) {
             component.update();
@@ -131,6 +143,16 @@ public final class GameObject {
         
         for (GameObject child: children) {
             child.update();
+        }
+    }
+    
+    public void lateUpdate() {
+        for (GameComponent component: components) {
+            component.lateUpdate();
+        }
+        
+        for (GameObject child: children) {
+            child.lateUpdate();
         }
     }
     

@@ -71,7 +71,9 @@ public final class GameScene {
         //Update Inputs
         input.update();
         
+        root.fixedUpdate();
         root.update();
+        root.lateUpdate();
     }
     
     public void render() {

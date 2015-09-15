@@ -16,6 +16,7 @@ public class RigidBody extends Body {
         this.mass = mass;
     }
 
+    @Override
     public void physicsUpdate() {
         if (mass != 0) {
             velocity = velocity.add(GameScene.gravity);
@@ -55,20 +56,28 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-                                for (GameComponent comp: gameobject.getAllComponents()) {
-                                    if (!colliding)
-                                        comp.onCollisionEnter();
-                                    comp.onCollision(body, normal, penetration);
+                                
+                                if (!colliding) {
+                                    colliding = true;
+                                    for (GameComponent comp: gameobject.getAllComponents()) {
+                                            comp.onCollisionEnter();
+                                    }
                                 }
+                                
+                                //Collision Event
+                                for (GameComponent comp: gameobject.getAllComponents())
+                                    comp.onCollision(body, normal, penetration);
+                                
                                 continue;
                             }
                         }
+                        
                         if (colliding) {
+                            colliding = false;
                             for (GameComponent comp: gameobject.getAllComponents()) {
                                 onCollisionExit();
                             }
                         }
-                        
                     }
                 }
             }
@@ -78,7 +87,6 @@ public class RigidBody extends Body {
     @Override
     public void update() {
         super.update();
-        physicsUpdate();
     }
 
     @Override
