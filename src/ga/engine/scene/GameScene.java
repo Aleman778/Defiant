@@ -63,7 +63,7 @@ public final class GameScene {
     }
     
     public List<GameObject> getAllGameObjects() {
-        return root.getGameObjects(new ArrayList<GameObject>());
+        return root.getGameObjects(new ArrayList<>());
     }
     
     public void update() {

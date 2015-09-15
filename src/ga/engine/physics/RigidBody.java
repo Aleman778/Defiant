@@ -43,7 +43,7 @@ public class RigidBody extends Body {
                                         normal = new Vector2D(-1, 0);
                                     }
                                     else {
-                                        dir = new Vector2D(1, 0);
+                                        normal = new Vector2D(1, 0);
                                     }
                                     penetration = overlapX;
                                 }
@@ -56,34 +56,7 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-                                Vector2D vel = body.velocity.sub(velocity);
-                                double bounce = Math.min(softness, body.softness);
-                                double velNorm = vel.dot(dir);
-                                double impulse = -(1 + bounce) * velNorm;
-                                double invMass, otherInvMass;
-                                if (mass == 0) {
-                                    invMass = 0;
-                                }
-                                else {
-                                    invMass = 1 / mass;
-                                }
-                                if (body.mass == 0) {
-                                    otherInvMass = 0;
-                                }
-                                else {
-                                    otherInvMass = 1 / body.mass;
-                                }
-                                impulse = impulse / invMass + otherInvMass;
-                                Vector2D impulseVector = dir.scale(impulse);
-                                double totalMass = mass + body.mass;
-                                velocity = velocity.sub(impulseVector.scale(mass / totalMass));
-                                body.velocity = body.velocity.add(impulseVector.scale(body.mass / totalMass));
                                 
-                                final double percent = 0.8;
-                                final double tolerance = 0.01;
-                                Vector2D correction = dir.scale(percent * dist - tolerance / (invMass + otherInvMass));
-                                velocity = velocity.sub(correction.scale(invMass));
-                                body.velocity = body.velocity.add(correction.scale(otherInvMass));
                                 
                                 if (!colliding) {
                                     colliding = true;
@@ -130,9 +103,9 @@ public class RigidBody extends Body {
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
         Vector2D vel = body.velocity.sub(velocity);
-        double e = Math.min(this.softness, body.softness);
+        double bounce = Math.min(softness, body.softness);
         double velNorm = vel.dot(normal);
-        double impulse = -(1 + e) * velNorm;
+        double impulse = -(1 + bounce) * velNorm;
         double invMass, otherInvMass;
         if (mass == 0) {
             invMass = 0;
@@ -151,13 +124,14 @@ public class RigidBody extends Body {
         double totalMass = mass + body.mass;
         velocity = velocity.sub(impulseVector.mul(mass / totalMass));
         body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
+
         final double percent = 0.8;
         final double tolerance = 0.01;
-        Vector2D correction = normal.mul(percent * Math.max(penetration - tolerance, 0.0) / (invMass + otherInvMass));
+        Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
         velocity = velocity.sub(correction.mul(invMass));
         body.velocity = body.velocity.add(correction.mul(otherInvMass));
-
         Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
-        velocity = velocity.add(frictionVector);
+        velocity = velocity.add(frictionVector); 
+
     }  
 }

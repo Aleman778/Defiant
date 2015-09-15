@@ -5,7 +5,7 @@ import ga.engine.scene.GameComponent;
 public abstract class Body extends GameComponent {
     
     protected double mass = 1;
-    protected double softness = 0;
+    protected double softness = 0.2;
     protected Vector2D velocity = new Vector2D();
     protected double friction = 0.1;
 
