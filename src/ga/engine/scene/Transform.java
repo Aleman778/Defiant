@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
 
 public class Transform {
@@ -54,6 +55,10 @@ public class Transform {
     
     public Vector3D position2D() {
         return new Vector3D(position.x, position.y, 0.0);
+    }
+    
+    public Vector2D toVector2D() {
+        return new Vector2D(position.x, position.y);
     }
     
     public Vector3D localPosition() {
