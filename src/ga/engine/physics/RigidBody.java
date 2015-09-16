@@ -20,13 +20,14 @@ public class RigidBody extends Body {
         if (mass != 0) {
             velocity = velocity.add(scene.gravity);
         }
-        
+
         transform.translate(velocity.x, velocity.y, 0);
         if (velocity.x + velocity.y != 0) {
             for (GameObject otherObject : scene.getAllGameObjects()) {
-                if (otherObject.equals(gameobject))
+                if (otherObject.equals(gameobject)) {
                     continue;
-                
+                }
+
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
@@ -58,26 +59,26 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-                                
-                                
+
                                 if (!colliding) {
                                     colliding = true;
-                                    for (GameComponent comp: gameobject.getAllComponents()) {
+                                    for (GameComponent comp : gameobject.getAllComponents()) {
                                         comp.onCollisionEnter(body, normal, penetration);
                                     }
                                 }
-                                
+
                                 //Collision Event
-                                for (GameComponent comp: gameobject.getAllComponents())
+                                for (GameComponent comp : gameobject.getAllComponents()) {
                                     comp.onCollision(body, normal, penetration);
-                                
+                                }
+
                                 continue;
                             }
                         }
-                        
+
                         if (colliding) {
                             colliding = false;
-                            for (GameComponent comp: gameobject.getAllComponents()) {
+                            for (GameComponent comp : gameobject.getAllComponents()) {
                                 onCollisionExit();
                             }
                         }
@@ -132,8 +133,9 @@ public class RigidBody extends Body {
         Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
         velocity = velocity.sub(correction.mul(invMass));
         body.velocity = body.velocity.add(correction.mul(otherInvMass));
-        Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
-        velocity = velocity.add(frictionVector); 
-
-    }  
+        if (normal.equals(scene.gravity.normalize())) {
+            Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
+            velocity = velocity.add(frictionVector);
+        }
+    }
 }
