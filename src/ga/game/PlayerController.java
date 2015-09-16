@@ -27,6 +27,9 @@ public class PlayerController extends GameComponent {
         int jump = Input.getKeyPressed(KeyCode.SPACE) == true ? 1 : 0;
         Vector2D movement = new Vector2D(horizontal * SPEED, -jump * JUMP_HEIGHT);
         body.setVelocity(body.getVelocity().add(movement));
+        if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
+            body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
+        }
     }
     
     private boolean isGrounded() {

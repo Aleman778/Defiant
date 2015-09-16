@@ -8,6 +8,7 @@ public abstract class Body extends GameComponent {
     protected double softness = 0.2;
     protected Vector2D velocity = new Vector2D();
     protected double friction = 0.1;
+    public double SPEED_LIMIT = 3;
 
     @Override
     public void update() {
