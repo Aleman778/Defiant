@@ -16,6 +16,8 @@ public class ImageRenderer extends GameComponent implements Renderable {
     public ImageRenderer(Image image) {
         this.image = image;
         this.imageview = new ImageView(this.image);
+        imageview.setLayoutY(-(image.getHeight() - 32) / 2);
+        imageview.setLayoutX(-(image.getWidth()- 32) / 2);
     }
     
     public ImageRenderer(String filepath) {
