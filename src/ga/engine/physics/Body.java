@@ -9,6 +9,7 @@ public abstract class Body extends GameComponent {
     protected Vector2D velocity = new Vector2D();
     protected double friction = 0.1;
     public double SPEED_LIMIT = 3;
+    private boolean grounded = false;
 
     @Override
     public void update() {
@@ -25,6 +26,14 @@ public abstract class Body extends GameComponent {
     
     public void setSoftness(double softness) {
         this.softness = softness;
+    }
+        
+    public void setGrounded(boolean grounded) {
+        this.grounded = grounded;
+    }
+    
+    public boolean isGrounded() {
+        return grounded;
     }
     
     public abstract void physicsUpdate();
