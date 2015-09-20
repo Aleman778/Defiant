@@ -7,14 +7,16 @@ import ga.engine.scene.GameScene;
 import ga.game.PlayerController;
 
 public class AI extends GameComponent {
-    
+
     GameObject player;
-    
-    private final double SPEED = 0.1;
-    private final double JUMP_HEIGHT = 6;
-    
-    public AI(GameScene scene)
-    {
+
+    private final double 
+            SPEED = 0.1,
+            JUMP_HEIGHT = 6;
+    private double timeSinceLastJump;
+    private final boolean canMoveInAir = false;
+
+    public AI(GameScene scene) {
         for (GameObject object : scene.getAllGameObjects()) {
             if (object.getComponent(PlayerController.class) != null) {
                 player = object;
@@ -25,11 +27,20 @@ public class AI extends GameComponent {
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
+        timeSinceLastJump++;
         Vector2D distToPlayer = player.getTransform().toVector2D().sub(gameobject.getTransform().toVector2D());
-        gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
-        if (distToPlayer.y < -80 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded()) {
+        if (!canMoveInAir) {
+            if (gameobject.getBody().isGrounded()) {
+                gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+            }
+        }
+        else {
+            gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+        }
+        if (distToPlayer.y < -80 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded() && timeSinceLastJump > 65) {
             gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(new Vector2D(0, -JUMP_HEIGHT)));
+            timeSinceLastJump = 0;
         }
     }
-    
+
 }
