@@ -5,6 +5,7 @@ import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.game.PlayerController;
+import ga.game.entity.AI;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Group;
@@ -58,6 +59,12 @@ public final class GameScene {
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
 
+                
+        GameObject enemy = new GameObject(200, 100, 0)
+                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+        enemy.addComponent(new RigidBody(this, 1));
+        enemy.addComponent(new AI(this));
+        root.addChild(enemy);
     }
     
     public javafx.scene.Scene get() {
