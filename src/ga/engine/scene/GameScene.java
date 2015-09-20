@@ -42,13 +42,14 @@ public final class GameScene {
                 .addComponent(new RigidBody(this, 0));
         object2.addChild(object3);
         
-        GameObject box1 = new GameObject(64, 0, 0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+        GameObject player = new GameObject(64, 0, 0)
+                .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
                 .addComponent(new PlayerController());
         RigidBody body = new RigidBody(this, 1.25);
         body.setVelocity(new Vector2D(1, 0));
-        box1.addComponent(body);
-        root.addChild(box1);
+        body.setSoftness(0);
+        player.addComponent(body);
+        root.addChild(player);
         GameObject box2 = new GameObject(200, 200, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         box2.transform.scale(9, 0, 0);
@@ -56,7 +57,7 @@ public final class GameScene {
         RigidBody body2 = new RigidBody(this, 0);
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
-        
+
     }
     
     public javafx.scene.Scene get() {
