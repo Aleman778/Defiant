@@ -27,7 +27,7 @@ public class AI extends GameComponent {
         super.fixedUpdate();
         Vector2D distToPlayer = player.getTransform().toVector2D().sub(gameobject.getTransform().toVector2D());
         gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
-        if (distToPlayer.y < -80 && gameobject.getBody().isGrounded()) {
+        if (distToPlayer.y < -80 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded()) {
             gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(new Vector2D(0, -JUMP_HEIGHT)));
         }
     }
