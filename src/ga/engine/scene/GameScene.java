@@ -47,6 +47,7 @@ public final class GameScene {
                 .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
                 .addComponent(new PlayerController());
         RigidBody body = new RigidBody(this, 1.25);
+        body.setID(2);
         body.setVelocity(new Vector2D(1, 0));
         body.setSoftness(0);
         player.addComponent(body);
@@ -58,11 +59,12 @@ public final class GameScene {
         RigidBody body2 = new RigidBody(this, 0);
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
-
                 
         GameObject enemy = new GameObject(200, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        enemy.addComponent(new RigidBody(this, 1));
+        RigidBody enemyBody = new RigidBody(this, 1);
+        enemyBody.setID(3);
+        enemy.addComponent(enemyBody);
         enemy.addComponent(new AI(this));
         root.addChild(enemy);
     }

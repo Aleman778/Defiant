@@ -20,7 +20,7 @@ public class RigidBody extends Body {
         if (mass != 0) {
             velocity = velocity.add(scene.gravity);
         }
-        
+
         colliding = false;
 
         transform.translate(velocity.x, velocity.y, 0);
@@ -29,7 +29,7 @@ public class RigidBody extends Body {
                 if (otherObject.equals(gameobject)) {
                     continue;
                 }
-                
+
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
@@ -109,20 +109,25 @@ public class RigidBody extends Body {
         impulse = impulse / invMass + otherInvMass;
         Vector2D impulseVector = normal.mul(impulse);
         double totalMass = mass + body.mass;
-        velocity = velocity.sub(impulseVector.mul(mass / totalMass));
-        body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
+        if (!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) {
+            if (getID() == body.getID() || getCollide().contains(body.getID())) {
+                velocity = velocity.sub(impulseVector.mul(mass / totalMass));
+                body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
+                
+                final double percent = 0.8;
+                final double tolerance = 0.01;
+                Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
+                velocity = velocity.sub(correction.mul(invMass));
+                body.velocity = body.velocity.add(correction.mul(otherInvMass));
+                if (normal.equals(scene.gravity.normalize())) {
+                    Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
+                    velocity = velocity.add(frictionVector);
+                }
 
-        final double percent = 0.8;
-        final double tolerance = 0.01;
-        Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
-        velocity = velocity.sub(correction.mul(invMass));
-        body.velocity = body.velocity.add(correction.mul(otherInvMass));
-        if (normal.equals(scene.gravity.normalize())) {
-            Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
-            velocity = velocity.add(frictionVector);
-        }
-        if (impulse < 7 && normal.equals(new Vector2D(0, 1))) {
-            setGrounded(true);
+                if (impulse < 7 && normal.equals(new Vector2D(0, 1))) {
+                    setGrounded(true);
+                }
+            }
         }
     }
 }
