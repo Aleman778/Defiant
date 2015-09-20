@@ -3,12 +3,14 @@ package ga.engine.physics;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
+import ga.game.PlayerController;
 import java.awt.Rectangle;
 
 public class RigidBody extends Body {
 
     private boolean colliding = false;
     private final GameScene scene;
+    private PlayerController player;
 
     public RigidBody(GameScene scene, double mass) {
         this.scene = scene;
@@ -20,6 +22,9 @@ public class RigidBody extends Body {
         if (mass != 0) {
             velocity = velocity.add(scene.gravity);
         }
+        
+        player = (PlayerController) getComponent(PlayerController.class);
+        colliding = false;
 
         transform.translate(velocity.x, velocity.y, 0);
         if (velocity.x + velocity.y != 0) {
@@ -27,7 +32,7 @@ public class RigidBody extends Body {
                 if (otherObject.equals(gameobject)) {
                     continue;
                 }
-
+                
                 for (GameComponent component : otherObject.getAllComponents()) {
                     if (component instanceof RigidBody) {
                         RigidBody body = (RigidBody) component;
@@ -41,6 +46,7 @@ public class RigidBody extends Body {
                             if (overlapY > 0) {
                                 Vector2D normal;
                                 double penetration;
+                                colliding = true;
                                 if (overlapX < overlapY) {
                                     if (diff.x < 0) {
                                         normal = new Vector2D(-1, 0);
@@ -59,30 +65,21 @@ public class RigidBody extends Body {
                                     }
                                     penetration = overlapY;
                                 }
-
-                                if (!colliding) {
-                                    colliding = true;
+                                //Collision Event
+                                onCollision(body, normal, penetration);
+                                if (penetration > 0.65) {
                                     for (GameComponent comp : gameobject.getAllComponents()) {
-                                        comp.onCollisionEnter(body, normal, penetration);
+                                        if (comp.getClass() != RigidBody.class) {
+                                            comp.onCollision(body, normal, penetration);
+                                        }
                                     }
                                 }
-
-                                //Collision Event
-                                for (GameComponent comp : gameobject.getAllComponents()) {
-                                    comp.onCollision(body, normal, penetration);
-                                }
-
-                                continue;
-                            }
-                        }
-
-                        if (colliding) {
-                            colliding = false;
-                            for (GameComponent comp : gameobject.getAllComponents()) {
-                                onCollisionExit();
                             }
                         }
                     }
+                }
+                if (!colliding) {
+                    player.setGrounded(false);
                 }
             }
         }
@@ -94,21 +91,11 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public void onCollisionExit() {
-        colliding = false;
-    }
-
-    @Override
-    public void onCollisionEnter(Body body, Vector2D normal, double penetration) {
-        colliding = true;
-    }
-
-    @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
         Vector2D vel = body.velocity.sub(velocity);
         double bounce = Math.min(softness, body.softness);
         double velNorm = vel.dot(normal);
-        double impulse = -(1 + bounce) * velNorm;
+        double impulse = -(0.8 + bounce) * velNorm;
         double invMass, otherInvMass;
         if (mass == 0) {
             invMass = 0;
@@ -136,6 +123,9 @@ public class RigidBody extends Body {
         if (normal.equals(scene.gravity.normalize())) {
             Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
             velocity = velocity.add(frictionVector);
+        }
+        if (impulse < 7) {
+            player.setGrounded(true);
         }
     }
 }
