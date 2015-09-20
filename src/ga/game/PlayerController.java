@@ -12,7 +12,7 @@ public class PlayerController extends GameComponent {
     private RigidBody body;
     private boolean grounded;
     private final double SPEED = 0.2;
-    private final double JUMP_HEIGHT = 4; 
+    private final double JUMP_HEIGHT = 8; 
     
     @Override
     public void start() {
@@ -24,7 +24,7 @@ public class PlayerController extends GameComponent {
     public void fixedUpdate() {
         int horizontal = (Input.getKey(KeyCode.A) == true ? -1 : 0) +
                 (Input.getKey(KeyCode.D) == true ? 1 : 0);
-        int jump = Input.getKeyPressed(KeyCode.SPACE) == true ? 1 : 0;
+        int jump = Input.getKeyPressed(KeyCode.SPACE) == true && isGrounded() ? 1 : 0;
         Vector2D movement = new Vector2D(horizontal * SPEED, -jump * JUMP_HEIGHT);
         body.setVelocity(body.getVelocity().add(movement));
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
@@ -32,21 +32,16 @@ public class PlayerController extends GameComponent {
         }
     }
     
+    public void setGrounded(boolean grounded) {
+        this.grounded = grounded;
+    }
+    
     private boolean isGrounded() {
         return grounded;
     }
 
     @Override
-    public void onCollisionEnter(Body body, Vector2D normal, double penetration) {
+    public void onCollision(Body body, Vector2D normal, double penetration) {
         System.out.println("Enter");
-        if (normal.equals(new Vector2D(0.0, 1.0))) {
-            grounded = true;
-        }
-    }
-
-    @Override
-    public void onCollisionExit() {
-        System.out.println("Exit!");
-        grounded = false;
     }
 }
