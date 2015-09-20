@@ -3,14 +3,12 @@ package ga.engine.physics;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
-import ga.game.PlayerController;
 import java.awt.Rectangle;
 
 public class RigidBody extends Body {
 
     private boolean colliding = false;
     private final GameScene scene;
-    private PlayerController player;
 
     public RigidBody(GameScene scene, double mass) {
         this.scene = scene;
@@ -23,7 +21,6 @@ public class RigidBody extends Body {
             velocity = velocity.add(scene.gravity);
         }
         
-        player = (PlayerController) getComponent(PlayerController.class);
         colliding = false;
 
         transform.translate(velocity.x, velocity.y, 0);
@@ -79,7 +76,7 @@ public class RigidBody extends Body {
                     }
                 }
                 if (!colliding) {
-                    player.setGrounded(false);
+                    setGrounded(false);
                 }
             }
         }
@@ -124,8 +121,8 @@ public class RigidBody extends Body {
             Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
             velocity = velocity.add(frictionVector);
         }
-        if (impulse < 7) {
-            player.setGrounded(true);
+        if (impulse < 7 && normal.equals(new Vector2D(0, 1))) {
+            setGrounded(true);
         }
     }
 }
