@@ -63,13 +63,17 @@ public final class GameScene {
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
                 
-        GameObject enemy = new GameObject(200, 100, 0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        RigidBody enemyBody = new RigidBody(1);
-        enemyBody.setID(3);
-        enemy.addComponent(enemyBody);
-        enemy.addComponent(new AI(this));
-        root.addChild(enemy);
+        GameObject ant = new GameObject(200, 100, 0)
+                .addComponent(new ImageRenderer("ga/game/myr.png"));
+        ant.addComponent(new RigidBody(1, 3));
+        ant.addComponent(new AI(this, 0.1, 4));
+        root.addChild(ant);
+        
+        GameObject spider = new GameObject(250, 100, 0)
+                .addComponent(new ImageRenderer("ga/game/SpiderR.png"));
+        spider.addComponent(new RigidBody(1, 4));
+        spider.addComponent(new AI(this, 0.15, 5));
+        root.addChild(spider);
     }
     
     public javafx.scene.Scene get() {
