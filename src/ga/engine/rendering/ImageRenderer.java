@@ -41,6 +41,6 @@ public class ImageRenderer extends GameComponent implements Renderable {
 
     @Override
     public Rectangle computeAABB() {
-        return new Rectangle(0, 0, (int) (image.getWidth() * transform.scale.x), (int) (image.getHeight() * transform.scale.y));
+        return new Rectangle(0, 0, (int) (image.getWidth() * Math.abs(transform.scale.x)), (int) (image.getHeight() * Math.abs(transform.scale.y)));
     }
 }
