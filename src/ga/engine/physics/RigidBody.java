@@ -9,6 +9,11 @@ public class RigidBody extends Body {
     public RigidBody(double mass) {
         this.mass = mass;
     }
+    
+    public RigidBody(double mass, int id) {
+        this.mass = mass;
+        this.id = id;
+    }
 
     @Override
     public boolean physicsUpdate(Body otherBody) {

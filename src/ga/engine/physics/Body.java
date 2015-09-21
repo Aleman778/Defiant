@@ -12,7 +12,13 @@ public abstract class Body extends GameComponent {
     public double SPEED_LIMIT = 3;
     private boolean grounded = false;
     private ArrayList<Integer> collide = new ArrayList(), noCollide = new ArrayList();
-    private int id = 1;
+    protected int id = 1;
+
+    public Body(int id) {
+        this.id = id;
+    }
+    
+    public Body() {}
 
     @Override
     public void awoke() {
