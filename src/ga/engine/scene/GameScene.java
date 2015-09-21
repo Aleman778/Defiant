@@ -1,13 +1,16 @@
 package ga.engine.scene;
 
 import ga.engine.input.Input;
+import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.game.PlayerController;
 import ga.game.entity.AI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 
@@ -32,21 +35,21 @@ public final class GameScene {
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject object = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
-                .addComponent(new RigidBody(this, 0));
+                .addComponent(new RigidBody(0));
         root.addChild(object);
         GameObject object2 = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
-                .addComponent(new RigidBody(this, 0));
+                .addComponent(new RigidBody(0));
         object.addChild(object2);
         GameObject object3 = new GameObject(32.0, 32.0, 0.0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
-                .addComponent(new RigidBody(this, 0));
+                .addComponent(new RigidBody(0));
         object2.addChild(object3);
         
         GameObject player = new GameObject(64, 0, 0)
                 .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
                 .addComponent(new PlayerController());
-        RigidBody body = new RigidBody(this, 1.25);
+        RigidBody body = new RigidBody(1.25);
         body.setID(2);
         body.setVelocity(new Vector2D(1, 0));
         body.setSoftness(0);
@@ -56,13 +59,13 @@ public final class GameScene {
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         box2.transform.scale(9, 0, 0);
         root.addChild(box2);
-        RigidBody body2 = new RigidBody(this, 0);
+        RigidBody body2 = new RigidBody(0);
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
                 
         GameObject enemy = new GameObject(200, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
-        RigidBody enemyBody = new RigidBody(this, 1);
+        RigidBody enemyBody = new RigidBody(1);
         enemyBody.setID(3);
         enemy.addComponent(enemyBody);
         enemy.addComponent(new AI(this));
@@ -79,6 +82,17 @@ public final class GameScene {
     
     public void update() {
         root.fixedUpdate();
+        for (GameObject object : getAllGameObjects()) {
+            if (!object.isBody())
+                continue;
+            Set<Body> retrievedBodies = new HashSet<>();
+            for (GameObject otherObjects: getAllGameObjects()) {
+                if (object.equals(otherObjects) || !otherObjects.isBody())
+                    continue;
+                retrievedBodies.add(otherObjects.getBody());
+            }
+            object.physicsUpdate(retrievedBodies);
+        }
         root.update();
         root.lateUpdate();
     }

@@ -59,6 +59,10 @@ public abstract class Body extends GameComponent {
             collide.add(i);
         }
     }
+
+    public double getMass() {
+        return mass;
+    }
     
     public ArrayList<Integer> getCollide() {
         return collide;
@@ -90,5 +94,5 @@ public abstract class Body extends GameComponent {
         return id;
     }
     
-    public abstract void physicsUpdate();
+    public abstract boolean physicsUpdate(Body otherBody);
 }

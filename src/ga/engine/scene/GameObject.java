@@ -6,6 +6,7 @@ import ga.engine.rendering.Renderable;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javafx.scene.Group;
@@ -18,145 +19,169 @@ public final class GameObject {
     public GameObject parent = null;
     private final List<GameObject> children;
     private final List<GameComponent> components;
-    
+
     private Renderable renderable = null;
     private Body body = null;
-    
+
     public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
         this.transform = new Transform(this, position, rotation, scale);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
     }
-    
+
     public GameObject(double x, double y, double z) {
         this(new Vector3D(x, y, z), new Vector3D(), new Vector3D(1, 1, 1));
     }
-    
+
     public GameObject() {
         this(new Vector3D(), new Vector3D(), new Vector3D(1, 1, 1));
     }
-    
+
     public GameObject addChild(GameObject object) {
-        if (object.parent != null)
+        if (object.parent != null) {
             return null;
-        
+        }
+
         object.parent = this;
-        for (GameComponent component: object.getAllComponents()) {
+        for (GameComponent component : object.getAllComponents()) {
             component.start();
         }
-        
+
         children.add(object);
         return object;
     }
-    
+
     public List<GameObject> getChildren() {
         return children;
     }
-    
+
     public GameObject getParent() {
         return parent;
     }
-    
+
     public List<GameObject> getGameObjects(List<GameObject> result) {
         result.addAll(children);
-        for (GameObject child: children) {
+        for (GameObject child : children) {
             child.getGameObjects(result);
         }
         return result;
     }
-    
+
     public GameObject addComponent(GameComponent component) {
-        if (component.gameobject != null)
+        if (component.gameobject != null) {
             return null;
-        
+        }
+
         component.awoke();
-        if (parent != null)
+        if (parent != null) {
             component.start();
-        
+        }
+
         if (component instanceof Renderable) {
             renderable = (Renderable) component;
         }
-        
+
         if (component instanceof Body) {
             body = (Body) component;
         }
-        
+
         component.gameobject = this;
         component.transform = transform;
         components.add(component);
         return this;
     }
-    
+
     public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
-        for (GameComponent comp: components) {
-            if (comp.getClass().equals(component) || component.isInstance(comp))
+        for (GameComponent comp : components) {
+            if (comp.getClass().equals(component) || component.isInstance(comp)) {
                 return comp;
+            }
         }
         return null;
     }
-    
+
     public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
         Set<GameComponent> result = new HashSet<>();
-        for (GameComponent comp: components) {
-            if (comp.getClass().equals(component) || component.isInstance(comp))
+        for (GameComponent comp : components) {
+            if (comp.getClass().equals(component) || component.isInstance(comp)) {
                 result.add(comp);
+            }
         }
         return result;
     }
-    
+
     public List<GameComponent> getAllComponents() {
         return components;
     }
-    
+
     public boolean isRenderable() {
         return (renderable != null);
     }
-    
+
     public Renderable getRenderable() {
         return renderable;
     }
-    
+
     public boolean isBody() {
         return (body != null);
     }
-    
+
     public Body getBody() {
         return body;
     }
-    
+
     public void fixedUpdate() {
-        for (GameComponent component: components) {
+        for (GameComponent component : components) {
             component.fixedUpdate();
         }
-        
-        if (isBody())
-            body.physicsUpdate();
-        
-        for (GameObject child: children) {
+
+        for (GameObject child : children) {
             child.fixedUpdate();
         }
     }
-    
+
+    public void physicsUpdate(Set<Body> retrievedBodies) {
+        boolean colliding = false;
+        if (Math.signum(body.getVelocity().normalize().x) != 0) {
+            transform.scale.x = Math.signum(body.getVelocity().normalize().x);
+        }
+        if (body.getMass() != 0) {
+            body.setVelocity(body.getVelocity().add(GameScene.gravity));
+        }
+        transform.translate(body.getVelocity().x, body.getVelocity().y, 0);
+        Iterator<Body> it = retrievedBodies.iterator();
+        while (it.hasNext()) {
+            Body physicsBody = it.next();
+            if (body.physicsUpdate(physicsBody) == true) {
+                colliding = true;
+            }
+
+        }
+        if (!colliding) {
+            body.setGrounded(false);
+        }
+    }
+
     public void update() {
-        for (GameComponent component: components) {
+        for (GameComponent component : components) {
             component.update();
         }
-        
-        for (GameObject child: children) {
+
+        for (GameObject child : children) {
             child.update();
         }
     }
-    
+
     public void lateUpdate() {
-        for (GameComponent component: components) {
+        for (GameComponent component : components) {
             component.lateUpdate();
         }
-        
-        for (GameObject child: children) {
+
+        for (GameObject child : children) {
             child.lateUpdate();
         }
     }
-    
+
     public void render(Group group) {
         if (renderable != null) {
             renderable.render(group);
@@ -175,43 +200,44 @@ public final class GameObject {
             node.setScaleY(transform.scale.y);
             node.setScaleZ(transform.scale.z);
         }
-            
-        for (GameObject child: children) {
+
+        for (GameObject child : children) {
             child.render(group);
         }
     }
-    
+
     public Transform getTransform() {
         return transform;
     }
-    
+
     public void setTranslateX(double x) {
         transform.position.x = x;
     }
-    
+
     public double getTranslateX() {
         return transform.position.x;
     }
-    
+
     public void setTranslateY(double y) {
         transform.position.y = y;
     }
-    
+
     public double getTranslateY() {
         return transform.position.y;
     }
-    
+
     public void setTranslateZ(double z) {
         transform.position.z = z;
     }
-    
+
     public double getTranslateZ() {
         return transform.position.z;
     }
-    
+
     public Rectangle computeAABB() {
-        if (isRenderable())
+        if (isRenderable()) {
             return renderable.computeAABB();
+        }
         return new Rectangle();
     }
 }
