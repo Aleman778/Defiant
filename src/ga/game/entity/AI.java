@@ -23,6 +23,16 @@ public class AI extends GameComponent {
             }
         }
     }
+    
+    public AI(GameScene scene, double speed, double jump) {
+        SPEED = speed;
+        JUMP_HEIGHT = jump;
+        for (GameObject object : scene.getAllGameObjects()) {
+            if (object.getComponent(PlayerController.class) != null) {
+                player = object;
+            }
+        }
+    }
 
     @Override
     public void fixedUpdate() {
@@ -44,5 +54,4 @@ public class AI extends GameComponent {
             timeSinceLastJump = 0;
         }
     }
-
 }
