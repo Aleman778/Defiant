@@ -14,6 +14,12 @@ public class RigidBody extends Body {
         this.mass = mass;
         this.id = id;
     }
+    
+    public RigidBody(double mass, int id, int sink) {
+        super(id, sink);
+        this.mass = mass;
+        this.id = id;
+    }
 
     @Override
     public boolean physicsUpdate(Body otherBody) {

@@ -21,6 +21,11 @@ public abstract class Body extends GameComponent {
         this.id = id;
     }
     
+    public Body(int id, int sink) {
+        this.id = id;
+        this.SINK_AMOUNT = sink;
+    }
+    
     public Body() {}
 
     @Override
@@ -104,10 +109,6 @@ public abstract class Body extends GameComponent {
     
     public int getID() {
         return id;
-    }
-    
-    public void setSinkAmount(int sink) {
-        SINK_AMOUNT = sink;
     }
     
     public abstract boolean physicsUpdate(Body otherBody);

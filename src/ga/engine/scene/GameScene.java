@@ -57,23 +57,22 @@ public final class GameScene {
         GameObject player = new GameObject(64, 0, 0)
                 .addComponent(new ImageRenderer("ga/game/Aplayertest2.png"))
                 .addComponent(new PlayerController());
-        RigidBody body = new RigidBody(1.25);
+        RigidBody body = new RigidBody(1.25, 1, 2);
         body.setID(2);
         body.setVelocity(new Vector2D(1, 0));
         body.setSoftness(0);
-        body.setSinkAmount(5);
         player.addComponent(body);
         root.addChild(player);
                 
         GameObject ant = new GameObject(200, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/myr.png"));
-        ant.addComponent(new RigidBody(1, 3));
+        ant.addComponent(new RigidBody(1, 3, 2));
         ant.addComponent(new AI(this, 0.1, 4));
         root.addChild(ant);
         
         GameObject spider = new GameObject(250, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/SpiderR.png"));
-        spider.addComponent(new RigidBody(1, 4));
+        spider.addComponent(new RigidBody(1, 4, 2));
         spider.addComponent(new AI(this, 0.15, 5));
         root.addChild(spider);
     }
