@@ -34,20 +34,20 @@ public final class GameScene {
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject object = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
                 .addComponent(new RigidBody(0));
         root.addChild(object);
         GameObject object2 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
                 .addComponent(new RigidBody(0));
         object.addChild(object2);
         GameObject object3 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"))
+                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
                 .addComponent(new RigidBody(0));
         object2.addChild(object3);
         
         GameObject box2 = new GameObject(200, 200, 0)
-                .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
+                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"));
         box2.transform.scale(9, 0, 0);
         root.addChild(box2);
         RigidBody body2 = new RigidBody(0);
@@ -55,7 +55,7 @@ public final class GameScene {
         box2.addComponent(body2);
         
         GameObject player = new GameObject(64, 0, 0)
-                .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
+                .addComponent(new ImageRenderer("ga/game/Aplayertest2.png"))
                 .addComponent(new PlayerController());
         RigidBody body = new RigidBody(1.25);
         body.setID(2);
