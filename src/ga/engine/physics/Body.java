@@ -1,5 +1,6 @@
 package ga.engine.physics;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import java.util.ArrayList;
 
@@ -10,9 +11,11 @@ public abstract class Body extends GameComponent {
     protected Vector2D velocity = new Vector2D();
     protected double friction = 0.1;
     public double SPEED_LIMIT = 3;
+    private int SINK_AMOUNT = 0;
     private boolean grounded = false;
     private ArrayList<Integer> collide = new ArrayList(), noCollide = new ArrayList();
     protected int id = 1;
+    public Rectangle AABB;
 
     public Body(int id) {
         this.id = id;
@@ -25,6 +28,9 @@ public abstract class Body extends GameComponent {
         super.awoke();
         collide.add(1);
         noCollide.add(0);
+        AABB = gameobject.computeAABB();
+        AABB.translate(0, -SINK_AMOUNT);
+        AABB.height -= SINK_AMOUNT;
     }
 
     @Override
@@ -98,6 +104,10 @@ public abstract class Body extends GameComponent {
     
     public int getID() {
         return id;
+    }
+    
+    public void setSinkAmount(int sink) {
+        SINK_AMOUNT = sink;
     }
     
     public abstract boolean physicsUpdate(Body otherBody);

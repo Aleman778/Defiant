@@ -1,8 +1,8 @@
 package ga.engine.rendering;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
-import java.awt.Rectangle;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;

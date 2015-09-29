@@ -46,15 +46,6 @@ public final class GameScene {
                 .addComponent(new RigidBody(0));
         object2.addChild(object3);
         
-        GameObject player = new GameObject(64, 0, 0)
-                .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
-                .addComponent(new PlayerController());
-        RigidBody body = new RigidBody(1.25);
-        body.setID(2);
-        body.setVelocity(new Vector2D(1, 0));
-        body.setSoftness(0);
-        player.addComponent(body);
-        root.addChild(player);
         GameObject box2 = new GameObject(200, 200, 0)
                 .addComponent(new ImageRenderer("ga/game/grass_tile.png"));
         box2.transform.scale(9, 0, 0);
@@ -62,6 +53,17 @@ public final class GameScene {
         RigidBody body2 = new RigidBody(0);
         body2.setVelocity(new Vector2D(0, 0));
         box2.addComponent(body2);
+        
+        GameObject player = new GameObject(64, 0, 0)
+                .addComponent(new ImageRenderer("ga/game/placeholder_player.png"))
+                .addComponent(new PlayerController());
+        RigidBody body = new RigidBody(1.25);
+        body.setID(2);
+        body.setVelocity(new Vector2D(1, 0));
+        body.setSoftness(0);
+        body.setSinkAmount(5);
+        player.addComponent(body);
+        root.addChild(player);
                 
         GameObject ant = new GameObject(200, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/myr.png"));

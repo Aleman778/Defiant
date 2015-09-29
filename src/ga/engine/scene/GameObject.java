@@ -1,9 +1,9 @@
 package ga.engine.scene;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -71,7 +71,10 @@ public final class GameObject {
         if (component.gameobject != null) {
             return null;
         }
-
+        
+        component.gameobject = this;
+        component.transform = transform;
+        
         component.awoke();
         if (parent != null) {
             component.start();
@@ -85,8 +88,6 @@ public final class GameObject {
             body = (Body) component;
         }
 
-        component.gameobject = this;
-        component.transform = transform;
         components.add(component);
         return this;
     }

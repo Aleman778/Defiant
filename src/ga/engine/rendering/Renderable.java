@@ -1,6 +1,6 @@
 package ga.engine.rendering;
 
-import java.awt.Rectangle;
+import com.sun.javafx.geom.Rectangle;
 import javafx.scene.Group;
 import javafx.scene.Node;
 

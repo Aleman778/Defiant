@@ -1,8 +1,8 @@
 package ga.engine.physics;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
-import java.awt.Rectangle;
 
 public class RigidBody extends Body {
 
@@ -22,8 +22,8 @@ public class RigidBody extends Body {
             return false;
         }
 
-        Rectangle bounds = gameobject.computeAABB();
-        Rectangle otherBounds = otherBody.gameobject.computeAABB();
+        Rectangle bounds = AABB;
+        Rectangle otherBounds = otherBody.AABB;
         Vector3D diff = (otherBody.transform.localPosition().add(new Vector3D(otherBounds.x, otherBounds.y, 0))).
                 sub(transform.localPosition().add(new Vector3D(bounds.x, bounds.y, 0)));
         double overlapX = (bounds.width / 2) + (otherBounds.width / 2) - Math.abs(diff.x);
