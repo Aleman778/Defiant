@@ -1,6 +1,5 @@
 package ga.devkit.ui;
 
-import ga.engine.core.Application;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,9 +16,9 @@ public class Interface {
     
     public final void load() {
         String classname = getClass().getCanonicalName();
-        String location = "ui/fxml/" + classname.substring(classname.lastIndexOf(".") + 1).toLowerCase() + ".fxml";
+        String location = "fxml/" + classname.substring(classname.lastIndexOf(".") + 1).toLowerCase() + ".fxml";
         System.out.println(location);
-        FXMLLoader loader = new FXMLLoader(Application.class.getResource(location));
+        FXMLLoader loader = new FXMLLoader(Interface.class.getResource(location));
         try {
             loader.setController(this);
             loader.load();
