@@ -28,7 +28,7 @@ public class Application extends javafx.application.Application {
 
             @Override
             public void handle(long now) {
-                if (scene != null) {
+                if (scene != null && !devmode) {
                     scene.update();
                     scene.render();
                 }
