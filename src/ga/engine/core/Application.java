@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
     
+    private static boolean devmode = false;
     private static AnimationTimer gameloop;
     private static Stage window;
     private static GameScene scene;
@@ -44,8 +45,7 @@ public class Application extends javafx.application.Application {
         launch(args);
     }
     
-    public static GameScene getScene()
-    {
+    public static GameScene getScene() {
         return scene;
     }
 }
