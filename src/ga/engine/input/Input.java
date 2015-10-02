@@ -1,9 +1,10 @@
 package ga.engine.input;
 
+import ga.engine.core.Application;
 import ga.engine.physics.Vector2D;
-import ga.engine.scene.GameScene;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -18,14 +19,14 @@ public class Input {
     private static Set<KeyCode> keysPressed;
     private static Set<KeyCode> keysReleased;
     
-    private final GameScene scene;
+    private final Scene scene;
     
-    public Input(GameScene scene) {
+    public Input(Scene scene) {
         this.scene = scene;
-        scene.get().setOnKeyPressed((KeyEvent event) -> {
+        scene.setOnKeyPressed((KeyEvent event) -> {
             pressedKey(event.getCode());
         });
-        scene.get().setOnKeyReleased((KeyEvent event) -> {
+        scene.setOnKeyReleased((KeyEvent event) -> {
             releasedKey(event.getCode());
         });
         keys = new HashSet<>();
@@ -39,6 +40,10 @@ public class Input {
         if (!keys.contains(keyCode))
             keysPressed.add(keyCode);
         keys.add(keyCode);
+        
+        if (getKeyPressed(KeyCode.F5)) {
+            Application.setDevmode(!Application.isDevmodeEnabled());
+        }
     }
     
     private void releasedKey(KeyCode keyCode) {

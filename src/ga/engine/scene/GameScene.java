@@ -30,7 +30,7 @@ public final class GameScene {
         group = new Group();
         scene = new Scene(group);
         root = new GameObject();
-        input = new Input(this);
+        input = new Input(scene);
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject object = new GameObject(32.0, 32.0, 0.0)
