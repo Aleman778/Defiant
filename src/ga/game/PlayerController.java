@@ -11,7 +11,7 @@ public class PlayerController extends GameComponent {
     
     private RigidBody body;
     private final double SPEED = 0.2;
-    private final double JUMP_HEIGHT = 8; 
+    private final double JUMP_HEIGHT = 6; 
     
     @Override
     public void start() {
