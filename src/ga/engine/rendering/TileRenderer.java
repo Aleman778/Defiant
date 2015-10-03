@@ -24,7 +24,7 @@ public class TileRenderer extends ImageRenderer {
     public void render(Group group) {
         // AABB is apparantly symmetrical around position, using x - width / 2 for image rendering
         for (int x = (int) (transform.position.x - (image.getWidth() * size.x) / 2 + image.getWidth() / 2); x < transform.position.x + (image.getWidth() * size.x) / 2; x += image.getWidth()) {
-            for (int y = (int) (transform.position.y - (image.getHeight() * size.y) / 2 + image.getHeight() / 2); y < transform.position.y + image.getHeight() * size.y; y += image.getHeight()) {
+            for (int y = (int) (transform.position.y - (image.getHeight() * size.y) / 2 + image.getHeight() / 2); y < transform.position.y + (image.getHeight() * size.y) / 2; y += image.getHeight()) {
                 ImageView view = new ImageView(image);
                 view.setX(x);
                 view.setY(y);
