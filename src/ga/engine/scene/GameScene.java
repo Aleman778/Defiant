@@ -5,6 +5,7 @@ import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.TileRenderer;
 import ga.game.PlayerController;
 import ga.game.entity.AI;
 import java.util.ArrayList;
@@ -47,8 +48,7 @@ public final class GameScene {
         object2.addChild(object3);
         
         GameObject box2 = new GameObject(200, 200, 0)
-                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"));
-        box2.transform.scale(9, 0, 0);
+                .addComponent(new TileRenderer("ga/game/Jordlabb.png", 10, 1));
         root.addChild(box2);
         RigidBody body2 = new RigidBody(0);
         body2.setVelocity(new Vector2D(0, 0));
