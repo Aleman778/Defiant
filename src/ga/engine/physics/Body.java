@@ -13,7 +13,7 @@ public abstract class Body extends GameComponent {
     public double SPEED_LIMIT = 3;
     private int SINK_AMOUNT = 0;
     private boolean grounded = false;
-    private ArrayList<Integer> collide = new ArrayList(), noCollide = new ArrayList();
+    private ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<>();
     protected int id = 1;
     public Rectangle AABB;
 
