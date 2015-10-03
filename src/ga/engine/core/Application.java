@@ -3,6 +3,7 @@ package ga.engine.core;
 import ga.devkit.core.Devkit;
 import ga.engine.scene.GameScene;
 import javafx.animation.AnimationTimer;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
@@ -39,8 +40,9 @@ public class Application extends javafx.application.Application {
     public static void start() {
         gameloop.start();
         window.setTitle("Ga Engine");
-        window.setWidth(640);
-        window.setHeight(480);
+        window.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        window.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        window.setMaximized(true);
         window.show();
     }
     
