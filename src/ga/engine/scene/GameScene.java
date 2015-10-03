@@ -5,8 +5,8 @@ import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
-import ga.engine.rendering.TileRenderer;
 import ga.game.PlayerController;
+import ga.game.Wall;
 import ga.game.entity.AI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,27 +34,19 @@ public final class GameScene {
         input = new Input(scene);
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
-        GameObject object = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
-                .addComponent(new RigidBody(0));
-        root.addChild(object);
-        GameObject object2 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
-                .addComponent(new RigidBody(0));
-        object.addChild(object2);
-        GameObject object3 = new GameObject(32.0, 32.0, 0.0)
-                .addComponent(new ImageRenderer("ga/game/Jordlabb.png"))
-                .addComponent(new RigidBody(0));
-        object2.addChild(object3);
+       
+        new Wall(root, 0, 15 * 32, 32, 1);
+        new Wall(root, 0, 0, 1, 16);
+        new Wall(root, 0, 0, 32, 1);
+        new Wall(root, 31 * 32, 0, 1, 16);
         
-        GameObject box2 = new GameObject(200, 200, 0)
-                .addComponent(new TileRenderer("ga/game/Jordlabb.png", 10, 1));
-        root.addChild(box2);
-        RigidBody body2 = new RigidBody(0);
-        body2.setVelocity(new Vector2D(0, 0));
-        box2.addComponent(body2);
+        new Wall(root, 0, 14 * 32, 3, 1);
+        new Wall(root, 200, 12 * 32, 3, 1);
+        new Wall(root, 300, 10 * 32, 3, 1);
+        new Wall(root, 500, 8 * 32, 3, 1);
+        new Wall(root, 600, 6 * 32, 3, 1);
         
-        GameObject player = new GameObject(64, 0, 0)
+        GameObject player = new GameObject(32, 15 * 32 - 64, 0)
                 .addComponent(new ImageRenderer("ga/game/Aplayertest2.png"))
                 .addComponent(new PlayerController());
         RigidBody body = new RigidBody(1.25, 1, 2);
@@ -64,13 +56,13 @@ public final class GameScene {
         player.addComponent(body);
         root.addChild(player);
                 
-        GameObject ant = new GameObject(200, 100, 0)
+        GameObject ant = new GameObject(700, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/myr.png"));
         ant.addComponent(new RigidBody(1, 3, 2));
         ant.addComponent(new AI(this, 0.1, 4));
         root.addChild(ant);
         
-        GameObject spider = new GameObject(250, 100, 0)
+        GameObject spider = new GameObject(800, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/SpiderR.png"));
         spider.addComponent(new RigidBody(1, 4, 2));
         spider.addComponent(new AI(this, 0.15, 5));
