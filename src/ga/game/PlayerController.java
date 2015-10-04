@@ -11,7 +11,8 @@ public class PlayerController extends GameComponent {
     
     private RigidBody body;
     private final double SPEED = 0.2;
-    private final double JUMP_HEIGHT = 6; 
+    private final double JUMP_HEIGHT = 6;
+    private Vector2D movement;
     
     @Override
     public void start() {
@@ -20,14 +21,16 @@ public class PlayerController extends GameComponent {
 
     @Override
     public void fixedUpdate() {
-        int horizontal = (Input.getKey(KeyCode.A) == true ? -1 : 0) +
-                (Input.getKey(KeyCode.D) == true ? 1 : 0);
-        int jump = Input.getKeyPressed(KeyCode.SPACE) == true && body.isGrounded() ? 1 : 0;
-        Vector2D movement = new Vector2D(horizontal * SPEED, -jump * JUMP_HEIGHT);
+        movement = new Vector2D((Input.getKey(KeyCode.A) == true ? -1 : 0 + (Input.getKey(KeyCode.D) == true ? 1 : 0)) * SPEED,
+        ((Input.getKeyPressed(KeyCode.SPACE) == true && body.isGrounded()) ? -1 : 0) * JUMP_HEIGHT);
         body.setVelocity(body.getVelocity().add(movement));
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
         }
+    }
+    
+    public Vector2D getMovement() {
+        return movement;
     }
 
     @Override

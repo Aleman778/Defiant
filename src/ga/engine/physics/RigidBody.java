@@ -9,12 +9,12 @@ public class RigidBody extends Body {
     public RigidBody(double mass) {
         this.mass = mass;
     }
-    
+
     public RigidBody(double mass, int id) {
         this.mass = mass;
         this.id = id;
     }
-    
+
     public RigidBody(double mass, int id, int sink) {
         super(id, sink);
         this.mass = mass;
@@ -22,10 +22,9 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public boolean physicsUpdate(Body otherBody) {
-        boolean colliding = false;
+    public Vector2D physicsUpdate(Body otherBody) {
         if (velocity.x + velocity.y == 0) {
-            return false;
+            return null;
         }
 
         Rectangle bounds = AABB;
@@ -38,7 +37,6 @@ public class RigidBody extends Body {
             if (overlapY > 0) {
                 Vector2D normal;
                 double penetration;
-                colliding = true;
                 if (overlapX < overlapY) {
                     if (diff.x < 0) {
                         normal = new Vector2D(-1, 0);
@@ -63,9 +61,10 @@ public class RigidBody extends Body {
                         }
                     }
                 }
+                return normal;
             }
         }
-        return colliding;
+        return null;
     }
 
     @Override
@@ -78,7 +77,7 @@ public class RigidBody extends Body {
         Vector2D vel = body.velocity.sub(velocity);
         double bounce = Math.min(softness, body.softness);
         double velNorm = vel.dot(normal);
-        double impulse = -(0.8 + bounce) * velNorm;
+        double impulse = -(1 + bounce) * velNorm;
         double invMass, otherInvMass;
         if (mass == 0) {
             invMass = 0;
@@ -90,15 +89,30 @@ public class RigidBody extends Body {
         } else {
             otherInvMass = 1 / body.mass;
         }
-        impulse = impulse / invMass + otherInvMass;
-        Vector2D impulseVector = normal.mul(impulse);
-        double totalMass = mass + body.mass;
+        double percent = 0;
         if (!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) {
             if (getID() == body.getID() || getCollide().contains(body.getID())) {
+                impulse = impulse / (invMass + otherInvMass);
+                if (bounce == 0) {
+                    if (Math.abs(normal.x) == 1) {
+                        velocity = velocity.mul(new Vector2D(0, 1));
+                    }
+                    if (Math.abs(normal.y) == 1) {
+                        velocity = velocity.mul(new Vector2D(1, 0));
+                    }
+                    impulse = penetration / 1;
+                }
+                Vector2D impulseVector = normal.mul(impulse);
+                double totalMass = mass + body.mass;
                 velocity = velocity.sub(impulseVector.mul(mass / totalMass));
                 body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
 
-                final double percent = 0.8;
+                if (bounce == 0) {
+                    percent = 0.01;
+                } else {
+                    percent = 0.2;
+                }
+
                 final double tolerance = 0.01;
                 Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
                 velocity = velocity.sub(correction.mul(invMass));
@@ -107,7 +121,7 @@ public class RigidBody extends Body {
                     Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
                     velocity = velocity.add(frictionVector);
                 }
-                if (impulse < 7 && normal.equals(new Vector2D(0, 1))) {
+                if (normal.equals(new Vector2D(0, 1))) {
                     setGrounded(true);
                 }
             }

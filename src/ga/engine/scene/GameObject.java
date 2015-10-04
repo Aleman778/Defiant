@@ -2,6 +2,7 @@ package ga.engine.scene;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
+import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
@@ -143,7 +144,7 @@ public class GameObject {
 
     public void physicsUpdate(Set<Body> retrievedBodies) {
         boolean colliding = false;
-        if (Math.signum(body.getVelocity().normalize().x) != 0) {
+        if (Math.signum(body.getVelocity().normalize().x) != 0 && Math.abs(body.getVelocity().x) > 0.5) {
             transform.scale.x = Math.signum(body.getVelocity().normalize().x);
         }
         if (body.getMass() != 0) {
@@ -153,8 +154,11 @@ public class GameObject {
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
-            if (body.physicsUpdate(physicsBody) == true) {
-                colliding = true;
+            Vector2D normal = body.physicsUpdate(physicsBody);
+            if (normal != null) {
+                if (normal.equals(new Vector2D(0, 1))) {
+                    colliding = true;
+                }
             }
 
         }

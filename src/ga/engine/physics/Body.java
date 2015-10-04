@@ -111,5 +111,5 @@ public abstract class Body extends GameComponent {
         return id;
     }
     
-    public abstract boolean physicsUpdate(Body otherBody);
+    public abstract Vector2D physicsUpdate(Body otherBody);
 }
