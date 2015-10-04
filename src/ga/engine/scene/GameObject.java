@@ -2,6 +2,7 @@ package ga.engine.scene;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
+import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Renderable;
 import java.util.ArrayList;
@@ -153,7 +154,8 @@ public final class GameObject {
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
-            if (body.physicsUpdate(physicsBody) == true) {
+            Vector2D normal = body.physicsUpdate(physicsBody);
+            if (normal != null) {
                 colliding = true;
             }
 

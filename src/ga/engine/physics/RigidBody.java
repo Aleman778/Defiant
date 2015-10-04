@@ -22,10 +22,9 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public boolean physicsUpdate(Body otherBody) {
-        boolean colliding = false;
+    public Vector2D physicsUpdate(Body otherBody) {
         if (velocity.x + velocity.y == 0) {
-            return false;
+            return null;
         }
 
         Rectangle bounds = AABB;
@@ -38,7 +37,6 @@ public class RigidBody extends Body {
             if (overlapY > 0) {
                 Vector2D normal;
                 double penetration;
-                colliding = true;
                 if (overlapX < overlapY) {
                     if (diff.x < 0) {
                         normal = new Vector2D(-1, 0);
@@ -63,9 +61,10 @@ public class RigidBody extends Body {
                         }
                     }
                 }
+                return normal;
             }
         }
-        return colliding;
+        return null;
     }
 
     @Override
