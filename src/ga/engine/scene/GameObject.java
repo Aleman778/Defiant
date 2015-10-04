@@ -156,7 +156,9 @@ public final class GameObject {
             Body physicsBody = it.next();
             Vector2D normal = body.physicsUpdate(physicsBody);
             if (normal != null) {
-                colliding = true;
+                if (normal.equals(new Vector2D(0, 1))) {
+                    colliding = true;
+                }
             }
 
         }
