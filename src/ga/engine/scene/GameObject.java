@@ -13,7 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 
-public final class GameObject {
+public class GameObject {
 
     public Transform transform;
     public GameObject parent = null;
