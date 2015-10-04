@@ -1,14 +1,13 @@
 package ga.devkit.ui;
 
 import ga.devkit.editor.EditorObject;
-import ga.devkit.editor.EditorObject;
 import ga.engine.scene.GameObject;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +26,7 @@ public class LevelEditor extends Interface implements Initializable {
     private int tileSize;
     private boolean showGrid;
     private EditorObject rootObject;
+    private EditorObject selectedObject;
     
     public LevelEditor() {
         this.width = 0;
@@ -34,6 +34,7 @@ public class LevelEditor extends Interface implements Initializable {
         this.tileSize = 32;
         this.showGrid = true;
         this.rootObject = new EditorObject();
+        this.selectedObject = null;
     }
 
     public void updateCanvas() {
@@ -102,7 +103,23 @@ public class LevelEditor extends Interface implements Initializable {
         setSize(2000, 2000);
         
         canvas.setOnMousePressed((MouseEvent event) -> {
+            selectedObject = new EditorObject(event.getX(), event.getY(), 0);
+            Node node = selectedObject.getNode();
+            node.setTranslateX(selectedObject.getTranslateX());
+            node.setTranslateY(selectedObject.getTranslateY());
+            node.setTranslateZ(selectedObject.getTranslateZ());
+            canvas.getChildren().add(selectedObject.getNode());
+        });
+        canvas.setOnMouseDragged((MouseEvent event) -> {
+            Node node = selectedObject.getNode();
+            node.setTranslateX(selectedObject.getTranslateX() + event.getX() - selectedObject.getTranslateX());
+            node.setTranslateY(selectedObject.getTranslateY() + event.getY() - selectedObject.getTranslateY());
+            node.setTranslateZ(selectedObject.getTranslateZ() + event.getZ() - selectedObject.getTranslateZ());
+        });
+        canvas.setOnMouseReleased((MouseEvent event) -> {
             rootObject.addChild(new EditorObject((int) event.getX() / tileSize * tileSize, (int) event.getY() / tileSize * tileSize, 0));
+            canvas.getChildren().remove(selectedObject.getNode());
+            selectedObject = null;
             render();
         });
     }
