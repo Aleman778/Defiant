@@ -13,7 +13,7 @@ import javafx.scene.transform.Rotate;
 
 public class EditorObject extends GameObject {
     
-    private static Image NONE_RENDERABLE_IMAGE = new Image("ga/game/grass_tile.png");
+    private static Image NONE_RENDERABLE_IMAGE = new Image("ga/devkit/editor/nonrenderable.png");
     private Node node = null;
 
     public EditorObject(Vector3D position, Vector3D rotation, Vector3D scale) {
