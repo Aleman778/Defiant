@@ -13,7 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 
-public class GameObject {
+public final class GameObject {
 
     public Transform transform;
     public GameObject parent = null;
@@ -143,7 +143,7 @@ public class GameObject {
 
     public void physicsUpdate(Set<Body> retrievedBodies) {
         boolean colliding = false;
-        if (Math.signum(body.getVelocity().normalize().x) != 0) {
+        if (Math.signum(body.getVelocity().normalize().x) != 0 && Math.abs(body.getVelocity().x) > 0.5) {
             transform.scale.x = Math.signum(body.getVelocity().normalize().x);
         }
         if (body.getMass() != 0) {
