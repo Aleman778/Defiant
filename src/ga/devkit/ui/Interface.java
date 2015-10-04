@@ -8,10 +8,8 @@ public class Interface {
     
     protected String fxml = "";
     public Parent root = null;
-    public final String name;
     
-    public Interface(String name) {
-        this.name = name;
+    public Interface() {
     }
     
     public final void load() {
