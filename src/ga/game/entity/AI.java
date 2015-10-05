@@ -14,7 +14,8 @@ public class AI extends GameComponent {
             JUMP_HEIGHT = 7,
             FOLLOW_DISTANCE = 0;
     private double timeSinceLastJump;
-    private final boolean canMoveInAir = false;
+    private final boolean canMoveInAir = true;
+    private final double AIR_SPEED = 0.05;
 
     public AI(GameScene scene) {
         for (GameObject object : scene.getAllGameObjects()) {
@@ -46,10 +47,14 @@ public class AI extends GameComponent {
                 }
             }
             else {
-                gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+                if (!gameobject.getBody().isGrounded()) {
+                    gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED)));
+                } else {
+                    gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+                }
             }
         }
-        if (distToPlayer.y < -80 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded() && timeSinceLastJump > 65) {
+        if (distToPlayer.y < -64 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded() && timeSinceLastJump > 65) {
             gameobject.getBody().setVelocity(gameobject.getBody().getVelocity().add(new Vector2D(0, -JUMP_HEIGHT)));
             timeSinceLastJump = 0;
         }
