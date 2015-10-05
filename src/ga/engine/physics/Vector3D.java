@@ -31,6 +31,10 @@ public class Vector3D {
     public Vector3D mul(Vector3D vector) {
         return new Vector3D(x * vector.x, y * vector.y, z * vector.y);
     }
+    
+    public Vector2D toVector2D() {
+        return new Vector2D(x, y);
+    }
 
     @Override
     public String toString() {
