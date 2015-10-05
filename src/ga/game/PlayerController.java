@@ -38,7 +38,10 @@ public class PlayerController extends GameComponent {
         }
         
         Vector2D diff = Input.getMousePosition().sub(gameobject.transform.localPosition().toVector2D());
-        armRotation = (float) Math.toDegrees(Math.atan(diff.y / diff.x)) + (diff.x < 0 ? 180 : 0);
+        armRotation = (float) Math.toDegrees(Math.atan(diff.y / diff.x));
+        if (diff.x < 0) {
+            armRotation = 360 - armRotation;
+        }
         arm.getTransform().rotation = new Vector3D(0, 0, armRotation);
     }
     
