@@ -6,6 +6,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.Renderable;
+import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -152,6 +153,11 @@ public class GameObject {
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
+            
+            if (Math.signum(physicsBody.getVelocity().normalize().x) != 0 && Math.abs(physicsBody.getVelocity().x) > 0.5 && physicsBody.gameobject.getComponent(PlayerController.class) == null) {
+                physicsBody.transform.rotation.y = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
+            }
+            
             Vector2D normal = body.physicsUpdate(physicsBody);
             if (normal != null) {
                 if (normal.equals(new Vector2D(0, 1))) {
