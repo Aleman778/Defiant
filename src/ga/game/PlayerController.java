@@ -17,7 +17,7 @@ public class PlayerController extends GameComponent {
     private final double JUMP_HEIGHT = 6;
     private Vector2D movement;
     private GameObject arm;
-    private Vector3D armRotation;
+    private float armRotation;
     
     @Override
     public void start() {
@@ -36,8 +36,10 @@ public class PlayerController extends GameComponent {
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
         }
-        armRotation = new Vector3D(0, 0, (Input.getKey(KeyCode.W) == true ? -5 : 0) + (Input.getKey(KeyCode.S) == true ? 5 : 0));
-        arm.getTransform().rotate(armRotation);
+        
+        Vector2D diff = Input.getMousePosition().sub(gameobject.transform.localPosition().toVector2D());
+        armRotation = (float) Math.toDegrees(Math.atan(diff.y / diff.x)) + (diff.x < 0 ? 180 : 0);
+        arm.getTransform().rotation = new Vector3D(0, 0, armRotation);
     }
     
     public Vector2D getMovement() {
