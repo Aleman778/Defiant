@@ -145,12 +145,6 @@ public class GameObject {
 
     public void physicsUpdate(Set<Body> retrievedBodies) {
         boolean colliding = false;
-        if (Math.signum(body.getVelocity().normalize().x) != 0 && Math.abs(body.getVelocity().x) > 0.5) {
-            transform.scale.x = Math.signum(body.getVelocity().normalize().x);
-            for (GameObject o : getChildren()) {
-                o.transform.scale.x = Math.signum(body.getVelocity().normalize().x);
-            }
-        }
         if (body.getMass() != 0) {
             body.setVelocity(body.getVelocity().add(GameScene.gravity));
         }
