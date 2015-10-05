@@ -47,7 +47,7 @@ public final class GameScene {
         new Wall(root, 600, 6 * 32, 3, 1);
         
         GameObject player = new GameObject(32, 15 * 32 - 64, 0)
-                .addComponent(new ImageRenderer("ga/game/Aplayertest2.png"))
+                .addComponent(new ImageRenderer("ga/game/RED_Player.png"))
                 .addComponent(new PlayerController());
         RigidBody body = new RigidBody(1.25, 1, 2);
         body.setID(2);
@@ -59,13 +59,13 @@ public final class GameScene {
         GameObject ant = new GameObject(700, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/myr.png"));
         ant.addComponent(new RigidBody(1, 3, 2));
-        ant.addComponent(new AI(this, 0.1, 4));
+        ant.addComponent(new AI(this, 0.2, 4));
         root.addChild(ant);
         
         GameObject spider = new GameObject(800, 100, 0)
                 .addComponent(new ImageRenderer("ga/game/SpiderR.png"));
         spider.addComponent(new RigidBody(1, 4, 2));
-        spider.addComponent(new AI(this, 0.15, 5));
+        spider.addComponent(new AI(this, 0.3, 5));
         root.addChild(spider);
     }
     
