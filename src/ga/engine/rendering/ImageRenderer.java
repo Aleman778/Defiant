@@ -12,12 +12,14 @@ public class ImageRenderer extends GameComponent implements Renderable {
     
     private ImageView imageview;
     protected Image image;
+    protected Vector2D pivot;
     
     public ImageRenderer(Image image) {
         this.image = image;
         this.imageview = new ImageView(this.image);
         imageview.setLayoutY(-(image.getHeight() - 32) / 2);
         imageview.setLayoutX(-(image.getWidth() - 32) / 2);
+        pivot = new Vector2D(image.getWidth() / 2, image.getHeight() / 2);
     }
     
     public ImageRenderer(String filepath) {
@@ -26,6 +28,14 @@ public class ImageRenderer extends GameComponent implements Renderable {
     
     public Vector2D getSize() {
         return new Vector2D(imageview.getImage().getWidth(), imageview.getImage().getHeight());
+    }
+    
+    public Vector2D getPivot() {
+        return pivot;
+    }
+    
+    public void setPivot(Vector2D pivot) {
+        this.pivot = pivot;
     }
 
     @Override

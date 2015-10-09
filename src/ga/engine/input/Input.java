@@ -8,12 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 public class Input {
     
     public static MouseButton mouseButton;
     public static Vector2D mousePosition;
-    public static double lerp = 0.2f;
     
     private static Set<KeyCode> keys;
     private static Set<KeyCode> keysPressed;
@@ -28,6 +28,16 @@ public class Input {
         });
         scene.setOnKeyReleased((KeyEvent event) -> {
             releasedKey(event.getCode());
+        });
+        scene.setOnMouseMoved((MouseEvent event) -> {
+            mousePosition.x = event.getX();
+            mousePosition.y = event.getY();
+        });
+        scene.setOnMousePressed((MouseEvent event) -> {
+            mouseButton = event.getButton();
+        });
+        scene.setOnMouseReleased((MouseEvent event) -> {
+            mouseButton = MouseButton.NONE;
         });
         keys = new HashSet<>();
         keysPressed = new HashSet<>();
@@ -80,5 +90,9 @@ public class Input {
     
     public static MouseButton getMouseButton() {
         return mouseButton;
+    }
+    
+    public static Vector2D getMousePosition() {
+        return mousePosition;
     }
 }

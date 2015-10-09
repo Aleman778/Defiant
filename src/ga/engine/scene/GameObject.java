@@ -4,7 +4,9 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
+import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.Renderable;
+import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -144,9 +146,6 @@ public class GameObject {
 
     public void physicsUpdate(Set<Body> retrievedBodies) {
         boolean colliding = false;
-        if (Math.signum(body.getVelocity().normalize().x) != 0 && Math.abs(body.getVelocity().x) > 0.5) {
-            transform.scale.x = Math.signum(body.getVelocity().normalize().x);
-        }
         if (body.getMass() != 0) {
             body.setVelocity(body.getVelocity().add(GameScene.gravity));
         }
@@ -154,6 +153,11 @@ public class GameObject {
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
+            
+            if (Math.signum(physicsBody.getVelocity().normalize().x) != 0 && Math.abs(physicsBody.getVelocity().x) > 0.5 && physicsBody.gameobject.getComponent(PlayerController.class) == null) {
+                physicsBody.transform.rotation.y = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
+            }
+            
             Vector2D normal = body.physicsUpdate(physicsBody);
             if (normal != null) {
                 if (normal.equals(new Vector2D(0, 1))) {
@@ -194,9 +198,9 @@ public class GameObject {
             node.getTransforms().clear();
             Vector3D rotation = transform.localRotation();
             Vector3D position = transform.localPosition();
-            Rotate rx = new Rotate(rotation.x, 0, 0, 0, Rotate.X_AXIS);
-            Rotate ry = new Rotate(rotation.y, 0, 0, 0, Rotate.Y_AXIS);
-            Rotate rz = new Rotate(rotation.z, 0, 0, 0, Rotate.Z_AXIS);
+            Rotate rx = new Rotate(rotation.x, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.X_AXIS);
+            Rotate ry = new Rotate(rotation.y, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.Y_AXIS);
+            Rotate rz = new Rotate(rotation.z, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.Z_AXIS);
             node.getTransforms().addAll(rx, ry, rz);
             node.setTranslateX((int) position.x);
             node.setTranslateY((int) position.y);
