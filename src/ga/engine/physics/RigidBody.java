@@ -107,9 +107,7 @@ public class RigidBody extends Body {
                 velocity = velocity.sub(impulseVector.mul(mass / totalMass));
                 body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
 
-                if (bounce == 0) {
-                    percent = 0.01;
-                } else {
+                if (bounce != 0) {
                     percent = 0.2;
                 }
 
