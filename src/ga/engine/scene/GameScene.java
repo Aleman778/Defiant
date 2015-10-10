@@ -5,6 +5,7 @@ import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import ga.game.Wall;
 import ga.game.entity.AI;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 
 public final class GameScene {
 
@@ -48,7 +50,8 @@ public final class GameScene {
         
         GameObject player = new GameObject(32, 15 * 32 - 64, 0)
                 .addComponent(new ImageRenderer("ga/game/Red_Player_No_Head.png"))
-                .addComponent(new PlayerController());
+                .addComponent(new PlayerController())
+                .addComponent(new ParticleEmitter(new Vector2D(16, 32), 90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN));
         RigidBody body = new RigidBody(1.25, 1, 2);
         body.setID(2);
         body.setVelocity(new Vector2D(1, 0));

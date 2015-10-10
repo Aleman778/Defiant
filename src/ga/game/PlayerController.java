@@ -6,6 +6,7 @@ import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.physics.Vector3D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import javafx.scene.input.KeyCode;
@@ -38,6 +39,11 @@ public class PlayerController extends GameComponent {
     public void fixedUpdate() {arm.getTransform().scale = new Vector3D(1, 1, 1);
         movement = new Vector2D((Input.getKey(KeyCode.A) == true ? -1 : 0 + (Input.getKey(KeyCode.D) == true ? 1 : 0)) * SPEED,
         ((Input.getKeyPressed(KeyCode.SPACE) == true && body.isGrounded()) ? -1 : 0) * JUMP_HEIGHT);
+        if (movement.y != 0) {
+            if (getComponent(ParticleEmitter.class) != null) {
+                ((ParticleEmitter)getComponent(ParticleEmitter.class)).fire();
+            }
+        }
         body.setVelocity(body.getVelocity().add(movement));
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
