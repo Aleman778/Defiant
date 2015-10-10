@@ -37,6 +37,16 @@ public class ImageRenderer extends GameComponent implements Renderable {
     public void setPivot(Vector2D pivot) {
         this.pivot = pivot;
     }
+    
+    public void setImage(Image image) {
+        this.image = image;
+        imageview.setImage(image);
+    }
+    
+    public void setImage(String path) {
+        this.image = new Image(path);
+        imageview.setImage(image);
+    }
 
     @Override
     public void render(Group group) {
