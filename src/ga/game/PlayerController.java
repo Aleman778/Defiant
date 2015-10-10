@@ -9,6 +9,8 @@ import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
+import java.util.HashMap;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController extends GameComponent {
@@ -18,9 +20,16 @@ public class PlayerController extends GameComponent {
     private final double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
-    private Vector2D movement;
+    private Vector2D movement, armPivot = new Vector2D(4, 15);
     private GameObject head, arm;
     private float armRotation, headRotation;
+    private int selectedWeapon;
+    private HashMap<Integer, Image> weapons = new HashMap<Integer, Image>() {
+        {
+            put(0, new Image("ga/game/Arm_Med_vapen1.png"));
+            put(1, new Image("ga/game/Arm_Med_vapen2.png"));
+        }
+    };
     
     @Override
     public void start() {
@@ -29,10 +38,10 @@ public class PlayerController extends GameComponent {
                 .addComponent(new ImageRenderer("ga/game/Red_Player_Head.png"));
         gameobject.addChild(head);
         ((ImageRenderer)head.getRenderable()).setPivot(new Vector2D(9, 16));
-        arm = new GameObject(12, -8, 0)
-                .addComponent(new ImageRenderer("ga/game/Red_arm2ss.png"));
+        arm = new GameObject(24, -10, 0)
+                .addComponent(new ImageRenderer(weapons.get(0)));
         gameobject.addChild(arm);
-        ((ImageRenderer)arm.getRenderable()).setPivot(new Vector2D(5, 4));
+        ((ImageRenderer)arm.getRenderable()).setPivot(armPivot);
     }
 
     @Override
@@ -66,6 +75,19 @@ public class PlayerController extends GameComponent {
         }
         arm.getTransform().rotation.z = armRotation;
         head.getTransform().rotation.z = headRotation;
+        
+        if (Input.getScrollPosition() != 0) {
+            selectedWeapon += Input.getScrollPosition();
+            if (selectedWeapon < 0) {
+                selectedWeapon = weapons.size() - 1;
+            }
+            if (selectedWeapon > weapons.size() - 1) {
+                selectedWeapon = 0;
+            }
+            ((ImageRenderer) arm.getRenderable()).setImage(weapons.get(selectedWeapon));
+            ((ImageRenderer) arm.getRenderable()).setPivot(armPivot);
+            Input.scrollPosition = 0;
+        }
     }
     
     public Vector2D getMovement() {
