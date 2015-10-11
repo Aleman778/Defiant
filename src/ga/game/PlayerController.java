@@ -52,6 +52,7 @@ public class PlayerController extends GameComponent {
             if (getComponent(ParticleEmitter.class) != null) {
                 ((ParticleEmitter)getComponent(ParticleEmitter.class)).fire();
             }
+            body.setVelocity(body.getVelocity().mul(new Vector2D(1, 0)));
         }
         body.setVelocity(body.getVelocity().add(movement));
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
