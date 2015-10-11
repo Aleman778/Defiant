@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import ga.engine.audio.AudioPlayer;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
@@ -47,6 +48,9 @@ public final class GameScene {
         new Wall(root, 300, 10 * 32, 3, 1);
         new Wall(root, 500, 8 * 32, 3, 1);
         new Wall(root, 600, 6 * 32, 3, 1);
+        
+        AudioPlayer audio = new AudioPlayer("audio/music/FL3-140.mp3");
+        audio.play();
         
         GameObject player = new GameObject(32, 15 * 32 - 64, 0)
                 .addComponent(new ImageRenderer("textures/player/Red_Player_No_Head.png"))
