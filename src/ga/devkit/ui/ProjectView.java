@@ -16,60 +16,45 @@ public class ProjectView extends Interface implements Initializable {
     @FXML
     public TreeView<String> tree = new TreeView<>();
     
-    public FlowPane content;
+    public FolderView folder;
     public AssetPreview preview;
+    
+    public ProjectView() {
+        folder = new FolderView();
+        preview = new AssetPreview();
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        content = new FlowPane();
-        preview = new AssetPreview();
         refreshTree();
     }
 
     @Override
     public void load() {
         super.load();
+        folder.load();
         preview.load();
     }
     
     public void refreshTree() {
-        List<File> folders = findFolders(new ArrayList<>(), new File("res"));
         TreeItem<String> root = new TreeItem<>("res");
-        for (File file: folders) {
-            root.getChildren().add(new TreeItem<>(file.getName()));
-        }
+        List<File> folders = findFolders(new ArrayList<>(), root, new File("res"));
         tree.setRoot(root);
     }
     
-    private List<File> findFiles(File file) {
-        List<File> result = new ArrayList<>();
-        File[] files = file.listFiles();
-        if (files == null)
-            return result;
-        
-        for (File f: files) {
-            if (!f.isDirectory()) {
-                result.add(f);
-            }
-        }
-        return result;
-    }
-    
-    private List<File> findFolders(List<File> result, File file) {
+    private List<File> findFolders(List<File> result, TreeItem<String> item, File file) {
         File[] files = file.listFiles();
         if (files == null)
             return result;
         
         for (File f: files) {
             if (f.isDirectory()) {
-                findFolders(result, f);
+                TreeItem<String> i = new TreeItem<>(f.getName());
+                findFolders(result, i, f);
+                item.getChildren().add(i);
                 result.add(f);
             }
         }
         return result;
-    }
-    
-    private String getFilename(String filename) {
-        return filename.substring(0, filename.lastIndexOf("."));
     }
 }
