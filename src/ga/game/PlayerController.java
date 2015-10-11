@@ -26,8 +26,8 @@ public class PlayerController extends GameComponent {
     private int selectedWeapon;
     private HashMap<Integer, Image> weapons = new HashMap<Integer, Image>() {
         {
-            put(0, new Image("ga/game/Arm_Med_vapen1.png"));
-            put(1, new Image("ga/game/Arm_Med_vapen2.png"));
+            put(0, new Image("textures/player/Arm_Med_vapen1.png"));
+            put(1, new Image("textures/player/Arm_Med_vapen2.png"));
         }
     };
     
@@ -35,7 +35,7 @@ public class PlayerController extends GameComponent {
     public void start() {
         body = (RigidBody) getComponent(RigidBody.class);
         head = new GameObject(0, -21, 0)
-                .addComponent(new ImageRenderer("ga/game/Red_Player_Head.png"));
+                .addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         gameobject.addChild(head);
         ((ImageRenderer)head.getRenderable()).setPivot(new Vector2D(9, 16));
         arm = new GameObject(24, -10, 0)

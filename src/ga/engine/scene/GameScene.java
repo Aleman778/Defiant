@@ -49,7 +49,7 @@ public final class GameScene {
         new Wall(root, 600, 6 * 32, 3, 1);
         
         GameObject player = new GameObject(32, 15 * 32 - 64, 0)
-                .addComponent(new ImageRenderer("ga/game/Red_Player_No_Head.png"))
+                .addComponent(new ImageRenderer("textures/player/Red_Player_No_Head.png"))
                 .addComponent(new PlayerController())
                 .addComponent(new ParticleEmitter(new Vector2D(16, 32), 90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN));
         RigidBody body = new RigidBody(1.25, 1, 2);
