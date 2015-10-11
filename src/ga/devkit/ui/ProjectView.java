@@ -5,11 +5,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.FlowPane;
 
 public class ProjectView extends Interface implements Initializable {
     
@@ -27,6 +28,10 @@ public class ProjectView extends Interface implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshTree();
+        tree.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) -> {
+            File file = new File(getTreePath(newValue));
+            folder.refreshFiles(file);
+        });
     }
 
     @Override
@@ -56,5 +61,18 @@ public class ProjectView extends Interface implements Initializable {
             }
         }
         return result;
+    }
+    
+    private String getTreePath(TreeItem<String> item) {
+        return findParentValue(item, "");
+    }
+    
+    private String findParentValue(TreeItem<String> parent, String path) {
+        if (parent == null)
+            return path;
+        else if (parent.getParent() == null)
+            return parent.getValue() + path;
+        else
+            return findParentValue(parent.getParent(), "/" + parent.getValue() + path);
     }
 }

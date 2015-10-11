@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -16,6 +18,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class FolderView extends Interface implements Initializable {
 
@@ -33,14 +36,21 @@ public class FolderView extends Interface implements Initializable {
         title.setText("Folder: " + folder.getPath());
         content.getChildren().clear();
         for (File file: result) {
-            addFile(file);
+            if (!file.isDirectory())
+                addFile(file);
         }
         
         return result;
     }
     
     private void addFile(File file) {
-        ImageView image = new ImageView(getClass().getResource("/textures/player/RED_Player.png").toExternalForm());
+        Node image = new Rectangle(64, 64, Color.GRAY);
+        switch (getExtension(file.getName())) {
+            case "png": case "jpg": case "gif":
+                image = new ImageView("file:" + file.getPath());
+                ((ImageView) image).setViewport(new Rectangle2D(0, 0, 64, 64));
+                break;
+        }
         Label name = new Label(getFilename(file.getName()));
         name.setMaxWidth(86);
         name.setAlignment(Pos.CENTER);
