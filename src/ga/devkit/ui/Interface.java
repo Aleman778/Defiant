@@ -12,7 +12,7 @@ public class Interface {
     public Interface() {
     }
     
-    public final void load() {
+    public void load() {
         String classname = getClass().getCanonicalName();
         String location = "fxml/" + classname.substring(classname.lastIndexOf(".") + 1).toLowerCase() + ".fxml";
         System.out.println(location);

@@ -31,9 +31,15 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane layoutY="32.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+      <SplitPane dividerPositions="0.8" layoutY="32.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
          <items>
-            <TabPane fx:id="content" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+            <SplitPane dividerPositions="0.7" orientation="VERTICAL">
+               <items>
+                  <TabPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+                  <SplitPane fx:id="bottomContent" prefHeight="200.0" prefWidth="200.0" />
+               </items>
+            </SplitPane>
+            <SplitPane fx:id="rightContent" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" />
          </items></SplitPane>
    </children>
 </AnchorPane>
