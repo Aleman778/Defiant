@@ -23,7 +23,7 @@ public class ImageRenderer extends GameComponent implements Renderable {
     }
     
     public ImageRenderer(String filepath) {
-        this(new Image(filepath));
+        this(new Image(ImageRenderer.class.getResource("/" + filepath).toExternalForm()));
     }
     
     public Vector2D getSize() {

@@ -23,7 +23,7 @@ public class PlayerController extends GameComponent {
     public void start() {
         body = (RigidBody) getComponent(RigidBody.class);
         arm = new GameObject(12, -8, 0)
-                .addComponent(new ImageRenderer("ga/game/Red_arm2ss.png"));
+                .addComponent(new ImageRenderer("textures/Red_arm2ss.png"));
         gameobject.addChild(arm);
         ((ImageRenderer)arm.getRenderable()).setPivot(new Vector2D(5, 4));
     }
