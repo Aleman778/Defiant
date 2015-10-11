@@ -26,6 +26,8 @@ public class GameObject {
     private Renderable renderable = null;
     private Body body = null;
 
+    private HashSet<Renderable> subRenderers = new HashSet<>();
+
     public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
         this.transform = new Transform(this, position, rotation, scale);
         this.children = new ArrayList<>();
@@ -74,17 +76,22 @@ public class GameObject {
         if (component.gameobject != null) {
             return null;
         }
-        
+
         component.gameobject = this;
         component.transform = transform;
-        
+
         component.awoke();
         if (parent != null) {
             component.start();
         }
 
         if (component instanceof Renderable) {
-            renderable = (Renderable) component;
+            if (renderable == null) {
+                renderable = (Renderable) component;
+            }
+            else {
+                subRenderers.add((Renderable) component);
+            }
         }
 
         if (component instanceof Body) {
@@ -153,11 +160,11 @@ public class GameObject {
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
-            
+
             if (Math.signum(physicsBody.getVelocity().normalize().x) != 0 && Math.abs(physicsBody.getVelocity().x) > 0.5 && physicsBody.gameobject.getComponent(PlayerController.class) == null) {
                 physicsBody.transform.rotation.y = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
             }
-            
+
             Vector2D normal = body.physicsUpdate(physicsBody);
             if (normal != null) {
                 if (normal.equals(new Vector2D(0, 1))) {
@@ -208,6 +215,9 @@ public class GameObject {
             node.setScaleX(transform.scale.x);
             node.setScaleY(transform.scale.y);
             node.setScaleZ(transform.scale.z);
+            for (Renderable subRenderer : subRenderers) {
+                subRenderer.render(group);
+            }
         }
 
         for (GameObject child : children) {

@@ -9,10 +9,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 public class Input {
     
     public static MouseButton mouseButton;
+    public static double scrollPosition;
     public static Vector2D mousePosition;
     
     private static Set<KeyCode> keys;
@@ -38,6 +40,9 @@ public class Input {
         });
         scene.setOnMouseReleased((MouseEvent event) -> {
             mouseButton = MouseButton.NONE;
+        });
+        scene.setOnScroll((ScrollEvent event) -> {
+            scrollPosition = Math.signum(event.getDeltaY());
         });
         keys = new HashSet<>();
         keysPressed = new HashSet<>();
@@ -94,5 +99,9 @@ public class Input {
     
     public static Vector2D getMousePosition() {
         return mousePosition;
+    }
+
+    public static double getScrollPosition() {
+        return scrollPosition;
     }
 }
