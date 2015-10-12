@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="content" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TitledPane fx:id="previewContainer" animated="false" layoutX="14.0" layoutY="14.0" text="Preview">
+         <content>
+            <Canvas fx:id="preview" height="200.0" width="200.0" />
+         </content>
+      </TitledPane>
+      <Slider fx:id="direction" blockIncrement="45.0" layoutX="244.0" layoutY="43.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" />
+      <Label layoutX="290.0" layoutY="26.0" text="Direction" />
+      <Slider fx:id="spread" blockIncrement="45.0" layoutX="408.0" layoutY="43.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="360.0" />
+      <Label layoutX="459.0" layoutY="26.0" text="Spread" />
+      <Slider fx:id="size" blockIncrement="2.0" layoutX="245.0" layoutY="117.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" />
+      <Label layoutX="304.0" layoutY="100.0" text="Size" />
+      <ColorPicker fx:id="color" layoutX="422.0" layoutY="124.0" />
+      <Label layoutX="464.0" layoutY="100.0" text="Color" />
+   </children>
+</AnchorPane>

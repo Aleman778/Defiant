@@ -13,12 +13,12 @@ import javafx.scene.paint.Color;
 
 public class ParticleEmitter extends GameComponent implements Renderable {
 
-    private final Canvas canvas;
-    protected final GraphicsContext graphics;
-    private Color color;
+    protected Canvas canvas;
+    protected GraphicsContext graphics;
+    protected Color color;
     public final static int MODE_CONTINUOUS = 0, MODE_SINGLE = 1;
-    private int mode;
-    private float life, direction, spread, size;
+    protected int mode;
+    protected float life, direction, spread, size;
     private HashSet<Particle> particles = new HashSet<>();
     private Vector2D localPosition;
 
@@ -32,12 +32,12 @@ public class ParticleEmitter extends GameComponent implements Renderable {
         this.color = color;
         canvas = new Canvas(1920, 1080);
         graphics = canvas.getGraphicsContext2D();
-        graphics.setFill(color);
     }
 
     @Override
     public void update() {
         super.update();
+        graphics.setFill(color);
         graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         if (mode == MODE_CONTINUOUS) {
             addParticles(1);
