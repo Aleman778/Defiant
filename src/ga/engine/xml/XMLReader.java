@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2015, Alexander, Aleman. All rights reserved.
- * License term can be found in the LICENSE.txt file
- */
 package ga.engine.xml;
 
 import java.io.IOException;
@@ -109,7 +105,7 @@ public abstract class XMLReader implements ErrorHandler {
             };
             
         } catch (ParserConfigurationException | SAXException | NullPointerException e) {
-            
+            e.printStackTrace();
         }
     }
     
@@ -156,7 +152,7 @@ public abstract class XMLReader implements ErrorHandler {
         try {
             parser.parse(getClass().getResource("/" + xmlfile).openStream(), handler);
         } catch (NullPointerException | SAXException | IOException e) {
-            
+            e.printStackTrace();
         }
     }
     
@@ -169,7 +165,7 @@ public abstract class XMLReader implements ErrorHandler {
      */
     @Override
     public void warning(SAXParseException exception) throws SAXException {
-        
+        exception.printStackTrace();
     }
     
     /**
@@ -181,7 +177,7 @@ public abstract class XMLReader implements ErrorHandler {
      */
     @Override
     public void error(SAXParseException exception) throws SAXException {
-        
+        exception.printStackTrace();
     }
     
     /**
@@ -193,6 +189,7 @@ public abstract class XMLReader implements ErrorHandler {
      */
     @Override
     public void fatalError(SAXParseException exception) throws SAXException {
+        exception.printStackTrace();
     }
     
     class Element {
