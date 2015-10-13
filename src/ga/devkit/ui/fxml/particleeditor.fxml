@@ -24,5 +24,6 @@
       <ColorPicker fx:id="color" layoutX="22.0" layoutY="215.0" />
       <Label layoutX="64.0" layoutY="191.0" text="Color" />
       <TextField fx:id="text" editable="false" layoutX="14.0" layoutY="367.0" prefHeight="25.0" prefWidth="581.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <CheckBox fx:id="mode" layoutX="48.0" layoutY="255.0" mnemonicParsing="false" text="Single Fire" />
    </children>
 </AnchorPane>

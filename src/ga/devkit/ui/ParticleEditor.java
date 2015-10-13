@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -34,6 +35,9 @@ public class ParticleEditor extends Interface implements Initializable {
     private ColorPicker color;
     @FXML
     private TextField text;
+    @FXML
+    private CheckBox mode;
+    private long lastFire = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,6 +48,12 @@ public class ParticleEditor extends Interface implements Initializable {
 
             @Override
             public void handle(long now) {
+                if (mode.isSelected()) {
+                    if (now > lastFire + 1000000000) {
+                        lastFire = now;
+                        emitter.fire();
+                    }
+                }
                 emitter.update();
             }
         }.start();
@@ -59,6 +69,9 @@ public class ParticleEditor extends Interface implements Initializable {
         color.setOnAction((ActionEvent event) -> {
             updatePreview();
         });
+        mode.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
         updatePreview();
     }
     
@@ -67,10 +80,12 @@ public class ParticleEditor extends Interface implements Initializable {
         emitter.setSize((float) size.getValue());
         emitter.setSpread((float) spread.getValue());
         emitter.setDirection((float) direction.getValue());
+        emitter.setMode(mode.isSelected() ? 1 : 0);
         String colorString = String.format("#%X", color.getValue().hashCode());
         if (colorString.length() > 7) {
             colorString = colorString.substring(0, 7);
         }
-        text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, ParticleEmitter.MODE_CONTINUOUS, 100, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), colorString));
+        String modeString = mode.isSelected() ? "ParticleEmitter.MODE_SINGLE" : "ParticleEmitter.MODE_CONTINUOUS";
+        text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, %s, 100, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), modeString, colorString));
     }
 }
