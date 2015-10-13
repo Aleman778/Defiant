@@ -8,20 +8,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="content" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="content" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane fx:id="previewContainer" animated="false" layoutX="14.0" layoutY="14.0" text="Preview">
+      <TitledPane fx:id="previewContainer" animated="false" layoutX="181.0" prefHeight="357.0" prefWidth="424.0" text="Preview" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <Canvas fx:id="preview" height="200.0" width="200.0" />
+            <Canvas fx:id="preview" height="330.0" width="422.0" />
          </content>
       </TitledPane>
-      <Slider fx:id="direction" blockIncrement="45.0" layoutX="244.0" layoutY="43.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" />
-      <Label layoutX="290.0" layoutY="26.0" text="Direction" />
-      <Slider fx:id="spread" blockIncrement="45.0" layoutX="408.0" layoutY="43.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="360.0" />
-      <Label layoutX="459.0" layoutY="26.0" text="Spread" />
-      <Slider fx:id="size" blockIncrement="2.0" layoutX="245.0" layoutY="117.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" />
-      <Label layoutX="304.0" layoutY="100.0" text="Size" />
-      <ColorPicker fx:id="color" layoutX="422.0" layoutY="124.0" />
-      <Label layoutX="464.0" layoutY="100.0" text="Color" />
+      <Slider fx:id="direction" blockIncrement="45.0" layoutX="14.0" layoutY="33.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" />
+      <Label layoutX="60.0" layoutY="16.0" text="Direction" />
+      <Slider fx:id="spread" blockIncrement="45.0" layoutX="14.0" layoutY="90.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="360.0" />
+      <Label layoutX="65.0" layoutY="73.0" text="Spread" />
+      <Slider fx:id="size" blockIncrement="2.0" layoutX="15.0" layoutY="145.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" />
+      <Label layoutX="74.0" layoutY="128.0" text="Size" />
+      <ColorPicker fx:id="color" layoutX="22.0" layoutY="215.0" />
+      <Label layoutX="64.0" layoutY="191.0" text="Color" />
+      <TextField fx:id="text" editable="false" layoutX="14.0" layoutY="367.0" prefHeight="25.0" prefWidth="581.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

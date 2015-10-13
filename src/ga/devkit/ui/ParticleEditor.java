@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
 
@@ -31,6 +32,8 @@ public class ParticleEditor extends Interface implements Initializable {
     private Slider size;
     @FXML
     private ColorPicker color;
+    @FXML
+    private TextField text;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,16 +48,29 @@ public class ParticleEditor extends Interface implements Initializable {
             }
         }.start();
         direction.valueProperty().addListener((observable, newValue, oldValue) -> {
-            emitter.setDirection(newValue.floatValue());
+            updatePreview();
         });
         spread.valueProperty().addListener((observable, newValue, oldValue) -> {
-            emitter.setSpread(newValue.floatValue());
+            updatePreview();
         });
         size.valueProperty().addListener((observable, newValue, oldValue) -> {
-            emitter.setSize(newValue.floatValue());
+            updatePreview();
         });
         color.setOnAction((ActionEvent event) -> {
-            emitter.setColor(color.getValue());
+            updatePreview();
         });
+        updatePreview();
+    }
+    
+    private void updatePreview() {
+        emitter.setColor(color.getValue());
+        emitter.setSize((float) size.getValue());
+        emitter.setSpread((float) spread.getValue());
+        emitter.setDirection((float) direction.getValue());
+        String colorString = String.format("#%X", color.getValue().hashCode());
+        if (colorString.length() > 7) {
+            colorString = colorString.substring(0, 7);
+        }
+        text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, ParticleEmitter.MODE_CONTINUOUS, 100, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), colorString));
     }
 }
