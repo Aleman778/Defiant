@@ -8,11 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="content" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="content" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TitledPane fx:id="previewContainer" animated="false" layoutX="181.0" prefHeight="357.0" prefWidth="424.0" text="Preview" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="179.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <Canvas fx:id="preview" height="330.0" width="422.0" />
+            <Canvas fx:id="preview" height="352.0" width="816.0" />
          </content>
       </TitledPane>
       <Slider fx:id="direction" blockIncrement="45.0" layoutX="14.0" layoutY="33.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" />
@@ -21,9 +21,11 @@
       <Label layoutX="65.0" layoutY="73.0" text="Spread" />
       <Slider fx:id="size" blockIncrement="2.0" layoutX="15.0" layoutY="145.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" />
       <Label layoutX="74.0" layoutY="128.0" text="Size" />
-      <ColorPicker fx:id="color" layoutX="22.0" layoutY="215.0" />
-      <Label layoutX="64.0" layoutY="191.0" text="Color" />
+      <ColorPicker fx:id="color" layoutX="16.0" layoutY="264.0" />
+      <Label layoutX="58.0" layoutY="240.0" text="Color" />
       <TextField fx:id="text" editable="false" layoutX="14.0" layoutY="367.0" prefHeight="25.0" prefWidth="581.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <CheckBox fx:id="mode" layoutX="48.0" layoutY="255.0" mnemonicParsing="false" text="Single Fire" />
+      <CheckBox fx:id="mode" layoutX="42.0" layoutY="304.0" mnemonicParsing="false" text="Single Fire" />
+      <Slider fx:id="life" blockIncrement="2.0" layoutX="15.0" layoutY="200.0" majorTickUnit="100.0" max="1000.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="100.0" />
+      <Label layoutX="62.0" layoutY="183.0" text="Lifetime" />
    </children>
 </AnchorPane>

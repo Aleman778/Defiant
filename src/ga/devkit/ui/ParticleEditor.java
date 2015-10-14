@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -37,6 +36,8 @@ public class ParticleEditor extends Interface implements Initializable {
     private TextField text;
     @FXML
     private CheckBox mode;
+    @FXML
+    private Slider life;
     private long lastFire = 0;
 
     @Override
@@ -72,6 +73,9 @@ public class ParticleEditor extends Interface implements Initializable {
         mode.setOnAction((ActionEvent event) -> {
             updatePreview();
         });
+        life.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
         updatePreview();
     }
     
@@ -81,11 +85,12 @@ public class ParticleEditor extends Interface implements Initializable {
         emitter.setSpread((float) spread.getValue());
         emitter.setDirection((float) direction.getValue());
         emitter.setMode(mode.isSelected() ? 1 : 0);
+        emitter.setLife((float) life.getValue());
         String colorString = String.format("#%X", color.getValue().hashCode());
         if (colorString.length() > 7) {
             colorString = colorString.substring(0, 7);
         }
         String modeString = mode.isSelected() ? "ParticleEmitter.MODE_SINGLE" : "ParticleEmitter.MODE_CONTINUOUS";
-        text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, %s, 100, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), modeString, colorString));
+        text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, %s, %d, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), modeString, (int) life.getValue(), colorString));
     }
 }
