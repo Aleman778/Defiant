@@ -4,6 +4,7 @@ import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import java.util.List;
 import java.util.Set;
+import javafx.scene.canvas.GraphicsContext;
 
 public abstract class GameComponent {
     
@@ -31,6 +32,7 @@ public abstract class GameComponent {
     public void fixedUpdate() {}
     public void update() {}
     public void lateUpdate() {}
+    public void render(GraphicsContext g) {}
     public void onCollisionEnter(Body body, Vector2D normal, double penetration) {}
     public void onCollision(Body body, Vector2D normal, double penetration) {}
     public void onCollisionExit() {}
