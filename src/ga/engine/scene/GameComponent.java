@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public abstract class GameComponent {
     
-    public Transform transform;
+    public Transform2D transform;
     public GameObject gameobject;
     
     public GameComponent() {
