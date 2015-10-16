@@ -26,7 +26,7 @@ public class Transform {
     }
     
     public Transform(GameObject object) {
-        this(object, new Vector3D(), new Vector3D(), new Vector3D());
+        this(object, new Vector3D(), new Vector3D(), new Vector3D(1, 1, 1));
     }
     
     public void translate(Vector3D vector3) {
