@@ -16,6 +16,7 @@
             <name>GA Engine</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.res.dir" name="Resource Packages"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
