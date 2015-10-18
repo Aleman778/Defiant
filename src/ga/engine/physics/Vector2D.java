@@ -2,14 +2,16 @@ package ga.engine.physics;
 
 public class Vector2D {
     
-    public double x = 0, y = 0;
+    public double x, y;
 
-    public Vector2D(double dX, double dY) {
-        this.x = dX;
-        this.y = dY;
+    public Vector2D(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
     
-    public Vector2D() {}
+    public Vector2D() {
+        this(0, 0);
+    }
     
     public double length() {
         return Math.sqrt(x * x + y * y);

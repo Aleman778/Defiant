@@ -36,10 +36,10 @@
             <SplitPane dividerPositions="0.7" orientation="VERTICAL">
                <items>
                   <TabPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
-                  <SplitPane fx:id="bottomContent" prefHeight="200.0" prefWidth="200.0" />
+                  <SplitPane fx:id="bottomContent" prefHeight="200.0" prefWidth="200.0" SplitPane.resizableWithParent="false" />
                </items>
             </SplitPane>
-            <SplitPane fx:id="rightContent" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" />
+            <SplitPane fx:id="rightContent" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" SplitPane.resizableWithParent="false" />
          </items></SplitPane>
    </children>
 </AnchorPane>

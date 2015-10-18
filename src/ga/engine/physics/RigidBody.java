@@ -1,6 +1,5 @@
 package ga.engine.physics;
 
-import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
 
@@ -11,12 +10,7 @@ public class RigidBody extends Body {
     }
 
     public RigidBody(double mass, int id) {
-        this.mass = mass;
-        this.id = id;
-    }
-
-    public RigidBody(double mass, int id, int sink) {
-        super(id, sink);
+        super(id);
         this.mass = mass;
         this.id = id;
     }
@@ -26,26 +20,32 @@ public class RigidBody extends Body {
         if (velocity.x + velocity.y == 0) {
             return null;
         }
-
-        Rectangle bounds = AABB;
-        Rectangle otherBounds = otherBody.AABB;
-        Vector3D diff = (otherBody.transform.localPosition().add(new Vector3D(otherBounds.x, otherBounds.y, 0))).
-                sub(transform.localPosition().add(new Vector3D(bounds.x, bounds.y, 0)));
-        double overlapX = (bounds.width / 2) + (otherBounds.width / 2) - Math.abs(diff.x);
+        
+        Vector2D n = otherBody.transform.localPosition().sub(transform.localPosition());
+        AABB boxA = gameobject.getAABB();
+        AABB boxB = otherBody.gameobject.getAABB();
+        
+        double extentA = (boxA.getMaxX() - boxA.getMinX()) / 2.0;
+        double extentB = (boxB.getMaxX() - boxB.getMinX()) / 2.0;
+        double overlapX = extentA + extentB - Math.abs(n.x);
+        
         if (overlapX > 0) {
-            double overlapY = (bounds.height / 2) + (otherBounds.height / 2) - Math.abs(diff.y);
+            extentA = (boxA.getMaxY() - boxA.getMinY()) / 2.0;
+            extentB = (boxB.getMaxY() - boxB.getMinY()) / 2.0;
+            double overlapY = extentA + extentB - Math.abs(n.y);
+            System.out.println(overlapX + ", " + overlapY);
             if (overlapY > 0) {
                 Vector2D normal;
                 double penetration;
                 if (overlapX < overlapY) {
-                    if (diff.x < 0) {
+                    if (n.x < 0) {
                         normal = new Vector2D(-1, 0);
                     } else {
                         normal = new Vector2D(1, 0);
                     }
                     penetration = overlapX;
                 } else {
-                    if (diff.y < 0) {
+                    if (n.y < 0) {
                         normal = new Vector2D(0, -1);
                     } else {
                         normal = new Vector2D(0, 1);

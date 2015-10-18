@@ -192,4 +192,9 @@ public class AABB {
     public double getHeight() {
         return maxY - minY;
     }
+
+    @Override
+    public String toString() {
+        return "minX: " + minX + ", minY: " + minY + "maxX: " + maxX + ", maxY: " + maxY;
+    }
 }

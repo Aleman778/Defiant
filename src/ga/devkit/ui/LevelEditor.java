@@ -54,7 +54,7 @@ public class LevelEditor extends Interface implements Initializable {
     public void render() {
         content.getChildren().clear();
         for (GameObject object: rootObject.getChildren()) {
-            ((EditorObject) object).render(content);
+            //((EditorObject) object).render(content);
         }
     }
     
@@ -107,14 +107,12 @@ public class LevelEditor extends Interface implements Initializable {
             Node node = selectedObject.getNode();
             node.setTranslateX(selectedObject.getTranslateX());
             node.setTranslateY(selectedObject.getTranslateY());
-            node.setTranslateZ(selectedObject.getTranslateZ());
             canvas.getChildren().add(selectedObject.getNode());
         });
         canvas.setOnMouseDragged((MouseEvent event) -> {
             Node node = selectedObject.getNode();
             node.setTranslateX(selectedObject.getTranslateX() + event.getX() - selectedObject.getTranslateX());
             node.setTranslateY(selectedObject.getTranslateY() + event.getY() - selectedObject.getTranslateY());
-            node.setTranslateZ(selectedObject.getTranslateZ() + event.getZ() - selectedObject.getTranslateZ());
         });
         canvas.setOnMouseReleased((MouseEvent event) -> {
             rootObject.addChild(new EditorObject((int) event.getX() / tileSize * tileSize, (int) event.getY() / tileSize * tileSize, 0));

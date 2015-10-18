@@ -61,17 +61,17 @@ public class Transform {
         return new Vector2D(position.x, position.y);
     }
     
-    public Vector3D localPosition() {
-        GameObject parent = gameobject.getParent();
-        if (parent != null)
-            return parent.getTransform().localPosition().add(position);
-        return position;
-    }
-    
-    public Vector3D localRotation() {
-        GameObject parent = gameobject.getParent();
-        if (parent != null)
-            return parent.getTransform().localRotation().add(rotation);
-        return rotation;
-    }
+//    public Vector3D localPosition() {
+//        GameObject parent = gameobject.getParent();
+//        if (parent != null)
+//            return parent.getTransform().localPosition().add(position);
+//        return position;
+//    }
+//    
+//    public Vector3D localRotation() {
+//        GameObject parent = gameobject.getParent();
+//        if (parent != null)
+//            return parent.getTransform().localRotation().add(rotation);
+//        return rotation;
+//    }
 }

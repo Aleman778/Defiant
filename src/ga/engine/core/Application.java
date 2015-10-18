@@ -3,6 +3,7 @@ package ga.engine.core;
 import ga.devkit.core.Devkit;
 import ga.engine.scene.GameScene;
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ObservableValue;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -42,6 +43,14 @@ public class Application extends javafx.application.Application {
         window.setTitle("Ga Engine");
         window.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
         window.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            if (scene != null)
+                scene.setWidth(newValue.doubleValue());
+        });
+        window.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            if (scene != null)
+                scene.setHeight(newValue.doubleValue());
+        });
         window.setMaximized(true);
         window.show();
     }
@@ -52,6 +61,14 @@ public class Application extends javafx.application.Application {
     
     public static GameScene getScene() {
         return scene;
+    }
+    
+    public static double getWidth() {
+        return window.getWidth();
+    }
+    
+    public static double getHeight() {
+        return window.getHeight();
     }
     
     public static void setDevmode(boolean enable) {
