@@ -3,43 +3,40 @@ package ga.engine.scene;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
-import ga.engine.physics.Vector3D;
-import ga.engine.rendering.ImageRenderer;
-import ga.engine.rendering.Renderable;
 import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.transform.Rotate;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Affine;
 
 public class GameObject {
 
-    public Transform transform;
+    public Transform2D transform;
     public GameObject parent = null;
+    private Rectangle AABB = new Rectangle();
     private final List<GameObject> children;
     private final List<GameComponent> components;
-
-    private Renderable renderable = null;
     private Body body = null;
 
-    private HashSet<Renderable> subRenderers = new HashSet<>();
-
-    public GameObject(Vector3D position, Vector3D rotation, Vector3D scale) {
-        this.transform = new Transform(this, position, rotation, scale);
+    public GameObject() {
+        this.transform = new Transform2D(this);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
     }
-
-    public GameObject(double x, double y, double z) {
-        this(new Vector3D(x, y, z), new Vector3D(), new Vector3D(1, 1, 1));
+    
+    public GameObject(Transform2D transform) {
+        this.transform = new Transform2D(this, transform);
+        this.children = new ArrayList<>();
+        this.components = new ArrayList<>();
     }
-
-    public GameObject() {
-        this(new Vector3D(), new Vector3D(), new Vector3D(1, 1, 1));
+    
+    public GameObject(double x, double y) {
+        this.transform = new Transform2D(this, x, y);
+        this.children = new ArrayList<>();
+        this.components = new ArrayList<>();
     }
 
     public GameObject addChild(GameObject object) {
@@ -84,16 +81,7 @@ public class GameObject {
         if (parent != null) {
             component.start();
         }
-
-        if (component instanceof Renderable) {
-            if (renderable == null) {
-                renderable = (Renderable) component;
-            }
-            else {
-                subRenderers.add((Renderable) component);
-            }
-        }
-
+        
         if (component instanceof Body) {
             body = (Body) component;
         }
@@ -125,14 +113,6 @@ public class GameObject {
         return components;
     }
 
-    public boolean isRenderable() {
-        return (renderable != null);
-    }
-
-    public Renderable getRenderable() {
-        return renderable;
-    }
-
     public boolean isBody() {
         return (body != null);
     }
@@ -156,13 +136,13 @@ public class GameObject {
         if (body.getMass() != 0) {
             body.setVelocity(body.getVelocity().add(GameScene.gravity));
         }
-        transform.translate(body.getVelocity().x, body.getVelocity().y, 0);
+        transform.translate(body.getVelocity().x, body.getVelocity().y);
         Iterator<Body> it = retrievedBodies.iterator();
         while (it.hasNext()) {
             Body physicsBody = it.next();
 
             if (Math.signum(physicsBody.getVelocity().normalize().x) != 0 && Math.abs(physicsBody.getVelocity().x) > 0.5 && physicsBody.gameobject.getComponent(PlayerController.class) == null) {
-                physicsBody.transform.rotation.y = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
+                physicsBody.transform.rotation = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
             }
 
             Vector2D normal = body.physicsUpdate(physicsBody);
@@ -198,65 +178,35 @@ public class GameObject {
         }
     }
 
-    public void render(Group group) {
-        if (renderable != null) {
-            renderable.render(group);
-            Node node = renderable.getNode();
-            node.getTransforms().clear();
-            Vector3D rotation = transform.localRotation();
-            Vector3D position = transform.localPosition();
-            Rotate rx = new Rotate(rotation.x, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.X_AXIS);
-            Rotate ry = new Rotate(rotation.y, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.Y_AXIS);
-            Rotate rz = new Rotate(rotation.z, ((ImageRenderer) renderable).getPivot().x, ((ImageRenderer) renderable).getPivot().y, 0, Rotate.Z_AXIS);
-            node.getTransforms().addAll(rx, ry, rz);
-            node.setTranslateX((int) position.x);
-            node.setTranslateY((int) position.y);
-            node.setTranslateZ((int) position.z);
-            node.setScaleX(transform.scale.x);
-            node.setScaleY(transform.scale.y);
-            node.setScaleZ(transform.scale.z);
-            for (Renderable subRenderer : subRenderers) {
-                subRenderer.render(group);
-            }
+    public void render(GraphicsContext g) {
+        Vector2D position = transform.localPosition();
+        double rotation = transform.localRotation();
+        Vector2D scale = transform.scale;
+        g.save();
+        Affine affine = new Affine();
+        affine.appendTranslation(position.x, position.y);
+        affine.appendRotation(rotation, transform.pivot.x, transform.pivot.y);
+        affine.appendScale(scale.x, scale.y, transform.pivot.x, transform.pivot.y);
+        g.setTransform(affine);
+        for (GameComponent component: components) {
+            component.render(g);
         }
+        g.restore();
 
         for (GameObject child : children) {
-            child.render(group);
+            child.render(g);
         }
     }
 
-    public Transform getTransform() {
+    public Transform2D getTransform() {
         return transform;
     }
-
-    public void setTranslateX(double x) {
-        transform.position.x = x;
+    
+    public void setAABB(int x, int y, int w, int h) {
+        AABB = new Rectangle(x, y, w, h);
     }
-
-    public double getTranslateX() {
-        return transform.position.x;
-    }
-
-    public void setTranslateY(double y) {
-        transform.position.y = y;
-    }
-
-    public double getTranslateY() {
-        return transform.position.y;
-    }
-
-    public void setTranslateZ(double z) {
-        transform.position.z = z;
-    }
-
-    public double getTranslateZ() {
-        return transform.position.z;
-    }
-
-    public Rectangle computeAABB() {
-        if (isRenderable()) {
-            return renderable.computeAABB();
-        }
-        return new Rectangle();
+    
+    public Rectangle getAABB() {
+        return AABB;
     }
 }

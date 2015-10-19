@@ -11,14 +11,8 @@ public class RigidBody extends Body {
     }
 
     public RigidBody(double mass, int id) {
+        super(id);
         this.mass = mass;
-        this.id = id;
-    }
-
-    public RigidBody(double mass, int id, int sink) {
-        super(id, sink);
-        this.mass = mass;
-        this.id = id;
     }
 
     @Override
@@ -27,10 +21,10 @@ public class RigidBody extends Body {
             return null;
         }
 
-        Rectangle bounds = AABB;
-        Rectangle otherBounds = otherBody.AABB;
-        Vector3D diff = (otherBody.transform.localPosition().add(new Vector3D(otherBounds.x, otherBounds.y, 0))).
-                sub(transform.localPosition().add(new Vector3D(bounds.x, bounds.y, 0)));
+        Rectangle bounds = gameobject.getAABB();
+        Rectangle otherBounds = otherBody.gameobject.getAABB();
+        Vector2D diff = (otherBody.transform.localPosition().add(new Vector2D(otherBounds.x, otherBounds.y))).
+                sub(transform.localPosition().add(new Vector2D(bounds.x, bounds.y)));
         double overlapX = (bounds.width / 2) + (otherBounds.width / 2) - Math.abs(diff.x);
         if (overlapX > 0) {
             double overlapY = (bounds.height / 2) + (otherBounds.height / 2) - Math.abs(diff.y);
@@ -54,6 +48,7 @@ public class RigidBody extends Body {
                 }
                 //Collision Event
                 onCollision(otherBody, normal, penetration);
+                
                 if (penetration > 0.65) {
                     for (GameComponent comp : gameobject.getAllComponents()) {
                         if (comp.getClass() != RigidBody.class) {

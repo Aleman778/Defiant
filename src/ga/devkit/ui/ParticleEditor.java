@@ -23,7 +23,7 @@ public class ParticleEditor extends Interface implements Initializable {
     private Canvas preview;
     @FXML
     private TitledPane previewContainer;
-    private ParticleEmitter_Editor emitter;
+    private ParticleEmitterEditor emitter;
     @FXML
     private Slider direction;
     @FXML
@@ -43,8 +43,8 @@ public class ParticleEditor extends Interface implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         color.setValue(Color.BLACK);
-        emitter = new ParticleEmitter_Editor(preview, new Vector2D(), (float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), ParticleEmitter.MODE_CONTINUOUS, 100, color.getValue());
-        new GameObject(preview.getWidth() / 2, preview.getHeight() / 2, 0).addComponent(emitter);
+        emitter = new ParticleEmitterEditor((float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), ParticleEmitter.MODE_CONTINUOUS, 100, color.getValue());
+        GameObject object = new GameObject(preview.getWidth() / 2, preview.getHeight() / 2).addComponent(emitter);
         new AnimationTimer() {
 
             @Override

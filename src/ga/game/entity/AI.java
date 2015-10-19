@@ -39,7 +39,7 @@ public class AI extends GameComponent {
     public void fixedUpdate() {
         super.fixedUpdate();
         timeSinceLastJump++;
-        Vector2D distToPlayer = player.getTransform().toVector2D().sub(gameobject.getTransform().toVector2D());
+        Vector2D distToPlayer = player.getTransform().position.sub(gameobject.getTransform().position);
         if (Math.abs(distToPlayer.x) > FOLLOW_DISTANCE) {
             if (!canMoveInAir) {
                 if (gameobject.getBody().isGrounded()) {

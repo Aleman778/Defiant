@@ -33,19 +33,24 @@ public class PlayerController extends GameComponent {
     
     @Override
     public void start() {
+        transform.pivot = new Vector2D(16, 62);
+        gameobject.setAABB(0, 0, 32, 62);
         body = (RigidBody) getComponent(RigidBody.class);
-        head = new GameObject(0, -21, 0)
-                .addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
+        
+        head = new GameObject(0, -21);
+        head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
+        head.transform.pivot = new Vector2D(9, 16);
+        
+        arm = new GameObject(24, -10);
+        arm.addComponent(new ImageRenderer(weapons.get(0)));
+        arm.transform.pivot = armPivot;
+        
         gameobject.addChild(head);
-        ((ImageRenderer)head.getRenderable()).setPivot(new Vector2D(9, 16));
-        arm = new GameObject(24, -10, 0)
-                .addComponent(new ImageRenderer(weapons.get(0)));
         gameobject.addChild(arm);
-        ((ImageRenderer)arm.getRenderable()).setPivot(armPivot);
     }
 
     @Override
-    public void fixedUpdate() {arm.getTransform().scale = new Vector3D(1, 1, 1);
+    public void fixedUpdate() {
         movement = new Vector2D((Input.getKey(KeyCode.A) == true ? -1 : 0 + (Input.getKey(KeyCode.D) == true ? 1 : 0)) * SPEED,
         ((Input.getKeyPressed(KeyCode.SPACE) == true && body.isGrounded()) ? -1 : 0) * JUMP_HEIGHT);
         if (movement.y != 0) {
@@ -59,23 +64,23 @@ public class PlayerController extends GameComponent {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
         }
         
-        Vector2D diff = Input.getMousePosition().sub(gameobject.transform.localPosition().toVector2D());
+        Vector2D diff = Input.getMousePosition().sub(gameobject.transform.localPosition());
         armRotation = (float) Math.toDegrees(Math.atan(diff.y / diff.x));
         headRotation = armRotation;
         if (diff.x < 0) {
             armRotation = 360 - armRotation;
-            transform.rotation.y = 180;
+            transform.scale.x = -1;
             headRotation = Math.max(armRotation, 360 + HEAD_ROTATION_LIMIT_UPPER);
             headRotation = Math.min(headRotation, 360 + HEAD_ROTATION_LIMIT_LOWER);
         }
         else {
-            arm.getTransform().rotation.x = 0;
-            transform.rotation.y = 0;
+            arm.getTransform().rotation = 0;
+            transform.scale.x = 1;
             headRotation = Math.max(armRotation, HEAD_ROTATION_LIMIT_UPPER);
             headRotation = Math.min(headRotation, HEAD_ROTATION_LIMIT_LOWER);
         }
-        arm.getTransform().rotation.z = armRotation;
-        head.getTransform().rotation.z = headRotation;
+        arm.getTransform().rotation = armRotation;
+        head.getTransform().rotation = headRotation;
         
         if (Input.getScrollPosition() != 0) {
             selectedWeapon += Input.getScrollPosition();
@@ -85,8 +90,8 @@ public class PlayerController extends GameComponent {
             if (selectedWeapon > weapons.size() - 1) {
                 selectedWeapon = 0;
             }
-            ((ImageRenderer) arm.getRenderable()).setImage(weapons.get(selectedWeapon));
-            ((ImageRenderer) arm.getRenderable()).setPivot(armPivot);
+            //((ImageRenderer) arm.getRenderable()).setImage(weapons.get(selectedWeapon));
+            arm.transform.pivot = armPivot;
             Input.scrollPosition = 0;
         }
     }
