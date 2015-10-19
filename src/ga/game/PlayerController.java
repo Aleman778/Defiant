@@ -20,7 +20,7 @@ public class PlayerController extends GameComponent {
     private final double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
-    private Vector2D movement, armPivot = new Vector2D(4, 15);
+    private Vector2D armPivot = new Vector2D(4, 15);
     private GameObject head, arm;
     private float armRotation, headRotation;
     private int selectedWeapon;
@@ -48,16 +48,28 @@ public class PlayerController extends GameComponent {
         gameobject.addChild(head);
         gameobject.addChild(arm);
     }
-
+ 
     @Override
     public void fixedUpdate() {
-        movement = new Vector2D((Input.getKey(KeyCode.A) == true ? -1 : 0 + (Input.getKey(KeyCode.D) == true ? 1 : 0)) * SPEED,
-        ((Input.getKeyPressed(KeyCode.SPACE) == true && body.isGrounded()) ? -1 : 0) * JUMP_HEIGHT);
+        Vector2D movement = new Vector2D();
+        
+        //Walking
+        movement.x += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
+        movement.x += (Input.getKey(KeyCode.D) == true) ? 1 : 0;
+        movement.x *= SPEED;
+        
+        //Jumping
+        if (body.isGrounded()) {
+            movement.y += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
+            movement.y *= JUMP_HEIGHT;
+        }
+        
+        
         if (movement.y != 0) {
             if (getComponent(ParticleEmitter.class) != null) {
-                ((ParticleEmitter)getComponent(ParticleEmitter.class)).fire();
+                ((ParticleEmitter)getComponent(ParticleEmitter.class)).fire(1000);
             }
-            body.setVelocity(body.getVelocity().mul(new Vector2D(1, 0)));
+            body.getVelocity().y = 0;
         }
         body.setVelocity(body.getVelocity().add(movement));
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
@@ -96,10 +108,6 @@ public class PlayerController extends GameComponent {
         }
     }
     
-    public Vector2D getMovement() {
-        return movement;
-    }
-
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
         System.out.println("Enter");
