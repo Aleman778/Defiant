@@ -46,8 +46,8 @@ public class ParticleEmitter extends GameComponent {
         }
     }
     
-    public void fire() {
-        addParticles(10);
+    public void fire(int amount) {
+        addParticles(amount);
     }
     
     private void addParticles(int amount) {

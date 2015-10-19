@@ -37,11 +37,11 @@ public class PlayerController extends GameComponent {
         gameobject.setAABB(0, 0, 32, 62);
         body = (RigidBody) getComponent(RigidBody.class);
         
-        head = new GameObject(0, -21);
+        head = new GameObject(6, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.transform.pivot = new Vector2D(9, 16);
         
-        arm = new GameObject(24, -10);
+        arm = new GameObject(12, 9);
         arm.addComponent(new ImageRenderer(weapons.get(0)));
         arm.transform.pivot = armPivot;
         
@@ -60,33 +60,38 @@ public class PlayerController extends GameComponent {
         
         //Jumping
         if (body.isGrounded()) {
-            movement.y += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
+            movement.y += (Input.getKey(KeyCode.SPACE) == true) ? -1 : 0;
             movement.y *= JUMP_HEIGHT;
         }
         
-        
+        //Apply movement
         if (movement.y != 0) {
             if (getComponent(ParticleEmitter.class) != null) {
                 ((ParticleEmitter)getComponent(ParticleEmitter.class)).fire(1000);
             }
             body.getVelocity().y = 0;
         }
-        body.setVelocity(body.getVelocity().add(movement));
-        if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
+        if (Math.abs(body.getVelocity().x) < body.SPEED_LIMIT) {
+            body.setVelocity(body.getVelocity().add(movement));
+        } else {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
+            body.getVelocity().y += movement.y;
         }
         
+        //Looking
         Vector2D diff = Input.getMousePosition().sub(gameobject.transform.localPosition());
         armRotation = (float) Math.toDegrees(Math.atan(diff.y / diff.x));
         headRotation = armRotation;
         if (diff.x < 0) {
-            armRotation = 360 - armRotation;
+            armRotation = armRotation - 360;
+            arm.transform.scale.x = -1;
             transform.scale.x = -1;
             headRotation = Math.max(armRotation, 360 + HEAD_ROTATION_LIMIT_UPPER);
             headRotation = Math.min(headRotation, 360 + HEAD_ROTATION_LIMIT_LOWER);
         }
         else {
             arm.getTransform().rotation = 0;
+            arm.transform.scale.x = 1;
             transform.scale.x = 1;
             headRotation = Math.max(armRotation, HEAD_ROTATION_LIMIT_UPPER);
             headRotation = Math.min(headRotation, HEAD_ROTATION_LIMIT_LOWER);

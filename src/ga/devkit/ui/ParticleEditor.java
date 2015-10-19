@@ -52,7 +52,7 @@ public class ParticleEditor extends Interface implements Initializable {
                 if (mode.isSelected()) {
                     if (now > lastFire + 1000000000) {
                         lastFire = now;
-                        emitter.fire();
+                        emitter.fire(1);
                     }
                 }
                 emitter.update();

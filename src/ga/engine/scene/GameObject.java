@@ -184,7 +184,7 @@ public class GameObject {
         Vector2D scale = transform.scale;
         g.save();
         Affine affine = new Affine();
-        affine.appendTranslation(position.x, position.y);
+        affine.appendTranslation((int) position.x, (int) position.y);
         affine.appendRotation(rotation, transform.pivot.x, transform.pivot.y);
         affine.appendScale(scale.x, scale.y, transform.pivot.x, transform.pivot.y);
         g.setTransform(affine);
