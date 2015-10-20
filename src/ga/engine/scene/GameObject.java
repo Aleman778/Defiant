@@ -1,6 +1,6 @@
 package ga.engine.scene;
 
-import ga.engine.physics.AABB;
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.game.PlayerController;
@@ -16,7 +16,7 @@ public class GameObject {
 
     public Transform2D transform;
     public GameObject parent = null;
-    private AABB AABB = new AABB();
+    private Rectangle AABB = new Rectangle();
     private final List<GameObject> children;
     private final List<GameComponent> components;
     private Body body = null;
@@ -184,7 +184,7 @@ public class GameObject {
         Vector2D scale = transform.scale;
         g.save();
         Affine affine = new Affine();
-        affine.appendTranslation(position.x, position.y);
+        affine.appendTranslation((int) position.x, (int) position.y);
         affine.appendRotation(rotation, transform.pivot.x, transform.pivot.y);
         affine.appendScale(scale.x, scale.y, transform.pivot.x, transform.pivot.y);
         g.setTransform(affine);
@@ -201,28 +201,12 @@ public class GameObject {
     public Transform2D getTransform() {
         return transform;
     }
-
-    public void setTranslateX(double x) {
-        transform.position.x = x;
-    }
-
-    public double getTranslateX() {
-        return transform.position.x;
-    }
-
-    public void setTranslateY(double y) {
-        transform.position.y = y;
-    }
-
-    public double getTranslateY() {
-        return transform.position.y;
-    }
-
-    public void setAABB(double x, double y, double w, double h) {
-        AABB = new AABB(x, y, w, h);
+    
+    public void setAABB(int x, int y, int w, int h) {
+        AABB = new Rectangle(x, y, w, h);
     }
     
-    public AABB getAABB() {
+    public Rectangle getAABB() {
         return AABB;
     }
 }

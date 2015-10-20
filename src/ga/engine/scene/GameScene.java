@@ -1,5 +1,6 @@
 package ga.engine.scene;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.AABB;
@@ -111,7 +112,6 @@ public final class GameScene {
     }
     
     public void render() {
-        offset += 1;
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         root.render(g);
         renderAABB();
@@ -126,9 +126,9 @@ public final class GameScene {
         Iterator<GameObject> it = getAllGameObjects().iterator();
         while (it.hasNext()) {
             GameObject object = it.next();
-            AABB aabb = object.getAABB();
+            Rectangle aabb = object.getAABB();
             Vector2D position = object.getTransform().localPosition();
-            g.fillRect(position.x + aabb.getMinX(), position.y + aabb.getMinY(), aabb.getWidth(), aabb.getHeight());
+            g.fillRect(position.x + aabb.x, position.y + aabb.y, aabb.width, aabb.height);
         }
     }
 }

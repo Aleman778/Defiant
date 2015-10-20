@@ -1,12 +1,11 @@
 package ga.devkit.ui;
 
 import ga.engine.rendering.ParticleEmitter;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
 public class ParticleEmitterEditor extends ParticleEmitter {
 
-    public ParticleEmitterEditor(Canvas canvas, float direction, float spread, float size, int mode, float life, Color color) {
+    public ParticleEmitterEditor(float direction, float spread, float size, int mode, float life, Color color) {
         super(direction, spread, size, mode, life, color);
     }
 

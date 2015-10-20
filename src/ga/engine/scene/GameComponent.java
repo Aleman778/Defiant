@@ -24,8 +24,7 @@ public abstract class GameComponent {
     public List<GameComponent> getAllComponents() {
         return gameobject.getAllComponents();
     }
-    
-    
+     
     //EVENTS
     public void awoke() {}
     public void start() {}

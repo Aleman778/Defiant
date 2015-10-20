@@ -1,12 +1,10 @@
 package ga.engine.rendering;
 
-import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
 import java.util.HashSet;
 import java.util.Iterator;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 
 public class ParticleEmitter extends GameComponent {
@@ -42,32 +40,23 @@ public class ParticleEmitter extends GameComponent {
         }
     }
     
-    public void fire() {
-        addParticles(10);
+    public void fire(int amount) {
+        addParticles(amount);
     }
     
     private void addParticles(int amount) {
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
-//            particles.add(new Particle(gameobject.getTransform().localPosition(),
-//                    new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))),
-//                    size, (int) ((life - 100) * Math.random() + 100))
-//            );
+            particles.add(new Particle(gameobject.getTransform().localPosition(), new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))), size, (int) ((life - 100) * Math.random() + 100)));
         }
     }
 
     @Override
     public void render(GraphicsContext g) {
-        g.getCanvas().setBlendMode(BlendMode.ADD);
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
             Particle p = it.next();
             p.render(g);
         }
-        g.getCanvas().setBlendMode(null);
-    }
-    
-    public Rectangle computeAABB() {
-        return new Rectangle();
     }
 }

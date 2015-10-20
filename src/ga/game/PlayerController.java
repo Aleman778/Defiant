@@ -50,7 +50,7 @@ public class PlayerController extends GameComponent {
         gameobject.addChild(arm);
         
     }
-
+ 
     @Override
     public void fixedUpdate() {
         //Walking
