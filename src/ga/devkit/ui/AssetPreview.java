@@ -5,19 +5,20 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.paint.Color;
+import javafx.scene.canvas.GraphicsContext;
 
 public class AssetPreview extends Interface implements Initializable {
     
+    public GraphicsContext g = null;
     @FXML
     public Canvas canvas;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        canvas.setWidth(64);
-        canvas.setHeight(64);
-        canvas.getGraphicsContext2D().setFill(Color.RED);
-        canvas.getGraphicsContext2D().fillRect(0, 0, 64, 64);
+        g = canvas.getGraphicsContext2D();
     }
     
+    public boolean isReady() {
+        return (g != null);
+    }
 }

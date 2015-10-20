@@ -20,8 +20,8 @@ public class ProjectView extends Interface implements Initializable {
     public AssetPreview preview;
     
     public ProjectView() {
-        folder = new FolderView();
         preview = new AssetPreview();
+        folder = new FolderView(preview);
     }
     
     @Override

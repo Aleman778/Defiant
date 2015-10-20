@@ -119,7 +119,7 @@ public class LevelEditor extends Interface implements Initializable {
                 File file = event.getDragboard().getFiles().get(0);
                 if (file.exists()) {
                     String ext = Core.getExtension(file.getName());
-                    event.acceptTransferModes(TransferMode.COPY);
+                    event.acceptTransferModes(TransferMode.MOVE);
                     if (ext.equals("object")) {
                         System.out.println("Object!?!?!??");
                     }
