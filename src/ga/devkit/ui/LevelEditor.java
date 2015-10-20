@@ -2,6 +2,7 @@ package ga.devkit.ui;
 
 import ga.devkit.editor.EditorObject;
 import ga.engine.scene.GameObject;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -10,16 +11,18 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class LevelEditor extends Interface implements Initializable {
 
     @FXML
-    public Canvas grid;
-    public Group content;
-    public AnchorPane canvas;
+    public Canvas canvas;
+    public AnchorPane pane;
     
     private GraphicsContext g;
     private int width, height;
@@ -36,25 +39,24 @@ public class LevelEditor extends Interface implements Initializable {
         this.rootObject = new EditorObject();
         this.selectedObject = null;
     }
-
-    public void updateCanvas() {
-        grid.setWidth(width);
-        grid.setHeight(height);
-        if (showGrid) {
-            g.setFill(new Color(0.0, 0.0, 0.0, 0.2));
-            for (int i = 1; i < width / tileSize; i++) {
-                g.fillRect(i * tileSize, 0, 1, height);
-            }
-            for (int j = 1; j < height / tileSize; j++) {
-                g.fillRect(0, j * tileSize, width, 1);
-            }
-        }
-    }
     
     public void render() {
-        content.getChildren().clear();
-        for (GameObject object: rootObject.getChildren()) {
-            //((EditorObject) object).render(content);
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        g.clearRect(0, 0, width, height);
+        rootObject.render(g);
+        
+        if (showGrid)
+            drawGrid();
+    }
+    
+    private void drawGrid() {
+        g.setFill(new Color(0.0, 0.0, 0.0, 0.1));
+        for (int i = 1; i < width / tileSize; i++) {
+            g.fillRect(i * tileSize, 0, 1, height);
+        }
+        for (int j = 1; j < height / tileSize; j++) {
+            g.fillRect(0, j * tileSize, width, 1);
         }
     }
     
@@ -68,7 +70,7 @@ public class LevelEditor extends Interface implements Initializable {
 
     public void setWidth(int width) {
         this.width = width / tileSize * tileSize;
-        updateCanvas();
+        render();
     }
 
     public int getHeight() {
@@ -77,13 +79,13 @@ public class LevelEditor extends Interface implements Initializable {
 
     public void setHeight(int height) {
         this.height = height / tileSize * tileSize;
-        updateCanvas();
+        render();
     }
     
     public void setSize(int width, int height) {
         this.width = width / tileSize * tileSize;
         this.height = height / tileSize * tileSize;
-        updateCanvas();
+        render();
     }
 
     public int getTileSize() {
@@ -94,31 +96,49 @@ public class LevelEditor extends Interface implements Initializable {
         this.tileSize = tileSize;
         width = width / this.tileSize * this.tileSize;
         height = height / this.tileSize * this.tileSize;
-        updateCanvas();
+        render();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        g = grid.getGraphicsContext2D();
+        g = canvas.getGraphicsContext2D();
         setSize(2000, 2000);
+        render();
         
-        canvas.setOnMousePressed((MouseEvent event) -> {
-            selectedObject = new EditorObject(event.getX(), event.getY(), 0);
-            Node node = selectedObject.getNode();
-            node.setTranslateX(selectedObject.getTranslateX());
-            node.setTranslateY(selectedObject.getTranslateY());
-            canvas.getChildren().add(selectedObject.getNode());
+        pane.setOnMousePressed((MouseEvent event) -> {
+            
         });
-        canvas.setOnMouseDragged((MouseEvent event) -> {
-            Node node = selectedObject.getNode();
-            node.setTranslateX(selectedObject.getTranslateX() + event.getX() - selectedObject.getTranslateX());
-            node.setTranslateY(selectedObject.getTranslateY() + event.getY() - selectedObject.getTranslateY());
+        pane.setOnMouseDragged((MouseEvent event) -> {
+            
         });
-        canvas.setOnMouseReleased((MouseEvent event) -> {
-            rootObject.addChild(new EditorObject((int) event.getX() / tileSize * tileSize, (int) event.getY() / tileSize * tileSize, 0));
-            canvas.getChildren().remove(selectedObject.getNode());
-            selectedObject = null;
-            render();
+        pane.setOnMouseReleased((MouseEvent event) -> {
+            
         });
+        pane.setOnDragOver((DragEvent event) -> {
+            if (event.getDragboard().hasContent(DataFormat.FILES)) {
+                File file = event.getDragboard().getFiles().get(0);
+                if (file.exists()) {
+                    String ext = Core.getExtension(file.getName());
+                    event.acceptTransferModes(TransferMode.COPY);
+                    if (ext.equals("object")) {
+                        System.out.println("Object!?!?!??");
+                    }
+                }
+            } else if (event.getDragboard().hasContent(DataFormat.PLAIN_TEXT)) {
+                
+            }
+        });
+        pane.setOnDragDropped((DragEvent event) -> {
+            if (event.isAccepted()) {
+                
+            }
+        });
+    }
+    
+    private String getExtension(String filename) {
+        int index = filename.lastIndexOf(".");
+        if (index < 0)
+            return "";
+        return filename.substring(index + 1);
     }
 }

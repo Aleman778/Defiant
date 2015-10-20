@@ -16,7 +16,6 @@ public class Core extends Interface implements Initializable {
     public SplitPane rightContent;
     public SplitPane bottomContent;
     
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Level Editor
@@ -42,5 +41,19 @@ public class Core extends Interface implements Initializable {
     @FXML
     public void exitDevkit() {
         Application.setDevmode(false);
+    }
+    
+    public static String getExtension(String filename) {
+        int index = filename.lastIndexOf(".");
+        if (index < 0)
+            return "";
+        return filename.substring(index + 1);
+    }
+    
+    public static String getFilename(String filename) {
+        int index = filename.lastIndexOf(".");
+        if (index < 0)
+            return filename;
+        return filename.substring(0, index);
     }
 }

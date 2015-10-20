@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,6 +42,7 @@ public class ProjectView extends Interface implements Initializable {
     
     public void refreshTree() {
         TreeItem<String> root = new TreeItem<>("res");
+        root.setExpanded(true);
         List<File> folders = findFolders(new ArrayList<>(), root, new File("res"));
         tree.setRoot(root);
     }
@@ -55,6 +55,7 @@ public class ProjectView extends Interface implements Initializable {
         for (File f: files) {
             if (f.isDirectory()) {
                 TreeItem<String> i = new TreeItem<>(f.getName());
+                i.setExpanded(true);
                 findFolders(result, i, f);
                 item.getChildren().add(i);
                 result.add(f);
