@@ -71,14 +71,6 @@ public class Application extends javafx.application.Application {
         return window.getHeight();
     }
     
-    public static double getWidth() {
-        return window.getWidth();
-    }
-    
-    public static double getHeight() {
-        return window.getHeight();
-    }
-    
     public static void setDevmode(boolean enable) {
         devmode = enable;
         if (devmode)
