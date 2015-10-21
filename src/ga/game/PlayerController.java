@@ -32,8 +32,8 @@ public class PlayerController extends GameComponent {
     
     @Override
     public void start() {
-        gameobject.setAABB(0, 0, 32, 62);
-        transform.pivot = new Vector2D(16, 62);
+        gameobject.setAABB(0, 0, 32, 58);
+        transform.pivot = new Vector2D(16, 58);
                 
         body = (RigidBody) getComponent(RigidBody.class);
         head = new GameObject(7, 2);

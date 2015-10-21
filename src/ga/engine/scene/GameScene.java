@@ -46,6 +46,15 @@ public final class GameScene {
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         
+        GameObject box = new GameObject(320, 320)
+                .addComponent(new ImageRenderer("textures/Jordlabb.png"));
+        box.getTransform().scale = new Vector2D(10, 2);
+        box.getTransform().pivot = new Vector2D(0, 0);
+        box.setAABB(0, 0, 320, 64);
+        RigidBody body2 = new RigidBody(0);
+        box.addComponent(body2);
+        root.addChild(box);
+        
         GameObject player = new GameObject(320, 0)
                 .addComponent(new ImageRenderer("textures/player/Red_Player_No_Head.png"))
                 .addComponent(new PlayerController())
@@ -55,15 +64,6 @@ public final class GameScene {
         body.setSoftness(0);
         player.addComponent(body);
         root.addChild(player);
-        
-        GameObject box = new GameObject(320, 320)
-                .addComponent(new ImageRenderer("textures/Jordlabb.png"));
-        box.getTransform().scale = new Vector2D(10, 2);
-        box.getTransform().pivot = new Vector2D(0, 0);
-        box.setAABB(0, 0, 320, 64);
-        RigidBody body2 = new RigidBody(0);
-        box.addComponent(body2);
-        root.addChild(box);
 //        
 //        GameObject ant = new GameObject(700, 100)
 //                .addComponent(new ImageRenderer("textures/myr.png"));
