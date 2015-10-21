@@ -44,21 +44,34 @@ public class RigidBody extends Body {
             return null;
         }
 
-        double overlapX = 0, overlapY = 0;
-        if (xMax > otherX) {
-            overlapX = xMax - otherX;
+        Vector2D diff = (otherBody.transform.localPosition().add(new Vector2D(bounds.width / 2, bounds.y / 2))).sub(transform.localPosition().add(new Vector2D(otherBounds.width / 2, otherBounds.y / 2)));
+        double overlapX = 0, overlapX2 = 0, overlapY = 0, overlapY2 = 0;
+
+        overlapX = xMax - otherX;
+        overlapX2 = otherXMax - x;
+
+        overlapY = yMax - otherY;
+        overlapY2 = otherYMax - y;
+
+        if (overlapX < 0) {
+            overlapX = 10000;
         }
-        if (x < otherXMax && overlapX == 0) {
-            overlapX = x - otherXMax;
+        if (overlapX2 < 0) {
+            overlapX2 = 10000;
         }
-        if (yMax > otherY) {
-            overlapY = yMax - otherY;
+        if (overlapY < 0) {
+            overlapY = 10000;
         }
-        if (y < otherYMax && overlapY == 0) {
-            overlapY = y - otherYMax;
+        if (overlapY2 < 0) {
+            overlapY2 = 10000;
+        }
+        if (overlapX2 < overlapX) {
+            overlapX = overlapX2;
+        }
+        if (overlapY2 < overlapY) {
+            overlapY = overlapY2;
         }
 
-        Vector2D diff = (otherBody.transform.localPosition()).sub(transform.localPosition());
         Vector2D normal;
         double penetration;
         if (overlapX < overlapY) {
@@ -118,6 +131,10 @@ public class RigidBody extends Body {
                 }
                 Vector2D impulseVector = normal.mul(impulse);
                 double totalMass = mass + body.mass;
+                if (impulseVector.normalize().x == -1 ||impulseVector.normalize().y == -1) {
+                    velocity = velocity.add(impulseVector.mul(mass / totalMass));
+                    body.velocity = body.velocity.sub(impulseVector.mul(body.mass / totalMass));
+                }
                 velocity = velocity.sub(impulseVector.mul(mass / totalMass));
                 body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
 
