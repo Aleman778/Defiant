@@ -38,6 +38,14 @@ public abstract class Body extends GameComponent {
     public Vector2D getVelocity() {
         return velocity;
     }
+
+    public double getFriction() {
+        return friction;
+    }
+
+    public void setFriction(double friction) {
+        this.friction = friction;
+    }
     
     public void setSoftness(double softness) {
         this.softness = softness;
