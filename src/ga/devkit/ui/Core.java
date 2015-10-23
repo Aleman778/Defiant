@@ -32,7 +32,9 @@ public class Core extends Interface implements Initializable {
         ProjectView project = new ProjectView();
         project.load();
         bottomContent.getItems().add(project.root);
+        SplitPane.setResizableWithParent(project.root, false);
         bottomContent.getItems().add(project.folder.root);
+        SplitPane.setResizableWithParent(project.folder.root, false);
         bottomContent.getItems().add(project.preview.root);
         bottomContent.setDividerPositions(0.2, 0.7);
         SplitPane.setResizableWithParent(project.root, false);
