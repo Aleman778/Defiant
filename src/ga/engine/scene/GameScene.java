@@ -1,6 +1,7 @@
 package ga.engine.scene;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.AABB;
@@ -9,6 +10,7 @@ import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
+import ga.engine.rendering.SpriteRenderer;
 import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,9 +58,10 @@ public final class GameScene {
         root.addChild(box);
         
         GameObject player = new GameObject(320, 0)
-                .addComponent(new ImageRenderer("textures/player/Red_Player_No_Head.png"))
+                .addComponent(new SpriteRenderer("textures/player/Red_Player_No_Head.png", 32, 64))
                 .addComponent(new PlayerController())
-                .addComponent(new ParticleEmitter(90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN));
+                .addComponent(new ParticleEmitter(90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN))
+                .addComponent(new AnimationController());
         RigidBody body = new RigidBody(1.25, 1);
         body.setID(2);
         body.setSoftness(0);

@@ -1,10 +1,13 @@
 package ga.game;
 
+import ga.engine.animation.Animation;
+import ga.engine.animation.AnimationController;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.SpriteRenderer;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.HashMap;
@@ -23,6 +26,8 @@ public class PlayerController extends GameComponent {
     private Vector2D armPivot;
     private GameObject head, arm;
     private ImageRenderer armRenderable;
+    private SpriteRenderer renderable;
+    private AnimationController AC;
     private HashMap<Integer, Image> weapons = new HashMap<Integer, Image>() {
         {
             put(0, new Image("textures/player/Arm_Med_vapen1.png"));
@@ -49,6 +54,27 @@ public class PlayerController extends GameComponent {
         gameobject.addChild(head);
         gameobject.addChild(arm);
         
+        renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
+        AC = (AnimationController) getComponent(AnimationController.class);
+        Animation idleAnim = new Animation(1) {
+            
+            @Override
+            public void animate(int frame) {
+                renderable.setOffsetX(0);
+                renderable.setOffsetY(0);
+            }
+        };
+        Animation walkAnim = new Animation(4, 0.25) {
+            
+            @Override
+            public void animate(int frame) {
+                renderable.setOffsetX(32 * frame);
+                renderable.setOffsetY(0);
+                System.out.println(frame);
+            }
+        };
+        AC.addAnimation("idle", idleAnim);
+        AC.addAnimation("walking", walkAnim);
     }
  
     @Override
@@ -74,6 +100,13 @@ public class PlayerController extends GameComponent {
         } else {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
             body.getVelocity().y += movement.y;
+        }
+        
+        //Set animation state
+        if (Math.abs(body.getVelocity().x) < 0.5) {
+            AC.setState("idle");
+        } else {
+            AC.setState("walking");
         }
         
         //Looking around
