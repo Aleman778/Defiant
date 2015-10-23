@@ -89,6 +89,9 @@ public class RigidBody extends Body {
             }
             penetration = overlapY;
         }
+        if (normal.x != -1 && otherBody.velocity.sub(velocity).dot(normal) > 0) {
+            return null;
+        }
         //Collision Event
         onCollision(otherBody, normal, penetration);
         return normal;
@@ -131,7 +134,7 @@ public class RigidBody extends Body {
                 }
                 Vector2D impulseVector = normal.mul(impulse);
                 double totalMass = mass + body.mass;
-                if (impulseVector.normalize().x == -1 ||impulseVector.normalize().y == -1) {
+                if (impulseVector.normalize().x == -1 || impulseVector.normalize().y == -1) {
                     velocity = velocity.add(impulseVector.mul(mass / totalMass));
                     body.velocity = body.velocity.sub(impulseVector.mul(body.mass / totalMass));
                 }
