@@ -59,7 +59,6 @@ public final class GameScene {
         GameObject player = new GameObject(320, 0)
                 .addComponent(new SpriteRenderer("textures/player/Red_Player_No_Head.png", 32, 64))
                 .addComponent(new PlayerController())
-                .addComponent(new ParticleEmitter(90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN))
                 .addComponent(new AnimationController());
         RigidBody body = new RigidBody(1.25, 1);
         body.setID(2);
