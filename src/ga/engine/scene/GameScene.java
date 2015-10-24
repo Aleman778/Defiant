@@ -4,7 +4,6 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
-import ga.engine.physics.AABB;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
@@ -45,18 +44,18 @@ public final class GameScene {
         canvas = new Canvas(Application.getWidth(), Application.getHeight());
         g = canvas.getGraphicsContext2D();
         group.getChildren().add(canvas);
-        
+
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
-        
-        GameObject box = new GameObject(320, 320)
-                .addComponent(new ImageRenderer("textures/Jordlabb.png"));
-        box.getTransform().scale = new Vector2D(10, 2);
-        box.getTransform().pivot = new Vector2D(0, 0);
-        box.setAABB(0, 0, 320, 64);
-        RigidBody body2 = new RigidBody(0);
-        box.addComponent(body2);
-        root.addChild(box);
-        
+        for (int i = 0; i < 320; i += 32) {
+            GameObject box = new GameObject(320 + i, 320)
+                    .addComponent(new ImageRenderer("textures/Jordlabb.png"));
+            box.getTransform().pivot = new Vector2D(0, 0);
+            box.setAABB(0, 0, 32, 32);
+            RigidBody body2 = new RigidBody(0);
+            box.addComponent(body2);
+            root.addChild(box);
+        }
+
         GameObject player = new GameObject(320, 0)
                 .addComponent(new SpriteRenderer("textures/player/Red_Player_No_Head.png", 32, 64))
                 .addComponent(new PlayerController())
@@ -80,32 +79,34 @@ public final class GameScene {
 //        spider.addComponent(new AI(this, 0.3, 5));
 //        root.addChild(spider);
     }
-    
+
     public javafx.scene.Scene get() {
         return scene;
     }
-    
+
     public List<GameObject> getAllGameObjects() {
         return root.getGameObjects(new ArrayList<>());
     }
-    
+
     public void setWidth(double width) {
         canvas.setWidth(width);
     }
-    
+
     public void setHeight(double height) {
-        canvas.setHeight(height);        
+        canvas.setHeight(height);
     }
-    
+
     public void update() {
         root.fixedUpdate();
         for (GameObject object : getAllGameObjects()) {
-            if (!object.isBody())
+            if (!object.isBody()) {
                 continue;
+            }
             Set<Body> retrievedBodies = new HashSet<>();
-            for (GameObject otherObjects: getAllGameObjects()) {
-                if (object.equals(otherObjects) || !otherObjects.isBody())
+            for (GameObject otherObjects : getAllGameObjects()) {
+                if (object.equals(otherObjects) || !otherObjects.isBody()) {
                     continue;
+                }
                 retrievedBodies.add(otherObjects.getBody());
             }
             object.physicsUpdate(retrievedBodies);
@@ -113,16 +114,16 @@ public final class GameScene {
         root.update();
         root.lateUpdate();
     }
-    
+
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         root.render(g);
         renderAABB();
-        
+
         //Clear Inputs
         input.clear();
     }
-    
+
     private void renderAABB() {
         g.setFill(new Color(1.0, 0.0, 0.0, 0.3));
         g.setStroke(new Color(0.0, 1.0, 0.0, 1.0));
