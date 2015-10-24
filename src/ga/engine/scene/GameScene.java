@@ -65,6 +65,7 @@ public final class GameScene {
         body.setID(2);
         body.setSoftness(0);
         player.addComponent(body);
+        ((PlayerController)player.getComponent(PlayerController.class)).initParticles();
         root.addChild(player);
 //        
 //        GameObject ant = new GameObject(700, 100)

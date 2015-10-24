@@ -8,14 +8,16 @@ import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.SpriteRenderer;
+import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class PlayerController extends GameComponent {
-    
+
     private final double SPEED = 0.2;
     private final double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
@@ -34,23 +36,24 @@ public class PlayerController extends GameComponent {
             put(1, new Image("textures/player/Arm_Med_vapen2.png"));
         }
     };
-    
+    private ParticleEmitter jumpEmitter;
+
     @Override
     public void start() {
         gameobject.setAABB(0, 0, 32, 58);
         transform.pivot = new Vector2D(16, 58);
-                
+
         body = (RigidBody) getComponent(RigidBody.class);
         head = new GameObject(7, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.getTransform().pivot = new Vector2D(9, 16);
-        
+
         arm = new GameObject(12, 10);
         arm.addComponent(new ImageRenderer(weapons.get(0)));
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         armRenderable = (ImageRenderer) arm.getComponent(ImageRenderer.class);
-        
+
         gameobject.addChild(head);
         gameobject.addChild(arm);
         
@@ -76,7 +79,7 @@ public class PlayerController extends GameComponent {
         AC.addAnimation("idle", idleAnim);
         AC.addAnimation("walking", walkAnim);
     }
- 
+
     @Override
     public void fixedUpdate() {
         //Walking
@@ -84,16 +87,17 @@ public class PlayerController extends GameComponent {
         movement.x += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
         movement.x += (Input.getKey(KeyCode.D) == true) ? 1 : 0;
         movement.x *= SPEED;
-        
+
         //Jumping
         if (body.isGrounded()) {
             movement.y += (Input.getKey(KeyCode.SPACE) == true) ? -1 : 0;
             movement.y *= JUMP_HEIGHT;
-        } 
-        
+        }
+
         //Apply velocity
         if (movement.y != 0) {
             body.setVelocity(body.getVelocity().mul(new Vector2D(1, 0)));
+            jumpEmitter.fire(10);
         }
         if (Math.abs(body.getVelocity().add(movement).x) < body.SPEED_LIMIT) {
             body.setVelocity(body.getVelocity().add(movement));
@@ -121,8 +125,7 @@ public class PlayerController extends GameComponent {
             transform.scale.x = -1;
             headRotation = Math.min(armRotation, -HEAD_ROTATION_LIMIT_UPPER - 360);
             headRotation = Math.max(headRotation, -HEAD_ROTATION_LIMIT_LOWER - 360);
-        }
-        else {
+        } else {
             arm.transform.rotation = 0;
             arm.transform.scale.x = 1;
             head.transform.scale.x = 1;
@@ -132,7 +135,7 @@ public class PlayerController extends GameComponent {
         }
         arm.getTransform().rotation = armRotation;
         head.getTransform().rotation = headRotation;
-        
+
         //Weapon Select
         if (Input.getScrollPosition() != 0) {
             selectedWeapon += Input.getScrollPosition();
@@ -151,5 +154,11 @@ public class PlayerController extends GameComponent {
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
         System.out.println("Enter");
+    }
+
+    public void initParticles() {
+        jumpEmitter = new ParticleEmitter(90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN);
+        gameobject.addComponent(jumpEmitter);
+        jumpEmitter.object.transform.position = new Vector2D(16, 50);
     }
 }
