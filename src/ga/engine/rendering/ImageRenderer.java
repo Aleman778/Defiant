@@ -23,6 +23,10 @@ public class ImageRenderer extends GameComponent {
     public void setImage(String path) {
         this.image = new Image(path);
     }
+    
+    public Image getImage() {
+        return image;
+    }
 
     @Override
     public void render(GraphicsContext g) {
