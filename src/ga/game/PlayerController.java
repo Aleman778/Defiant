@@ -157,7 +157,7 @@ public class PlayerController extends GameComponent {
     }
 
     public void initParticles() {
-        jumpEmitter = new ParticleEmitter(90, 90, 10, ParticleEmitter.MODE_SINGLE, 10, Color.BROWN);
+        jumpEmitter = new ParticleEmitter(-10, 45, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
         gameobject.addComponent(jumpEmitter);
         jumpEmitter.object.transform.position = new Vector2D(16, 50);
     }

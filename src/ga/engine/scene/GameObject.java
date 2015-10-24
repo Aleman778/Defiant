@@ -3,6 +3,7 @@ package ga.engine.scene;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
+import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -155,6 +156,10 @@ public class GameObject {
         }
         if (!colliding) {
             body.setGrounded(false);
+        }
+        
+        if (getComponent(ParticleEmitter.class) != null) {
+            ((ParticleEmitter)getComponent(ParticleEmitter.class)).physicsUpdate(retrievedBodies);
         }
     }
 
