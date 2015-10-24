@@ -12,7 +12,7 @@ import javafx.scene.transform.Affine;
 public class ParticleEmitter extends GameComponent {
 
     private final HashSet<Particle> particles;
-    public final static int MODE_CONTINUOUS = 0, MODE_SINGLE = 1;
+    public final static int MODE_CONTINUOUS = 0, MODE_SINGLE = 1, MODE_CONTINUOUS_MIRRORED = 2, MODE_SINGLE_MIRRORED = 3;
     protected Color color;
     protected int mode;
     protected float life, direction, spread, size;
@@ -33,8 +33,16 @@ public class ParticleEmitter extends GameComponent {
     @Override
     public void update() {
         super.update();
-        if (mode == MODE_CONTINUOUS) {
-            addParticles(1);
+        switch (mode) {
+            case MODE_CONTINUOUS:
+                addParticles(1);
+                break;
+            case MODE_CONTINUOUS_MIRRORED:
+                addParticles(1);
+                direction = 180 - direction;
+                addParticles(1);
+                direction = 0 + direction;
+                break;
         }
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
@@ -46,8 +54,8 @@ public class ParticleEmitter extends GameComponent {
     }
     
     public void fire(int amount) {
-        addParticles(amount);
-    }
+            addParticles(amount);
+        }
     
     private void addParticles(int amount) {
         for (int i = 0; i < amount; i++) {
