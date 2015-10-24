@@ -36,7 +36,7 @@ public class PlayerController extends GameComponent {
             put(1, new Image("textures/player/Arm_Med_vapen2.png"));
         }
     };
-    private ParticleEmitter jumpEmitter;
+    private ParticleEmitter jumpEmitter, landEmitter;
 
     @Override
     public void start() {
@@ -154,11 +154,22 @@ public class PlayerController extends GameComponent {
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
         System.out.println("Enter");
+        if (body.getMass() == 0 && body.getVelocity().sub(gameobject.getBody().getVelocity()).y > 2 && normal.equals(new Vector2D(0, 1))) {
+            if (body.gameobject.getComponent(ImageRenderer.class) != null) {
+                Image i = ((ImageRenderer)body.gameobject.getComponent(ImageRenderer.class)).getImage();
+                int size = 5;
+                landEmitter.setSprite(ParticleEmitter.cropImage(i, Math.max((int)(Math.random() * i.getWidth() - size), 0), 0, size, size));
+            }
+            landEmitter.fire(10);
+        }
     }
 
     public void initParticles() {
-        jumpEmitter = new ParticleEmitter(-10, 45, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
+        jumpEmitter = new ParticleEmitter(90, 180, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
+        landEmitter = new ParticleEmitter(-10, 45, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BLUE);
         gameobject.addComponent(jumpEmitter);
-        jumpEmitter.object.transform.position = new Vector2D(16, 50);
+        gameobject.addComponent(landEmitter);
+        jumpEmitter.object.transform.position = new Vector2D(16, 45);
+        landEmitter.object.transform.position = new Vector2D(16, 50);
     }
 }
