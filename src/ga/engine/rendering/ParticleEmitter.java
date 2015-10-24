@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
@@ -21,6 +23,7 @@ public class ParticleEmitter extends GameComponent {
     protected float life, direction, spread, size;
     public Vector2D offset = new Vector2D();
     public GameObject object;
+    protected Image sprite;
 
     public ParticleEmitter(float direction, float spread, float size, int mode, float life, Color color) {
         this.mode = mode;
@@ -55,7 +58,7 @@ public class ParticleEmitter extends GameComponent {
             }
         }
     }
-    
+
     public void physicsUpdate(Set<Body> retrievedBodies) {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
@@ -70,7 +73,7 @@ public class ParticleEmitter extends GameComponent {
             }
         }
     }
-    
+
     public void fire(int amount) {
         if (mode == MODE_SINGLE_MIRRORED) {
             addParticles(amount / 2);
@@ -81,11 +84,14 @@ public class ParticleEmitter extends GameComponent {
             addParticles(amount);
         }
     }
-    
+
     private void addParticles(int amount) {
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
             Particle p = new Particle(transform.position.add(object.transform.position), new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))), size, (int) ((life - 100) * Math.random() + 100));
+            if (sprite != null) {
+                p.sprite = sprite;
+            }
             particles.add(p);
         }
     }
@@ -99,5 +105,13 @@ public class ParticleEmitter extends GameComponent {
             Particle p = it.next();
             p.render(g);
         }
+    }
+
+    public static Image cropImage(Image image, int x, int y, int width, int height) {
+        return new WritableImage(image.getPixelReader(), x, y, width, height);
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
     }
 }
