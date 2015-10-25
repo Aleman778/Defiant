@@ -107,16 +107,8 @@ public class FolderView extends Interface implements Initializable {
     public void previewAsset(File file) {
         if (!preview.isReady())
             return;
-        preview.g.clearRect(0, 0, preview.canvas.getWidth(), preview.canvas.getHeight());
         
-        switch (Core.getExtension(file.getName())) {
-            case "png": case "jpg": case "gif":
-                Image image = new Image("file:" + file.getPath());
-                preview.canvas.setWidth(image.getWidth());
-                preview.canvas.setHeight(image.getHeight());
-                preview.g.drawImage(image, 0, 0);
-                break;
-        }
+        preview.refreshFile(file);
     }
     
     @Override
