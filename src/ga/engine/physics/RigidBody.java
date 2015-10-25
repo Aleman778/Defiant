@@ -75,6 +75,9 @@ public class RigidBody extends Body {
         Vector2D normal;
         double penetration;
         if (overlapX < overlapY) {
+            if (overlapY < 1) {
+                return null;
+            }
             if (diff.x < 0) {
                 normal = new Vector2D(-1, 0);
             } else {

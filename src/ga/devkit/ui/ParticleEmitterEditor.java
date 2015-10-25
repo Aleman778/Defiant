@@ -32,4 +32,8 @@ public class ParticleEmitterEditor extends ParticleEmitter {
     public void setSize(float size) {
         this.size = size;
     }
+
+    public void setGravity(double gravity) {
+        this.gravityScale = gravity;
+    }
 }

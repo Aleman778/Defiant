@@ -1,15 +1,19 @@
 package ga.devkit.ui;
 
-import ga.engine.physics.Vector2D;
+import ga.engine.physics.Body;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
@@ -36,15 +40,19 @@ public class ParticleEditor extends Interface implements Initializable {
     private TextField text;
     @FXML
     private CheckBox mode;
+    @FXML
+    private Slider gravity;
 //    @FXML
 //    private Slider life;
     private long lastFire = 0;
+    private GraphicsContext g;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         color.setValue(Color.BLACK);
-        emitter = new ParticleEmitterEditor((float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), ParticleEmitter.MODE_CONTINUOUS, 100, color.getValue());
+        emitter = new ParticleEmitterEditor((float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), ParticleEmitter.MODE_CONTINUOUS, 500, color.getValue());
         GameObject object = new GameObject(preview.getWidth() / 2, preview.getHeight() / 2).addComponent(emitter);
+        g = preview.getGraphicsContext2D();
         new AnimationTimer() {
 
             @Override
@@ -52,10 +60,13 @@ public class ParticleEditor extends Interface implements Initializable {
                 if (mode.isSelected()) {
                     if (now > lastFire + 1000000000) {
                         lastFire = now;
-                        emitter.fire(1);
+                        emitter.fire(20);
                     }
                 }
+                g.clearRect(0, 0, preview.getWidth(), preview.getHeight());
                 emitter.update();
+                emitter.physicsUpdate(new HashSet<>());
+                emitter.render(g);
             }
         }.start();
         direction.valueProperty().addListener((observable, newValue, oldValue) -> {
@@ -65,6 +76,9 @@ public class ParticleEditor extends Interface implements Initializable {
             updatePreview();
         });
         size.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        gravity.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
         color.setOnAction((ActionEvent event) -> {
@@ -85,6 +99,7 @@ public class ParticleEditor extends Interface implements Initializable {
         emitter.setSpread((float) spread.getValue());
         emitter.setDirection((float) direction.getValue());
         emitter.setMode(mode.isSelected() ? 1 : 0);
+        emitter.setGravity((float) gravity.getValue());
 //        emitter.setLife((float) life.getValue());
         String colorString = String.format("#%X", color.getValue().hashCode());
         if (colorString.length() > 7) {

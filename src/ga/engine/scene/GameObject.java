@@ -3,6 +3,7 @@ package ga.engine.scene;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
+import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,13 +27,13 @@ public class GameObject {
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
     }
-    
+
     public GameObject(Transform2D transform) {
         this.transform = new Transform2D(this, transform);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
     }
-    
+
     public GameObject(double x, double y) {
         this.transform = new Transform2D(this, x, y);
         this.children = new ArrayList<>();
@@ -81,7 +82,7 @@ public class GameObject {
         if (parent != null) {
             component.start();
         }
-        
+
         if (component instanceof Body) {
             body = (Body) component;
         }
@@ -156,6 +157,13 @@ public class GameObject {
         if (!colliding) {
             body.setGrounded(false);
         }
+
+        if (getComponent(ParticleEmitter.class) != null) {
+            for (GameComponent emitter : getComponents(ParticleEmitter.class)) {
+                ((ParticleEmitter) emitter).physicsUpdate(retrievedBodies);
+            }
+
+        }
     }
 
     public void update() {
@@ -188,7 +196,7 @@ public class GameObject {
         affine.appendRotation(rotation, transform.pivot.x, transform.pivot.y);
         affine.appendScale(scale.x, scale.y, transform.pivot.x, transform.pivot.y);
         g.setTransform(affine);
-        for (GameComponent component: components) {
+        for (GameComponent component : components) {
             component.render(g);
         }
         g.restore();
@@ -201,11 +209,11 @@ public class GameObject {
     public Transform2D getTransform() {
         return transform;
     }
-    
+
     public void setAABB(int x, int y, int w, int h) {
         AABB = new Rectangle(x, y, w, h);
     }
-    
+
     public Rectangle getAABB() {
         return AABB;
     }
