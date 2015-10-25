@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class AnimationController extends GameComponent {
     
     private final HashMap<String, Animation> animations;
-    private double frame, time;
+    private double frame;
     private String state;
     
     public AnimationController() {
@@ -15,6 +15,9 @@ public class AnimationController extends GameComponent {
     }
     
     public void setState(String state) {
+        if (!this.state.equals(state)) {
+            this.frame = 0;
+        }
         this.state = state;
     }
     

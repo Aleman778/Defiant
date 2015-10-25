@@ -4,7 +4,6 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
-import ga.engine.physics.AABB;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
@@ -32,7 +31,7 @@ public final class GameScene {
     private final Canvas canvas;
     private final GraphicsContext g;
     public static Vector2D gravity = new Vector2D(0, 0.2);
-    private int offset = 0;
+    
     /**
      * Constructs a Scene from filepath scene
      * @param filepath path to xml scene
@@ -50,10 +49,11 @@ public final class GameScene {
         
         GameObject box = new GameObject(320, 320)
                 .addComponent(new ImageRenderer("textures/Jordlabb.png"));
-        box.getTransform().scale = new Vector2D(10, 2);
+        box.getTransform().scale = new Vector2D(10, 1);
         box.getTransform().pivot = new Vector2D(0, 0);
-        box.setAABB(0, 0, 320, 64);
+        box.setAABB(0, 0, 320, 32);
         RigidBody body2 = new RigidBody(0);
+        body2.setFriction(0.2);
         box.addComponent(body2);
         root.addChild(box);
         
@@ -117,7 +117,7 @@ public final class GameScene {
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         root.render(g);
-        renderAABB();
+        //renderAABB();
         
         //Clear Inputs
         input.clear();

@@ -37,8 +37,8 @@ public class PlayerController extends GameComponent {
     
     @Override
     public void start() {
-        gameobject.setAABB(0, 0, 32, 58);
-        transform.pivot = new Vector2D(16, 58);
+        gameobject.setAABB(0, 0, 32, 62);
+        transform.pivot = new Vector2D(16, 62);
                 
         body = (RigidBody) getComponent(RigidBody.class);
         head = new GameObject(7, 2);
@@ -91,6 +91,13 @@ public class PlayerController extends GameComponent {
             movement.y *= JUMP_HEIGHT;
         } 
         
+        //Set animation state
+        if (movement.x == 0) {
+            AC.setState("idle");
+        } else {
+            AC.setState("walking");
+        }
+        
         //Apply velocity
         if (movement.y != 0) {
             body.setVelocity(body.getVelocity().mul(new Vector2D(1, 0)));
@@ -100,13 +107,6 @@ public class PlayerController extends GameComponent {
         } else {
             body.getVelocity().x = Math.signum(body.getVelocity().x) * body.SPEED_LIMIT;
             body.getVelocity().y += movement.y;
-        }
-        
-        //Set animation state
-        if (Math.abs(body.getVelocity().x) < 0.5) {
-            AC.setState("idle");
-        } else {
-            AC.setState("walking");
         }
         
         //Looking around
