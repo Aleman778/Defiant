@@ -40,6 +40,8 @@ public class ParticleEditor extends Interface implements Initializable {
     private TextField text;
     @FXML
     private CheckBox mode;
+    @FXML
+    private Slider gravity;
 //    @FXML
 //    private Slider life;
     private long lastFire = 0;
@@ -76,6 +78,9 @@ public class ParticleEditor extends Interface implements Initializable {
         size.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
+        gravity.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
         color.setOnAction((ActionEvent event) -> {
             updatePreview();
         });
@@ -94,6 +99,7 @@ public class ParticleEditor extends Interface implements Initializable {
         emitter.setSpread((float) spread.getValue());
         emitter.setDirection((float) direction.getValue());
         emitter.setMode(mode.isSelected() ? 1 : 0);
+        emitter.setGravity((float) gravity.getValue());
 //        emitter.setLife((float) life.getValue());
         String colorString = String.format("#%X", color.getValue().hashCode());
         if (colorString.length() > 7) {

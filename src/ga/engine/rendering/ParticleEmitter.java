@@ -24,6 +24,7 @@ public class ParticleEmitter extends GameComponent {
     public Vector2D offset = new Vector2D();
     public GameObject object;
     protected Image sprite;
+    protected double gravityScale = 0.6;
 
     public ParticleEmitter(float direction, float spread, float size, int mode, float life, Color color) {
         this.mode = mode;
@@ -63,7 +64,7 @@ public class ParticleEmitter extends GameComponent {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             if (p.body.getMass() != 0) {
-                p.body.setVelocity(p.body.getVelocity().add(GameScene.gravity.mul(0.6)));
+                p.body.setVelocity(p.body.getVelocity().add(GameScene.gravity.mul(gravityScale)));
                 p.body.transform.position = p.body.transform.position.add(p.body.velocity);
             }
             Iterator<Body> bodyIt = retrievedBodies.iterator();
