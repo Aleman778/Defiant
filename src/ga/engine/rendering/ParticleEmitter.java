@@ -88,7 +88,7 @@ public class ParticleEmitter extends GameComponent {
     private void addParticles(int amount) {
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
-            Particle p = new Particle(transform.position.add(object.transform.position), new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))), size, (int) ((life - 100) * Math.random() + 100));
+            Particle p = new Particle(transform.position.add(object.transform.position), new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))), size, (int) ((life - 100) * Math.random() + 100), color);
             if (sprite != null) {
                 p.sprite = sprite;
             }
