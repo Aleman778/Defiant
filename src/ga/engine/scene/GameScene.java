@@ -57,7 +57,7 @@ public final class GameScene {
         }
 
         GameObject player = new GameObject(320, 0)
-                .addComponent(new SpriteRenderer("textures/player/Red_Player_No_Head.png", 32, 64))
+                .addComponent(new SpriteRenderer("textures/player/Player_Idle.png", 32, 64))
                 .addComponent(new PlayerController())
                 .addComponent(new AnimationController());
         RigidBody body = new RigidBody(1.25, 1);

@@ -11,14 +11,28 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class PlayerController extends GameComponent {
 
-    private final double SPEED = 0.2;
+    private static final List<Image> weapons = new ArrayList<Image>() {
+        {
+            add(new Image("textures/player/Arm_Med_vapen1.png"));
+            add(new Image("textures/player/Arm_Med_vapen2.png"));
+        }
+    };
+    private static final List<Image> playerAnimations = new ArrayList<Image>() {
+        {
+            add(new Image("textures/player/Player_Idle.png"));
+            add(new Image("textures/player/Player_Walking.png"));
+        }
+    };
+    
+    private final double SPEED = 0.1;
     private final double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
@@ -30,12 +44,6 @@ public class PlayerController extends GameComponent {
     private ImageRenderer armRenderable;
     private SpriteRenderer renderable;
     private AnimationController AC;
-    private HashMap<Integer, Image> weapons = new HashMap<Integer, Image>() {
-        {
-            put(0, new Image("textures/player/Arm_Med_vapen1.png"));
-            put(1, new Image("textures/player/Arm_Med_vapen2.png"));
-        }
-    };
     private ParticleEmitter jumpEmitter, landEmitter;
 
     @Override
@@ -59,21 +67,30 @@ public class PlayerController extends GameComponent {
         
         renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
         AC = (AnimationController) getComponent(AnimationController.class);
-        Animation idleAnim = new Animation(1) {
+        Animation idleAnim = new Animation(0) {
             
             @Override
             public void animate(int frame) {
                 renderable.setOffsetX(0);
                 renderable.setOffsetY(0);
+                renderable.setSprite(playerAnimations.get(0));
+                head.getTransform().position.y = 2;
             }
         };
-        Animation walkAnim = new Animation(4, 0.25) {
+        Animation walkAnim = new Animation(20, 0.1) {
             
             @Override
             public void animate(int frame) {
+                setSpeed(Math.abs(body.getVelocity().x) / 3);
                 renderable.setOffsetX(32 * frame);
                 renderable.setOffsetY(0);
-                System.out.println(frame);
+                renderable.setSprite(playerAnimations.get(1));
+                
+                if (frame == 1) {
+                    head.getTransform().position.y = 3;
+                } else {
+                    head.getTransform().position.y = 2;
+                }
             }
         };
         AC.addAnimation("idle", idleAnim);
