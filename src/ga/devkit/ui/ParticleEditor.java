@@ -1,13 +1,11 @@
 package ga.devkit.ui;
 
-import ga.engine.physics.Body;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
+import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,11 +15,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
 
-public class ParticleEditor extends Interface implements Initializable {
+public class ParticleEditor extends Interface implements Initializable, Editor {
     
     @FXML
     private Canvas preview;
@@ -42,11 +41,24 @@ public class ParticleEditor extends Interface implements Initializable {
     private CheckBox mode;
     @FXML
     private Slider gravity;
-//    @FXML
-//    private Slider life;
+
+    private final File file;
     private long lastFire = 0;
     private GraphicsContext g;
+    
+    public ParticleEditor(File file) {
+        this.file = file;
+    }
+    
+    @Override
+    public void save() {
+        
+    }
 
+    @Override
+    public void rightContent(SplitPane sidebar) {
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         color.setValue(Color.BLACK);

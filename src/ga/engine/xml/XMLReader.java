@@ -1,5 +1,6 @@
 package ga.engine.xml;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +152,20 @@ public abstract class XMLReader implements ErrorHandler {
     public void parse(String xmlfile) {
         try {
             parser.parse(getClass().getResource("/" + xmlfile).openStream(), handler);
+        } catch (NullPointerException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * <b>Parse</b><br>
+     * <i>added in version 1.0</i><br><br>
+     * Starts the parsing process and when it is done the next line will be executed.
+     * @param xmlfile The XML document to parse
+     */
+    public void parse(File xmlfile) {
+        try {
+            parser.parse(xmlfile, handler);
         } catch (NullPointerException | SAXException | IOException e) {
             e.printStackTrace();
         }

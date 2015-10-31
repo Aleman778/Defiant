@@ -11,6 +11,7 @@ public class Devkit {
         Core core = new Core();
         core.load();
         scene = new Scene(core.root);
+        scene.getStylesheets().add("ga/devkit/core/Theme.css");
     }
     
     public Scene get() {

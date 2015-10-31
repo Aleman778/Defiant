@@ -1,5 +1,6 @@
 package ga.devkit.ui;
 
+import ga.devkit.editor.Tileset;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -66,30 +67,38 @@ public class FolderView extends Interface implements Initializable {
     }
     
     private void addFile(File file) {
-        Node image = new Rectangle(64, 64, Color.GRAY);
+        Node image = new Rectangle(0, 0);
         switch (Core.getExtension(file.getName())) {
             case "png": case "jpg": case "gif":
                 image = new ImageView("file:" + file.getPath());
                 ((ImageView) image).setViewport(new Rectangle2D(0, 0, 64, 64));
+                break;
+            case "tileset":
+                Tileset tileset = new Tileset(file);
+                image = new ImageView(tileset.getTilesheet());
+                image.setLayoutX(32 - Math.min(tileset.width, 64) / 2);
+                image.setLayoutY(32 - Math.min(tileset.height, 64) / 2);
+                ((ImageView) image).setViewport(new Rectangle2D(0, 0,
+                        Math.min(tileset.width, 64), Math.min(tileset.height, 64)));
                 break;
         }
         Label name = new Label(Core.getFilename(file.getName()));
         name.setMaxWidth(86);
         name.setAlignment(Pos.CENTER);
         VBox box = new VBox(image, name);
-        box.setBackground(new Background(new BackgroundFill(new Color(0.88, 0.88, 0.88, 1.0), new CornerRadii(2), new Insets(4))));
+        box.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), new CornerRadii(2), new Insets(4))));
         box.setPrefWidth(96);
         box.setPrefHeight(96);
         box.setAlignment(Pos.CENTER);
         content.getChildren().add(box);
         box.setOnMousePressed((MouseEvent event) -> {
             for (VBox b: boxes) {
-                b.setBackground(new Background(new BackgroundFill(new Color(0.88, 0.88, 0.88, 1.0), new CornerRadii(2), new Insets(4))));
+                b.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), new CornerRadii(2), new Insets(4))));
                 b.setBorder(Border.EMPTY);
             }
             
-            box.setBackground(new Background(new BackgroundFill(new Color(0.78, 0.78, 0.78, 1.0), new CornerRadii(2), new Insets(4))));
-            box.setBorder(new Border(new BorderStroke(new Color(0.1, 0.6, 0.9, 1.0), BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(2), new Insets(2))));
+            box.setBackground(new Background(new BackgroundFill(new Color(0.28, 0.28, 0.28, 1.0), new CornerRadii(2), new Insets(4))));
+            box.setBorder(new Border(new BorderStroke(new Color(0.1, 0.6, 0.9, 1.0), BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1), new Insets(2))));
             previewAsset(file);
         });
         box.setOnDragDetected((MouseEvent event) -> {

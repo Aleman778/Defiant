@@ -1,67 +1,57 @@
 package ga.devkit.editor;
 
+import com.sun.javafx.geom.Rectangle;
+import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
-import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 
 public class EditorObject extends GameObject {
     
     private static Image NONE_RENDERABLE_IMAGE = new Image("ga/devkit/editor/nonrenderable.png");
-    private Node node = null;
-
-    public EditorObject(Transform2D transform) {
+    private final String name;
+    
+    public EditorObject(String name, Transform2D transform) {
         super(transform);
-        setDefaultNode();
+        this.name = name;
     }
 
-    public EditorObject(double x, double y, double z) {
+    public EditorObject(String name, double x, double y, double z) {
         super(x, y);
-        setDefaultNode();
+        this.name = name;
     }
 
-    public EditorObject() {
+    public EditorObject(String name) {
         super();
-        setDefaultNode();
+        this.name = name;
     }
     
-    private void setNode(Node node) {
-        this.node = node;
-        this.node.setOnMousePressed((MouseEvent event) -> {
-            System.out.println("Pressed on node!");
-        });
-    }
-    
-    private void setDefaultNode() {
-        setNode(new ImageView(NONE_RENDERABLE_IMAGE));
-    }
-    
-    public Node getNode() {
-        return node;
-    }
-
     @Override
-    public void render(GraphicsContext group) {
-//        group.getChildren().add(node);
-//        node.getTransforms().clear();
-//        Vector3D rotation = transform.localRotation();
-//        Vector3D position = transform.localPosition();
-//        Rotate rx = new Rotate(rotation.x, 0, 0, 0, Rotate.X_AXIS);
-//        Rotate ry = new Rotate(rotation.y, 0, 0, 0, Rotate.Y_AXIS);
-//        Rotate rz = new Rotate(rotation.z, 0, 0, 0, Rotate.Z_AXIS);
-//        node.getTransforms().addAll(rx, ry, rz);
-//        node.setTranslateX((int) position.x);
-//        node.setTranslateY((int) position.y);
-//        node.setTranslateZ((int) position.z);
-//        node.setScaleX(transform.scale.x);
-//        node.setScaleY(transform.scale.y);
-//        node.setScaleZ(transform.scale.z);
-//        
-//        for (GameObject child : getChildren()) {
-//            ((EditorObject) child).render(group);
-//        }
+    public void render(GraphicsContext g) {
+        super.render(g);
+    }
+    
+    public void renderAABB(GraphicsContext g) {
+        Vector2D position = transform.localPosition();
+        g.save();
+        Affine affine = new Affine();
+        affine.appendTranslation((int) position.x, (int) position.y);
+        
+        g.setTransform(affine);
+        Rectangle aabb = getAABB();
+        g.setFill(new Color(1.0, 0.0, 0.0, 0.2));
+        g.fillRect(aabb.x, aabb.y, aabb.width, aabb.height);
+        g.restore();
+
+        for (GameObject child : getChildren()) {
+            ((EditorObject) child).renderAABB(g);
+        }
+    }
+    
+    public String getName() {
+        return name;
     }
 }

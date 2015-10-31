@@ -1,13 +1,20 @@
 package ga.devkit.ui;
 
 import ga.engine.core.Application;
+import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 
 public class Core extends Interface implements Initializable {
 
@@ -16,17 +23,11 @@ public class Core extends Interface implements Initializable {
     public SplitPane rightContent;
     public SplitPane bottomContent;
     
+    private HashMap<String, Editor> editors;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //Level Editor
-        LevelEditor editor = new LevelEditor();
-        editor.load();
-        Tab tab = new Tab("Level Editor", editor.root);
-        centerContent.getTabs().add(tab);
-        
-        ParticleEditor particleeditor = new ParticleEditor();
-        particleeditor.load();
-        centerContent.getTabs().add(new Tab("Particle Editor", particleeditor.root));
+        editors = new HashMap<>();
         
         //Project View
         ProjectView project = new ProjectView();
@@ -38,10 +39,95 @@ public class Core extends Interface implements Initializable {
         bottomContent.getItems().add(project.preview.root);
         bottomContent.setDividerPositions(0.2, 0.7);
         SplitPane.setResizableWithParent(project.root, false);
+        
+        //Events
+        centerContent.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) -> {
+            rightContent.getItems().clear();
+            try {
+                editors.get(newValue.getText()).rightContent(rightContent);
+            } catch (Exception e) {
+            }
+        });
+        centerContent.getTabs().addListener((ListChangeListener.Change<? extends Tab> c) -> {
+            c.next();
+            for (Tab tab: c.getRemoved()) {
+                removeEditor(tab.getText());
+            }
+        });
+        centerContent.setOnDragDropped((DragEvent event) -> {
+            if (event.getDragboard().hasContent(DataFormat.FILES)) {
+                File file = event.getDragboard().getFiles().get(0);
+                if (file.exists()) {
+                    openFile(file);
+                }
+            }
+        });
+        centerContent.setOnDragOver((DragEvent event) -> {
+            if (event.getDragboard().hasContent(DataFormat.FILES)) {
+                File file = event.getDragboard().getFiles().get(0);
+                if (file.exists()) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                    event.consume();
+                }
+            }
+        });
+    }
+    
+    public void openFile(File file) {
+        Interface editor;
+        switch (getExtension(file.getName())) {
+            case "scene":
+                editor = new SceneEditor(file);
+                editor.load();
+                addEditor(editor, file.getName());
+                break;
+            case "psystem":
+                editor = new ParticleEditor(file);
+                editor.load();
+                addEditor(editor, file.getName());
+                break;
+            default:
+                System.out.println("DEFAULT");
+                break;
+        }
+    }
+    
+    public void addEditor(Interface editor, String name) {
+        if (!(editor instanceof Editor) || editors.containsKey(name))
+            return;
+        
+        editors.put(name, (Editor) editor);
+        Tab tab = new Tab(name);
+        tab.setContent(editor.root);
+        centerContent.getTabs().add(tab);
+    }
+    
+    public void removeEditor(String name) {
+        editors.remove(name);
     }
     
     @FXML
-    public void exitDevkit() {
+    public void menuitemNew() {
+        System.out.println("New!");
+    }
+    
+    @FXML
+    public void menuitemOpen() {
+        System.out.println("Open!");
+    }
+    
+    @FXML
+    public void menuitemSave() {
+        System.out.println("Save!");
+    }
+    
+    @FXML
+    public void menuitemSaveAll() {
+        System.out.println("Save All!");
+    }
+    
+    @FXML
+    public void menuitemExit() {
         Application.setDevmode(false);
     }
     
