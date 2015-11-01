@@ -11,8 +11,8 @@ import javafx.scene.transform.Affine;
 
 public class EditorObject extends GameObject {
     
-    private static Image NONE_RENDERABLE_IMAGE = new Image("ga/devkit/editor/nonrenderable.png");
-    private final String name;
+    private static final Image NONE_RENDERABLE_IMAGE = new Image("ga/devkit/editor/nonrenderable.png");
+    private String name;
     
     public EditorObject(String name, Transform2D transform) {
         super(transform);
@@ -45,13 +45,13 @@ public class EditorObject extends GameObject {
         g.setFill(new Color(1.0, 0.0, 0.0, 0.2));
         g.fillRect(aabb.x, aabb.y, aabb.width, aabb.height);
         g.restore();
-
-        for (GameObject child : getChildren()) {
-            ((EditorObject) child).renderAABB(g);
-        }
     }
     
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

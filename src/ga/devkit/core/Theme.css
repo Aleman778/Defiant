@@ -267,3 +267,42 @@
     -fx-focus-color: transparent;
     -fx-background-insets: 0, 1, 0, 0;
 }
+
+.scroll-bar {
+    -fx-background-color: #3e3e3e;
+}
+
+.scroll-pane {
+    -fx-background-color: #3e3e3e;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: #3e3e3e;
+}
+
+.scroll-bar .track-background {
+    -fx-background-color: #3e3e3e;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #3e3e3e;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #686868;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal .increment-button , .scroll-bar:horizontal .decrement-button{
+    -fx-background-color: null;
+    -fx-padding: 7 0 7 0;
+}
+.scroll-bar:vertical .increment-button , .scroll-bar:vertical .decrement-button{
+    -fx-background-color: null;
+    -fx-padding: 0 7 0 7;
+}
+
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-background-color: null;
+    -fx-padding: 0;
+}
