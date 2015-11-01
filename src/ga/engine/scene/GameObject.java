@@ -217,4 +217,8 @@ public class GameObject {
     public Rectangle getAABB() {
         return AABB;
     }
+    
+    public Rectangle localAABB() {
+        return new Rectangle((int) transform.position.x + AABB.x, (int) transform.position.y + AABB.y, AABB.width, AABB.height);
+    }
 }
