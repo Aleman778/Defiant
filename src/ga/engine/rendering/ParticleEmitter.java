@@ -94,7 +94,7 @@ public class ParticleEmitter extends GameComponent {
             Particle p = new Particle(transform.position.add(object.transform.position).add(new Vector2D(shape.x, shape.y))
                     .add(pos),
                     new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))),
-                    size, (int) ((life - 100) * Math.random() + 100), color);
+                    size, (int) ((life - 100) * Math.random() + 100), color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1));
             if (sprite != null) {
                 p.sprite = sprite;
             }
