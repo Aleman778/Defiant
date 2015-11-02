@@ -1,5 +1,6 @@
 package ga.engine.rendering;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
@@ -21,10 +22,10 @@ public class ParticleEmitter extends GameComponent {
     protected Color color;
     protected int mode;
     protected float life, direction, spread, size;
-    public Vector2D offset = new Vector2D();
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
+    protected Rectangle shape = new Rectangle(0, 0, 1, 1);
 
     public ParticleEmitter(float direction, float spread, float size, int mode, float life, Color color) {
         this.mode = mode;
@@ -89,7 +90,11 @@ public class ParticleEmitter extends GameComponent {
     private void addParticles(int amount) {
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
-            Particle p = new Particle(transform.position.add(object.transform.position), new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))), size, (int) ((life - 100) * Math.random() + 100), color);
+            Vector2D pos = new Vector2D((Math.random() * shape.width), (Math.random() * shape.height));
+            Particle p = new Particle(transform.position.add(object.transform.position).add(new Vector2D(shape.x, shape.y))
+                    .add(pos),
+                    new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))),
+                    size, (int) ((life - 100) * Math.random() + 100), color);
             if (sprite != null) {
                 p.sprite = sprite;
             }
@@ -114,5 +119,9 @@ public class ParticleEmitter extends GameComponent {
 
     public void setSprite(Image sprite) {
         this.sprite = sprite;
+    }
+
+    public void setShape(Rectangle shape) {
+        this.shape = shape;
     }
 }
