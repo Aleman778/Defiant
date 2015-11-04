@@ -82,6 +82,7 @@ public class PlayerController extends GameComponent {
             @Override
             public void animate(int frame) {
                 setSpeed(Math.abs(body.getVelocity().x) / 3);
+                setSpeed(getSpeed() * body.velocity.normalize().x * transform.scale.x);
                 renderable.setOffsetX(32 * frame);
                 renderable.setOffsetY(0);
                 renderable.setSprite(playerAnimations.get(1));
