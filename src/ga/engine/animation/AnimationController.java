@@ -39,6 +39,9 @@ public class AnimationController extends GameComponent {
         if (frame >= animation.getFrames()) {
             frame = 0;
         }
+        else if (frame < 0) {
+            frame = animation.getFrames() - 1;
+        }
         animation.animate((int) frame);
     }
 }
