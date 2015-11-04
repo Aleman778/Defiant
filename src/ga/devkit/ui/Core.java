@@ -119,11 +119,15 @@ public class Core extends Interface implements Initializable {
     @FXML
     public void menuitemSave() {
         System.out.println("Save!");
+        editors.get(centerContent.getSelectionModel().getSelectedItem().getText()).save();
     }
     
     @FXML
     public void menuitemSaveAll() {
         System.out.println("Save All!");
+        for (Editor e : editors.values()) {
+            e.save();
+        }
     }
     
     @FXML
