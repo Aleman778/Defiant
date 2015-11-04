@@ -183,8 +183,9 @@ public class PlayerController extends GameComponent {
     }
 
     public void initParticles() {
-        jumpEmitter = new ParticleEmitter(90, 180, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
-        landEmitter = new ParticleEmitter(-10, 45, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BLUE);
+       // jumpEmitter = new ParticleEmitter(90, 180, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
+        jumpEmitter = ParticleEmitter.loadXML("TestSystem.psystem");
+        landEmitter = new ParticleEmitter(-10, 45, 10, "MODE_SINGLE_MIRRORED", 10, Color.BLUE);
         gameobject.addComponent(jumpEmitter);
         gameobject.addComponent(landEmitter);
         jumpEmitter.object.transform.position = new Vector2D(16, 45);

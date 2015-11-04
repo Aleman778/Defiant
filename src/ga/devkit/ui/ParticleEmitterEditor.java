@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 
 public class ParticleEmitterEditor extends ParticleEmitter {
 
-    public ParticleEmitterEditor(float direction, float spread, float size, int mode, float life, Color color) {
+    public ParticleEmitterEditor(float direction, float spread, float size, String mode, float life, Color color) {
         super(direction, spread, size, mode, life, color);
     }
 
@@ -13,7 +13,7 @@ public class ParticleEmitterEditor extends ParticleEmitter {
         this.color = color;
     }
 
-    public void setMode(int mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 

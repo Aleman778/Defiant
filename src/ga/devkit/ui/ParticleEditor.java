@@ -1,7 +1,7 @@
 package ga.devkit.ui;
 
-import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
+import ga.engine.xml.XMLWriter;
 import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
+import org.w3c.dom.Element;
 
 public class ParticleEditor extends Interface implements Initializable, Editor {
     
@@ -45,6 +46,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     private final File file;
     private long lastFire = 0;
     private GraphicsContext g;
+    private final XMLWriter writer = new XMLWriter();
     
     public ParticleEditor(File file) {
         this.file = file;
@@ -52,7 +54,14 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     
     @Override
     public void save() {
-        
+        Element root = writer.createElement("particleSystem");
+        writer.createElementValue(root, "direction", String.valueOf((int) direction.getValue()));
+        writer.createElementValue(root, "spread", String.valueOf((int) spread.getValue()));
+        writer.createElementValue(root, "size", String.valueOf((int) size.getValue()));
+     //   writer.createElementValue(root, "life", String.valueOf(life));
+        writer.createElementValue(root, "color", String.format("#%X", color.getValue().hashCode()));
+        writer.createElementValue(root, "mode", mode.isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
+        writer.save(file.getName());
     }
 
     @Override
@@ -61,8 +70,8 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        color.setValue(Color.BLACK);
-        emitter = new ParticleEmitterEditor((float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), ParticleEmitter.MODE_CONTINUOUS, 500, color.getValue());
+        color.setValue(Color.BLUE);
+        emitter = new ParticleEmitterEditor((float) direction.getValue(), (float) spread.getValue(), (float) size.getValue(), "MODE_CONTINUOUS", 500, color.getValue());
         GameObject object = new GameObject(preview.getWidth() / 2, preview.getHeight() / 2).addComponent(emitter);
         g = preview.getGraphicsContext2D();
         new AnimationTimer() {
@@ -110,13 +119,10 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         emitter.setSize((float) size.getValue());
         emitter.setSpread((float) spread.getValue());
         emitter.setDirection((float) direction.getValue());
-        emitter.setMode(mode.isSelected() ? 1 : 0);
+        emitter.setMode(mode.isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         emitter.setGravity((float) gravity.getValue());
 //        emitter.setLife((float) life.getValue());
         String colorString = String.format("#%X", color.getValue().hashCode());
-        if (colorString.length() > 7) {
-            colorString = colorString.substring(0, 7);
-        }
         String modeString = mode.isSelected() ? "ParticleEmitter.MODE_SINGLE" : "ParticleEmitter.MODE_CONTINUOUS";
         text.setText(String.format("new ParticleEmitter(new Vector2D(), %d, %d, %d, %s, %d, Color.web(\"%s\"));", (int) direction.getValue(), (int) spread.getValue(), (int) size.getValue(), modeString, 100, colorString));
     }

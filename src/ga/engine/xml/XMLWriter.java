@@ -37,7 +37,7 @@ public class XMLWriter {
         return result;
     }
     
-    public Element createElement(String element, String value, String... attributes) {
+    public Element createElementValue(String element, String value, String... attributes) {
         Element result = document.createElement(element);
         result.appendChild(document.createTextNode(value));
         for (int i = 1; i < attributes.length; i += 2) {
@@ -56,7 +56,7 @@ public class XMLWriter {
         return result;
     }
     
-    public Element createElement(Element parent, String element, String value, String... attributes) {
+    public Element createElementValue(Element parent, String element, String value, String... attributes) {
         Element result = document.createElement(element);
         result.appendChild(document.createTextNode(value));
         for (int i = 1; i < attributes.length; i += 2) {

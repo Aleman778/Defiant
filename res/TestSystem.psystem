@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<particleSystem>
+    <direction>90</direction>
+    <spread>90</spread>
+    <size>8</size>
+    <color>#E64D4DFF</color>
+    <mode>MODE_SINGLE</mode>
+</particleSystem>
