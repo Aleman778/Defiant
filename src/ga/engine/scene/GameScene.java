@@ -4,11 +4,12 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
+import ga.engine.lighting.AmbientLight;
+import ga.engine.lighting.LightMap;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
-import ga.engine.rendering.ParticleEmitter;
 import ga.engine.rendering.SpriteRenderer;
 import ga.game.PlayerController;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 
 public final class GameScene {
@@ -30,6 +32,7 @@ public final class GameScene {
     private final Input input;
     private final Canvas canvas;
     private final GraphicsContext g;
+    private final LightMap lightmap;
     public static Vector2D gravity = new Vector2D(0, 0.2);
     
     /**
@@ -42,8 +45,12 @@ public final class GameScene {
         root = new GameObject();
         input = new Input(scene);
         canvas = new Canvas(Application.getWidth(), Application.getHeight());
-        g = canvas.getGraphicsContext2D();
+        canvas.setBlendMode(BlendMode.MULTIPLY);
         group.getChildren().add(canvas);
+        lightmap = new LightMap(Application.getWidth(), Application.getHeight());
+        lightmap.setAmbientLight(new AmbientLight(Color.GREEN));
+        group.getChildren().add(lightmap);
+        g = canvas.getGraphicsContext2D();
 
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         for (int i = 0; i < 320; i += 32) {
@@ -90,10 +97,12 @@ public final class GameScene {
 
     public void setWidth(double width) {
         canvas.setWidth(width);
+        lightmap.setWidth(width);
     }
 
     public void setHeight(double height) {
         canvas.setHeight(height);
+        lightmap.setHeight(height);
     }
 
     public void update() {
@@ -117,9 +126,14 @@ public final class GameScene {
 
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        //Render objects
         root.render(g);
-        renderAABB();
-
+        //renderAABB();
+        
+        //Render lightning
+        lightmap.refresh();
+        
         //Clear Inputs
         input.clear();
     }
