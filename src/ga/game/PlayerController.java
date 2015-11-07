@@ -73,7 +73,7 @@ public class PlayerController extends GameComponent {
             public void animate(int frame) {
                 renderable.setOffsetX(0);
                 renderable.setOffsetY(0);
-                renderable.setSprite(playerAnimations.get(2));
+                renderable.setSprite(playerAnimations.get(0));
                 head.getTransform().position.y = 2;
             }
         };
