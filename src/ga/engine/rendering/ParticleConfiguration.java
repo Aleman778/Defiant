@@ -12,6 +12,7 @@ public class ParticleConfiguration {
             put("mode", "MODE_CONTINUOUS");
             put("life", "100");
             put("color", "#0000FFFF");
+            put("gravity", "0.6");            
         }
     };
     

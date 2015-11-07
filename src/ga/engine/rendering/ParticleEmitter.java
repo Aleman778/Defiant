@@ -41,6 +41,11 @@ public class ParticleEmitter extends GameComponent {
         this.particles = new HashSet<>();
         object = new GameObject();
     }
+    
+    public ParticleEmitter() {
+        this.particles = new HashSet<>();
+        object = new GameObject();
+    }
 
     @Override
     public void update() {
@@ -141,6 +146,7 @@ public class ParticleEmitter extends GameComponent {
         spread = Float.parseFloat(config.getValue("spread"));
         size = Float.parseFloat(config.getValue("size"));
         color = Color.web(config.getValue("color"));
+        gravityScale = Float.parseFloat(config.getValue("gravity"));
     }
 
     public static ParticleEmitter loadXML(String filepath) {
@@ -148,6 +154,11 @@ public class ParticleEmitter extends GameComponent {
         ParticleEmitter e = new ParticleEmitter(0, 0, 0, "", 0, Color.BLUE);
         e.setConfig(tempConfig);
         return e;
+    }
+    
+    public static ParticleConfiguration loadXMLConfig(String filepath) {
+        reader.parse(filepath);
+        return tempConfig;
     }
 
     private static final XMLReader reader = new XMLReader() {

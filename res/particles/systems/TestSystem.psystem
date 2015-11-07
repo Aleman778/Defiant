@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
-<psystem>
-    
-</psystem>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<particleSystem>
+    <direction>90</direction>
+    <spread>135</spread>
+    <size>8</size>
+    <color>#B31A1AFF</color>
+    <mode>MODE_SINGLE</mode>
+    <gravity>0.6</gravity>
+</particleSystem>
