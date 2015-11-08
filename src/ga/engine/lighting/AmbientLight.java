@@ -1,19 +1,14 @@
 package ga.engine.lighting;
 
-import ga.engine.physics.Vector2D;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import ga.engine.core.Application;
 
-public class AmbientLight extends Light{
-    
-    private Image lightmap;
-    
-    public AmbientLight(Color color) {
-        this.color = color;
-    }
+public class AmbientLight extends Light {
 
     @Override
-    public Vector2D getLightPosition() {
-        return new Vector2D(0, 0);
+    public void refresh() {
+        lightMap.setWidth(Application.getWidth());
+        lightMap.setHeight(Application.getHeight());
+        g.setFill(color);
+        g.fillRect(0, 0, lightMap.getWidth(), lightMap.getHeight());
     }
 }

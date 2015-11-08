@@ -2,33 +2,36 @@ package ga.engine.lighting;
 
 import java.util.HashSet;
 import java.util.Set;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Group;
 import javafx.scene.effect.BlendMode;
 
-public class LightMap extends Canvas {
+public class LightMap extends Group {
     
-    private AmbientLight ambientLight;
     private final Set<Light> lights;
-    private final GraphicsContext g;
+    private AmbientLight ambientLight;
     
-    public LightMap(double width, double height) {
-        super(width, height);
+    public LightMap() {
         this.lights = new HashSet<>();
         this.ambientLight = null;
-        this.g = getGraphicsContext2D();
         setBlendMode(BlendMode.MULTIPLY);
     }
     
     public void setAmbientLight(AmbientLight light) {
         ambientLight = light;
+        lights.add(ambientLight);
+        getChildren().add(ambientLight.lightMap);
+        ambientLight.lightMap.toFront();
+    }
+    
+    public void addLight(Light light) {
+        lights.add(light);
+        getChildren().add(light.lightMap);
+        light.lightMap.toBack();
     }
     
     public void refresh() {
-        g.clearRect(0, 0, getWidth(), getHeight());
-        if (ambientLight == null)
-            return;
-        g.setFill(ambientLight.color);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        for (Light light: lights) {
+            light.refresh();
+        }
     }
 }
