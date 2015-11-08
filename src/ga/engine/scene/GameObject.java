@@ -6,6 +6,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Affine;
 
-public class GameObject {
+public class GameObject implements Comparator<GameObject> {
 
     public Transform2D transform;
     public GameObject parent = null;
@@ -220,5 +221,10 @@ public class GameObject {
     
     public Rectangle localAABB() {
         return new Rectangle((int) transform.position.x + AABB.x, (int) transform.position.y + AABB.y, AABB.width, AABB.height);
+    }
+
+    @Override
+    public int compare(GameObject o1, GameObject o2) {
+        return o2.transform.depth - o1.transform.depth;
     }
 }
