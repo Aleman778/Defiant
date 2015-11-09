@@ -22,34 +22,33 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
 
     @FXML
     private Canvas preview;
-    @FXML
-    private TitledPane previewContainer;
-    private ParticleEmitter emitter;
-
+    
+    private final ParticleSettings settings;
     private final File file;
+    private final XMLWriter writer = new XMLWriter();
+
+    private ParticleEmitter emitter;
     private long lastFire = 0;
     private GraphicsContext g;
     private Dimension2D editorSize;
-    private final XMLWriter writer = new XMLWriter();
-    private ParticleEditorRight right;
 
     public ParticleEditor(Dimension2D size, File file) {
         this.file = file;
         editorSize = size;
-        right = new ParticleEditorRight(this);
-        right.load();
+        settings = new ParticleSettings(this);
+        settings.load();
     }
 
     @Override
     public void save() {
         Element root = writer.createElement("particleSystem");
-        writer.createElementValue(root, "direction", String.valueOf((int) right.getDirection().getValue()));
-        writer.createElementValue(root, "spread", String.valueOf((int) right.getSpread().getValue()));
-        writer.createElementValue(root, "size", String.valueOf((int) right.getSize().getValue()));
+        writer.createElementValue(root, "direction", String.valueOf((int) settings.getDirection().getValue()));
+        writer.createElementValue(root, "spread", String.valueOf((int) settings.getSpread().getValue()));
+        writer.createElementValue(root, "size", String.valueOf((int) settings.getSize().getValue()));
         //   writer.createElementValue(root, "life", String.valueOf(life));
-        writer.createElementValue(root, "color", String.format("#%X", right.getColor().getValue().hashCode()));
-        writer.createElementValue(root, "mode", right.getMode().isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
-        writer.createElementValue(root, "gravity", String.valueOf(right.getGravity().getValue()));
+        writer.createElementValue(root, "color", String.format("#%X", settings.getColor().getValue().hashCode()));
+        writer.createElementValue(root, "mode", settings.getMode().isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
+        writer.createElementValue(root, "gravity", String.valueOf(settings.getGravity().getValue()));
         writer.save("particles/systems/" + file.getName());
     }
 
@@ -64,13 +63,13 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         preview.setWidth(editorSize.width);
         preview.setHeight(editorSize.height);
         g = preview.getGraphicsContext2D();
-        right.updateSliders(emitter.getConfig());
-        right.initEvents();
+        settings.updateSliders(emitter.getConfig());
+        settings.initEvents();
         new AnimationTimer() {
 
             @Override
             public void handle(long now) {
-                if (right.getMode().isSelected()) {
+                if (settings.getMode().isSelected()) {
                     if (now > lastFire + 1000000000) {
                         lastFire = now;
                         emitter.fire(20);
@@ -86,7 +85,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
 
     @Override
     public void rightContent(SplitPane sidebar) {
-        sidebar.getItems().add(right.root);
+        sidebar.getItems().add(settings.root);
     }
 
     @Override

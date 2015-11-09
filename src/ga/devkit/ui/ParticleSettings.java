@@ -11,24 +11,19 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 
-public class ParticleEditorRight extends Interface implements Initializable {
+public class ParticleSettings extends Interface implements Initializable {
 
     private Editor editor;
+    
+    @FXML
+    public Slider direction;
+    public Slider spread;
+    public Slider size;
+    public ColorPicker color;
+    public CheckBox mode;
+    public Slider gravity;
 
-    @FXML
-    private Slider direction;
-    @FXML
-    private Slider spread;
-    @FXML
-    private Slider size;
-    @FXML
-    private ColorPicker color;
-    @FXML
-    private CheckBox mode;
-    @FXML
-    private Slider gravity;
-
-    public ParticleEditorRight(Editor editor) {
+    public ParticleSettings(Editor editor) {
         this.editor = editor;
     }
 
