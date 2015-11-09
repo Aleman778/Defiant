@@ -1,9 +1,9 @@
 package ga.devkit.ui;
 
+import com.sun.javafx.geom.Dimension2D;
 import ga.engine.rendering.ParticleConfiguration;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
-import ga.engine.scene.Transform2D;
 import ga.engine.xml.XMLWriter;
 import java.io.File;
 import java.net.URL;
@@ -49,10 +49,12 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     private final File file;
     private long lastFire = 0;
     private GraphicsContext g;
+    private Dimension2D editorSize;
     private final XMLWriter writer = new XMLWriter();
 
-    public ParticleEditor(File file) {
+    public ParticleEditor(Dimension2D size, File file) {
         this.file = file;
+        editorSize = size;
     }
 
     @Override
@@ -105,6 +107,8 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     public void initialize(URL location, ResourceBundle resources) {
         color.setValue(Color.BLUE);
         emitter = new ParticleEmitter();
+        preview.setWidth(editorSize.width);
+        preview.setHeight(editorSize.height);
         g = preview.getGraphicsContext2D();
         new AnimationTimer() {
 

@@ -1,5 +1,6 @@
 package ga.devkit.ui;
 
+import com.sun.javafx.geom.Dimension2D;
 import ga.engine.core.Application;
 import java.io.File;
 import java.net.URL;
@@ -82,7 +83,7 @@ public class Core extends Interface implements Initializable {
                 addEditor(editor, file.getName());
                 break;
             case "psystem":
-                editor = new ParticleEditor(file);
+                editor = new ParticleEditor(new Dimension2D((float) (centerContent.getWidth() - rightContent.getWidth()), (float) centerContent.getHeight()), file);
                 editor.load();
                 addEditor(editor, file.getName());
                 break;
