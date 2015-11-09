@@ -84,7 +84,7 @@ public class Core extends Interface implements Initializable {
                 addEditor(editor, file.getName());
                 break;
             case "psystem":
-                editor = new ParticleEditor(new Dimension2D((float) (centerContent.getWidth() - rightContent.getWidth()), (float) centerContent.getHeight()), file);
+                editor = new ParticleEditor(new Dimension2D((float) centerContent.getWidth(), (float) centerContent.getHeight() - 32), file);
                 editor.load();
                 addEditor(editor, file.getName());
                 break;

@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TitledPane;
 import org.w3c.dom.Element;
 
 public class ParticleEditor extends Interface implements Initializable, Editor {
@@ -57,7 +56,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         super.load();
         System.out.println("Loading " + "particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1) + " in particle editor");
         emitter = ParticleEmitter.loadXML("particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1));
-        emitter.gameobject = new GameObject(preview.getWidth() / 2, preview.getHeight() / 2);
+        emitter.gameobject = new GameObject(editorSize.width / 2, editorSize.height / 2);
         emitter.gameobject.addComponent(emitter);
         emitter.transform = emitter.gameobject.transform;
         preview.setWidth(editorSize.width);
