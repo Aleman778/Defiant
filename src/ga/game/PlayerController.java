@@ -55,12 +55,14 @@ public class PlayerController extends GameComponent {
         head = new GameObject(7, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.getTransform().pivot = new Vector2D(9, 16);
+        head.transform.depth = -1;
 
         arm = new GameObject(12, 10);
         arm.addComponent(new ImageRenderer(weapons.get(0)));
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         armRenderable = (ImageRenderer) arm.getComponent(ImageRenderer.class);
+        arm.transform.depth = -1;
 
         gameobject.addChild(head);
         gameobject.addChild(arm);
