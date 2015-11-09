@@ -92,10 +92,14 @@
 }
 
 .check-box .box .mark {
+    -fx-background-color: transparent;
+}
+
+.check-box:selected .box .mark {
     -fx-background-color: white;
 }
 
-.check-box:hover .box .mark {
+.check-box:selected:hover .box .mark {
     -fx-background-color: white;
 }
 
