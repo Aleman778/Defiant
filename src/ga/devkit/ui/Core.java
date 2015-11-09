@@ -23,6 +23,7 @@ public class Core extends Interface implements Initializable {
     public SplitPane rightContent;
     public SplitPane bottomContent;
     
+    private static ProjectView project;
     private HashMap<String, Editor> editors;
     
     @Override
@@ -30,7 +31,7 @@ public class Core extends Interface implements Initializable {
         editors = new HashMap<>();
         
         //Project View
-        ProjectView project = new ProjectView();
+        project = new ProjectView();
         project.load();
         bottomContent.getItems().add(project.root);
         SplitPane.setResizableWithParent(project.root, false);
@@ -118,13 +119,11 @@ public class Core extends Interface implements Initializable {
     
     @FXML
     public void menuitemSave() {
-        System.out.println("Save!");
         editors.get(centerContent.getSelectionModel().getSelectedItem().getText()).save();
     }
     
     @FXML
     public void menuitemSaveAll() {
-        System.out.println("Save All!");
         for (Editor e : editors.values()) {
             e.save();
         }
@@ -147,5 +146,9 @@ public class Core extends Interface implements Initializable {
         if (index < 0)
             return filename;
         return filename.substring(0, index);
+    }
+    
+    public static ProjectView getProject() {
+        return project;
     }
 }

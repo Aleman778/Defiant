@@ -76,19 +76,31 @@
     -fx-background-color: #434343;
 }
 
-.button {
+.button, .check-box .box {
     -fx-background-color: #5d5d5d;
     -fx-background-radius: 1.5px;
     -fx-text-fill: #e1e1e1;
 }
 
-.button:hover {
+.button:hover, .check-box:hover .box {
     -fx-background-color: #5688a5;
 }
 
-.button:pressed {
+.button:pressed, .check-box:pressed .box {
     -fx-background-color: #e1e1e1;
     -fx-text-fill: #434343;
+}
+
+.check-box .box .mark {
+    -fx-background-color: white;
+}
+
+.check-box:hover .box .mark {
+    -fx-background-color: white;
+}
+
+.check-box:pressed .box .mark {
+    -fx-background-color: black;
 }
 
 .button-icon {

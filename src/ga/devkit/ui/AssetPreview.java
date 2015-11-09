@@ -1,5 +1,6 @@
 package ga.devkit.ui;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.devkit.editor.Tileset;
 import java.io.File;
 import java.net.URL;
@@ -12,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 public class AssetPreview extends Interface implements Initializable {
     
@@ -20,6 +23,8 @@ public class AssetPreview extends Interface implements Initializable {
     @FXML
     public Label title;
     public Canvas canvas;
+    
+    private int x, y;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,9 +46,18 @@ public class AssetPreview extends Interface implements Initializable {
                 break;
             case "tileset":
                 Tileset tileset = new Tileset(file);
-                drawTileset(tileset, 0, 0);
+                drawTileset(tileset, 0, 0, 1, 1);
                 canvas.setOnMousePressed((MouseEvent event) -> {
-                    drawTileset(tileset, (int) (event.getX() / 32), (int) (event.getY() / 32));
+                    x = (int) (event.getX() / tileset.getWidth());
+                    y = (int) (event.getY() / tileset.getHeight());
+                    drawTileset(tileset, (int) (event.getX() / tileset.getWidth()), (int) (event.getY() / tileset.getHeight()), 1, 1);
+                });
+                canvas.setOnMouseDragged((MouseEvent event) -> {
+                    int minX = Math.min(x, (int) (event.getX() / tileset.getWidth()));
+                    int minY = Math.min(y, (int) (event.getY() / tileset.getHeight()));
+                    int maxX = Math.max(x, (int) (event.getX() / tileset.getWidth())) + 1;
+                    int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
+                    drawTileset(tileset, minX, minY, maxX - minX, maxY - minY);
                 });
                 type = "Tileset";
                 break;
@@ -58,7 +72,7 @@ public class AssetPreview extends Interface implements Initializable {
         title.setText(type + ": " + file.getName());
     }
     
-    public void drawTileset(Tileset tileset, int tileX, int tileY) {
+    public void drawTileset(Tileset tileset, int tileX, int tileY, int tileW, int tileH) {
         canvas.setWidth(tileset.getTilesheet().getWidth());
         canvas.setHeight(tileset.getTilesheet().getHeight());
         drawCheckerboard();
@@ -70,15 +84,35 @@ public class AssetPreview extends Interface implements Initializable {
         for (int j = 1; j < tileset.getTilesheet().getHeight() / tileset.getHeight(); j++) {
             g.fillRect(0, j * tileset.getHeight(), tileset.getTilesheet().getWidth(), 1);
         }
-        g.setFill(new Color(1.0, 0.0, 0.0, 1.0));
-        g.fillRect(tileX * 32, tileY * 32, tileset.getWidth(), 2);
-        g.fillRect(tileX * 32, tileY * 32 + tileset.getHeight() - 1, tileset.getWidth(), 2);
-        g.fillRect(tileX * 32, tileY * 32, 2, tileset.getHeight());
-        g.fillRect(tileX * 32 + tileset.getWidth() - 1, tileY * 32, 2, tileset.getHeight());
+        renderSelection(new Rectangle(tileX * tileset.getWidth() + 1, tileY * tileset.getHeight() + 1,
+                tileW * tileset.getWidth() - 2, tileH * tileset.getHeight() - 2));
     }
     
     public boolean isReady() {
         return (g != null);
+    }
+    
+    private void renderSelection(Rectangle selection) {
+        g.setLineJoin(StrokeLineJoin.MITER);
+        g.setLineCap(StrokeLineCap.SQUARE);
+        g.setLineDashes(6.0);
+        
+        g.setFill(Color.rgb(67, 141, 215, 0.5));
+        g.fillRect(selection.x, selection.y, selection.width, selection.height);
+        
+        g.setStroke(Color.rgb(0, 0, 0, 1));
+        g.setLineDashOffset(6.0);
+        g.strokeLine(selection.x, selection.y, selection.x, selection.y + selection.height);
+        g.strokeLine(selection.x, selection.y, selection.x + selection.width, selection.y);
+        g.strokeLine(selection.x + selection.width, selection.y, selection.x + selection.width, selection.y + selection.height);
+        g.strokeLine(selection.x, selection.y + selection.height, selection.x + selection.width, selection.y + selection.height);
+        
+        g.setStroke(Color.rgb(67, 141, 215, 1));
+        g.setLineDashOffset(0.0);
+        g.strokeLine(selection.x, selection.y, selection.x, selection.y + selection.height);
+        g.strokeLine(selection.x, selection.y, selection.x + selection.width, selection.y);
+        g.strokeLine(selection.x + selection.width, selection.y, selection.x + selection.width, selection.y + selection.height);
+        g.strokeLine(selection.x, selection.y + selection.height, selection.x + selection.width, selection.y + selection.height);
     }
     
     private void drawCheckerboard() {

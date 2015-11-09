@@ -37,6 +37,8 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     public AnchorPane pane;
     
     public SceneGraph graph;
+    public ObjectEditor object;
+    public LayerView layer;
     
     private final File file;
     private GraphicsContext g;
@@ -52,6 +54,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     private final EditorObject rootObject;
     
     public SceneEditor(File file) {
+        this.file = file;
         this.width = 0;
         this.height = 0;
         this.x = 0; this.y = 0;
@@ -61,12 +64,18 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         this.rootObject = new EditorObject("root");
         this.selectedObjects = new HashSet<>();
         this.placingObjects = new HashSet<>();
-        this.file = file;
-        this.graph = new SceneGraph(this);
-        this.graph.load();
         this.selectionRange = null;
         this.placingRange = null;
-        graph.refreshGraph(rootObject);
+        this.graph = new SceneGraph(this);
+        this.graph.load();
+        this.graph.refreshGraph(rootObject);
+        this.object = new ObjectEditor();
+        this.object.load();
+        this.layer = new LayerView();
+        this.layer.load();
+        SplitPane.setResizableWithParent(graph.root, false);
+        SplitPane.setResizableWithParent(layer.root, true);
+        SplitPane.setResizableWithParent(object.root, true);
     }
     
     @Override
@@ -76,7 +85,10 @@ public class SceneEditor extends Interface implements Initializable, Editor {
 
     @Override
     public void rightContent(SplitPane sidebar) {
+        sidebar.setDividerPositions(0.3, 0.5);
         sidebar.getItems().add(graph.root);
+        sidebar.getItems().add(layer.root);
+        sidebar.getItems().add(object.root);
     }
     
     public void render() {

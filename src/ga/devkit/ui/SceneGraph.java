@@ -21,7 +21,7 @@ public class SceneGraph extends Interface implements Initializable {
     
     public HashMap<String, EditorObject> objects;
     
-    private SceneEditor editor;
+    private final SceneEditor editor;
     
     public SceneGraph(SceneEditor editor) {
         this.objects = new HashMap<>();
@@ -30,6 +30,7 @@ public class SceneGraph extends Interface implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        graph.showRootProperty().setValue(false);
         graph.setOnMouseReleased((MouseEvent event) -> {
             editor.clearSelectedObjects();
             for (TreeItem<String> item: graph.getSelectionModel().getSelectedItems()) {
@@ -38,8 +39,17 @@ public class SceneGraph extends Interface implements Initializable {
                     editor.addSelectedObject(object);
                 }
             }
+            refreshObjectEditor();
             editor.render();
         });
+    }
+    
+    private void refreshObjectEditor() {
+        if (graph.getSelectionModel().getSelectedItems().size() == 1) {
+            editor.object.setObject(objects.get(graph.getSelectionModel().getSelectedItems().get(0).getValue()));
+        } else {
+            editor.object.setObject(null);
+        }
     }
     
     public void clearSelection() {
@@ -52,6 +62,7 @@ public class SceneGraph extends Interface implements Initializable {
             clearSelection();
             graph.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             graph.getSelectionModel().select(item);
+            refreshObjectEditor();
         }
     }
     
@@ -60,6 +71,7 @@ public class SceneGraph extends Interface implements Initializable {
         if (item != null) {
             graph.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             graph.getSelectionModel().select(item);
+            refreshObjectEditor();
         }
     }
     
@@ -72,6 +84,7 @@ public class SceneGraph extends Interface implements Initializable {
                 graph.getSelectionModel().select(item);
             }
         }
+        refreshObjectEditor();
     }
     
     public void addAllSelections(Collection<EditorObject> objects) {
