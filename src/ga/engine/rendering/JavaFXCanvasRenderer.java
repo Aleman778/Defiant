@@ -14,7 +14,6 @@ public class JavaFXCanvasRenderer {
     public static void renderAll(Canvas canvas, List<GameObject> objects) {
         objects.sort(new GameObject());
         for (GameObject object: objects) {
-            System.out.println(object.transform.depth);
             render(canvas, object, object.getTransform());
         }
     }

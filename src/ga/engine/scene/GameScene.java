@@ -53,7 +53,7 @@ public final class GameScene {
         
         lightmap = new LightMap();
         AmbientLight ambient = new AmbientLight();
-        ambient.setColor(new Color(0.05, 0.05, 0.05, 1.0));
+        ambient.setColor(new Color(0.01, 0.01, 0.01, 1.0));
         group.getChildren().add(lightmap);
         
         Transform2D transform = new Transform2D(null);
