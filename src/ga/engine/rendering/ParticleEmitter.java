@@ -23,7 +23,7 @@ public class ParticleEmitter extends GameComponent {
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color;
     protected String mode;
-    protected float life, direction, spread, size;
+    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep;
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
@@ -41,7 +41,7 @@ public class ParticleEmitter extends GameComponent {
         this.particles = new HashSet<>();
         object = new GameObject();
     }
-    
+
     public ParticleEmitter() {
         this.particles = new HashSet<>();
         object = new GameObject();
@@ -64,6 +64,8 @@ public class ParticleEmitter extends GameComponent {
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
             Particle p = it.next();
+            p.size += sizeStep;
+            p.velocity += (velocityStep - 1);
             if (!p.update()) {
                 it.remove();
             }
@@ -74,7 +76,7 @@ public class ParticleEmitter extends GameComponent {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             if (p.body.getMass() != 0) {
-                p.body.setVelocity(p.body.getVelocity().add(GameScene.gravity.mul(gravityScale)));
+                p.body.setVelocity(p.body.getVelocity().add(GameScene.gravity.mul(gravityScale)).mul(p.velocity));
                 p.body.transform.position = p.body.transform.position.add(p.body.velocity);
             }
             Iterator<Body> bodyIt = retrievedBodies.iterator();
@@ -102,8 +104,9 @@ public class ParticleEmitter extends GameComponent {
             Vector2D pos = new Vector2D((Math.random() * shape.width), (Math.random() * shape.height));
             Particle p = new Particle(transform.position.add(object.transform.position).add(new Vector2D(shape.x, shape.y))
                     .add(pos),
-                    new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))),
+                    new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))).mul(velocity),
                     size, (int) ((life - 100) * Math.random() + 100), color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1));
+            p.velocity = velocity;
             if (sprite != null) {
                 p.sprite = sprite;
             }
@@ -140,13 +143,24 @@ public class ParticleEmitter extends GameComponent {
 
     public void setConfig(ParticleConfiguration config) {
         this.config = config;
-        direction = Float.parseFloat(config.getValue("direction"));
-        life = Float.parseFloat(config.getValue("life"));
-        mode = config.getValue("mode");
-        spread = Float.parseFloat(config.getValue("spread"));
-        size = Float.parseFloat(config.getValue("size"));
-        color = Color.web(config.getValue("color"));
-        gravityScale = Float.parseFloat(config.getValue("gravity"));
+        try {
+            direction = Float.parseFloat(config.getValue("direction"));
+            life = Float.parseFloat(config.getValue("life"));
+            mode = config.getValue("mode");
+            spread = Float.parseFloat(config.getValue("spread"));
+            size = Float.parseFloat(config.getValue("size"));
+            sizeEnd = Float.parseFloat(config.getValue("sizeEnd"));
+            sizeStep = Float.parseFloat(config.getValue("sizeStep"));
+            color = Color.web(config.getValue("color"));
+            gravityScale = Float.parseFloat(config.getValue("gravity"));
+            velocity = Float.parseFloat(config.getValue("velocity"));
+            velocityStep = Float.parseFloat(config.getValue("velocityStep"));
+        } catch (NullPointerException ex) {
+            
+        }
+        if (sizeStep == 0 && size != sizeEnd) {
+            sizeStep = (sizeEnd - size) / life;
+        }
     }
 
     public static ParticleEmitter loadXML(String filepath) {
@@ -155,7 +169,7 @@ public class ParticleEmitter extends GameComponent {
         e.setConfig(tempConfig);
         return e;
     }
-    
+
     public static ParticleConfiguration loadXMLConfig(String filepath) {
         reader.parse(filepath);
         return tempConfig;

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class Particle {
 
-    public float size, life, lifeTime;
+    public float size, life, lifeTime, velocity;
     public ParticleBody body;
     public Image sprite;
     public Color color;

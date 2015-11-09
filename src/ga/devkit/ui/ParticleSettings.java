@@ -19,9 +19,14 @@ public class ParticleSettings extends Interface implements Initializable {
     public Slider direction;
     public Slider spread;
     public Slider size;
+    public Slider sizeEnd;
+    public Slider sizeStep;
     public ColorPicker color;
     public CheckBox mode;
     public Slider gravity;
+    public Slider velocity;
+    public Slider velocityStep;
+    public Slider life;
 
     public ParticleSettings(Editor editor) {
         this.editor = editor;
@@ -54,24 +59,54 @@ public class ParticleSettings extends Interface implements Initializable {
         return gravity;
     }
 
+    public Slider getSizeEnd() {
+        return sizeEnd;
+    }
+
+    public Slider getSizeStep() {
+        return sizeStep;
+    }
+
+    public Slider getVelocity() {
+        return velocity;
+    }
+
+    public Slider getVelocityStep() {
+        return velocityStep;
+    }
+
+    public Slider getLife() {
+        return life;
+    }
+    
+
     public void updateSliders(ParticleConfiguration c) {
         color.setValue(Color.web(c.getValue("color")));
         size.setValue(Double.valueOf(c.getValue("size")));
+        sizeEnd.setValue(Double.valueOf(c.getValue("sizeEnd")));
+        sizeStep.setValue(Double.valueOf(c.getValue("sizeStep")));
         spread.setValue(Double.valueOf(c.getValue("spread")));
         direction.setValue(Double.valueOf(c.getValue("direction")));
         gravity.setValue(Double.valueOf(c.getValue("gravity")));
         mode.setSelected(c.getValue("mode").equals("MODE_SINGLE"));
+        life.setValue(Double.valueOf(c.getValue("life")));
+        velocity.setValue(Double.valueOf(c.getValue("velocity")));
+        velocityStep.setValue(Double.valueOf(c.getValue("velocityStep")));
     }
 
     private void updatePreview() {
         ParticleConfiguration c = ((ParticleEditor)editor).getConfig();
         c.setValue("color", String.format("#%X", color.getValue().hashCode()));
         c.setValue("size", String.valueOf(size.getValue()));
+        c.setValue("sizeEnd", String.valueOf(sizeEnd.getValue()));
+        c.setValue("sizeStep", String.valueOf(sizeStep.getValue()));
         c.setValue("spread", String.valueOf(spread.getValue()));
         c.setValue("direction", String.valueOf(direction.getValue()));
         c.setValue("mode", mode.isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         c.setValue("gravity", String.valueOf(gravity.getValue()));
-//       c.setValue("life", String.valueOf(life.getValue()));
+        c.setValue("velocity", String.valueOf(velocity.getValue()));
+        c.setValue("velocityStep", String.valueOf(velocityStep.getValue()));
+        c.setValue("life", String.valueOf(life.getValue()));
         ((ParticleEditor)editor).updateConfig(c);
     }
     
@@ -85,6 +120,12 @@ public class ParticleSettings extends Interface implements Initializable {
         size.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
+        sizeEnd.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        sizeStep.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
         gravity.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
@@ -92,6 +133,15 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         mode.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        life.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        velocity.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        velocityStep.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
     }

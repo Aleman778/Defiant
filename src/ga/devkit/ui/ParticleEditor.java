@@ -44,10 +44,14 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "direction", String.valueOf((int) settings.getDirection().getValue()));
         writer.createElementValue(root, "spread", String.valueOf((int) settings.getSpread().getValue()));
         writer.createElementValue(root, "size", String.valueOf((int) settings.getSize().getValue()));
-        //   writer.createElementValue(root, "life", String.valueOf(life));
+        writer.createElementValue(root, "sizeEnd", String.valueOf((int) settings.getSizeEnd().getValue()));
+        writer.createElementValue(root, "sizeStep", String.valueOf((int) settings.getSizeStep().getValue()));
+        writer.createElementValue(root, "life", String.valueOf((int)settings.getLife().getValue()));
         writer.createElementValue(root, "color", String.format("#%X", settings.getColor().getValue().hashCode()));
         writer.createElementValue(root, "mode", settings.getMode().isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         writer.createElementValue(root, "gravity", String.valueOf(settings.getGravity().getValue()));
+        writer.createElementValue(root, "velocity", String.valueOf(settings.getVelocity().getValue()));
+        writer.createElementValue(root, "velocityStep", String.valueOf(settings.getVelocityStep().getValue()));
         writer.save("particles/systems/" + file.getName());
     }
 
