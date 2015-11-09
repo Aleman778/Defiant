@@ -63,6 +63,7 @@ public class PlayerController extends GameComponent {
         arm.getTransform().pivot = armPivot;
         arm.getTransform().depth = -3;
         armRenderable = (ImageRenderer) arm.getComponent(ImageRenderer.class);
+        arm.transform.depth = -1;
 
         gameobject.addChild(head);
         gameobject.addChild(arm);
