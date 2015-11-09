@@ -38,7 +38,7 @@ public class Particle {
         if (sprite != null) {
             g.drawImage(sprite, body.transform.position.x, body.transform.position.y);
         } else {
-            g.fillOval(body.transform.position.x, body.transform.position.y, size * life / lifeTime, size * life / lifeTime);
+            g.fillOval(body.transform.position.x - size / 2, body.transform.position.y - size / 2, size, size);
         }
     }
 
