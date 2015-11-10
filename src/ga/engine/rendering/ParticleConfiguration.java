@@ -16,7 +16,7 @@ public class ParticleConfiguration {
             put("color", "#0000FFFF");
             put("gravity", "0.6");
             put("velocity", "1");
-            put("velocityStep", "0");
+            put("velocityStep", "1");
         }
     };
     
