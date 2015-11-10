@@ -1,5 +1,6 @@
 package ga.devkit.ui;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.rendering.ParticleConfiguration;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -8,13 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 
 public class ParticleSettings extends Interface implements Initializable {
 
     private Editor editor;
-    
+
     @FXML
     public Slider direction;
     public Slider spread;
@@ -28,6 +30,9 @@ public class ParticleSettings extends Interface implements Initializable {
     public Slider velocityStep;
     public Slider life;
     public Slider rate;
+    public RadioButton point;
+    public RadioButton line;
+    public RadioButton area;
 
     public ParticleSettings(Editor editor) {
         this.editor = editor;
@@ -84,6 +89,18 @@ public class ParticleSettings extends Interface implements Initializable {
         return rate;
     }
 
+    public RadioButton getPoint() {
+        return point;
+    }
+
+    public RadioButton getLine() {
+        return line;
+    }
+
+    public RadioButton getArea() {
+        return area;
+    }
+
     public void updateSliders(ParticleConfiguration c) {
         color.setValue(Color.web(c.getValue("color")));
         size.setValue(Double.valueOf(c.getValue("size")));
@@ -115,7 +132,7 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("rate", String.valueOf(rate.getValue()));
         ((ParticleEditor)editor).updateConfig(c);
     }
-    
+
     public void initEvents() {
         direction.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
@@ -152,6 +169,21 @@ public class ParticleSettings extends Interface implements Initializable {
         });
         rate.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
+        });
+        point.setOnAction((ActionEvent event) -> {
+            if (point.isSelected()) {
+                ((ParticleEditor) editor).emitter.setShape(new Rectangle(1, 1));
+            }
+        });
+        line.setOnAction((ActionEvent event) -> {
+            if (line.isSelected()) {
+                ((ParticleEditor) editor).emitter.setShape(new Rectangle(-250, 0, 500, 1));
+            }
+        });
+        area.setOnAction((ActionEvent event) -> {
+            if (area.isSelected()) {
+                ((ParticleEditor) editor).emitter.setShape(new Rectangle(-250, -250, 500, 500));
+            }
         });
     }
 }

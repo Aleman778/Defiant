@@ -26,7 +26,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     private final File file;
     private final XMLWriter writer = new XMLWriter();
 
-    private ParticleEmitter emitter;
+    public ParticleEmitter emitter;
     private long lastFire = 0;
     private GraphicsContext g;
     private Dimension2D editorSize;
