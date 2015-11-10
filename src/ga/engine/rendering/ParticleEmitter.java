@@ -23,7 +23,7 @@ public class ParticleEmitter extends GameComponent {
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color;
     protected String mode;
-    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep;
+    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate;
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
@@ -52,12 +52,12 @@ public class ParticleEmitter extends GameComponent {
         super.update();
         switch (mode) {
             case "MODE_CONTINUOUS":
-                addParticles(1);
+                addParticles((int) rate);
                 break;
             case "MODE_CONTINUOUS_MIRRORED":
-                addParticles(1);
+                addParticles((int) rate);
                 direction = 180 - direction;
-                addParticles(1);
+                addParticles((int) rate);
                 direction = 0 + direction;
                 break;
         }
@@ -95,6 +95,17 @@ public class ParticleEmitter extends GameComponent {
             direction = 0 + direction;
         } else {
             addParticles(amount);
+        }
+    }
+    
+    public void fire() {
+        if (mode.equals("MODE_SINGLE_MIRRORED")) {
+            addParticles((int) ((rate * 10) / 2));
+            direction = 180 - direction;
+            addParticles((int) ((rate * 10) / 2));
+            direction = 0 + direction;
+        } else {
+            addParticles((int) rate * 10);
         }
     }
 
@@ -155,6 +166,7 @@ public class ParticleEmitter extends GameComponent {
             gravityScale = Float.parseFloat(config.getValue("gravity"));
             velocity = Float.parseFloat(config.getValue("velocity"));
             velocityStep = Float.parseFloat(config.getValue("velocityStep"));
+            rate = Float.parseFloat(config.getValue("rate"));
         } catch (NullPointerException ex) {
             
         }

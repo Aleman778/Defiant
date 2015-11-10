@@ -27,6 +27,7 @@ public class ParticleSettings extends Interface implements Initializable {
     public Slider velocity;
     public Slider velocityStep;
     public Slider life;
+    public Slider rate;
 
     public ParticleSettings(Editor editor) {
         this.editor = editor;
@@ -78,7 +79,10 @@ public class ParticleSettings extends Interface implements Initializable {
     public Slider getLife() {
         return life;
     }
-    
+
+    public Slider getRate() {
+        return rate;
+    }
 
     public void updateSliders(ParticleConfiguration c) {
         color.setValue(Color.web(c.getValue("color")));
@@ -92,6 +96,7 @@ public class ParticleSettings extends Interface implements Initializable {
         life.setValue(Double.valueOf(c.getValue("life")));
         velocity.setValue(Double.valueOf(c.getValue("velocity")));
         velocityStep.setValue(Double.valueOf(c.getValue("velocityStep")));
+        rate.setValue(Double.valueOf(c.getValue("rate")));
     }
 
     private void updatePreview() {
@@ -107,6 +112,7 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("velocity", String.valueOf(velocity.getValue()));
         c.setValue("velocityStep", String.valueOf(velocityStep.getValue()));
         c.setValue("life", String.valueOf(life.getValue()));
+        c.setValue("rate", String.valueOf(rate.getValue()));
         ((ParticleEditor)editor).updateConfig(c);
     }
     
@@ -142,6 +148,9 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         velocityStep.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        rate.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
     }

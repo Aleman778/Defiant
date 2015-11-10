@@ -17,6 +17,7 @@ public class ParticleConfiguration {
             put("gravity", "0.6");
             put("velocity", "1");
             put("velocityStep", "1");
+            put("rate", "1");
         }
     };
     

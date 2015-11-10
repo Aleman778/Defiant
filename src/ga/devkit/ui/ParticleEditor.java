@@ -52,6 +52,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "gravity", String.valueOf(settings.getGravity().getValue()));
         writer.createElementValue(root, "velocity", String.valueOf(settings.getVelocity().getValue()));
         writer.createElementValue(root, "velocityStep", String.valueOf(settings.getVelocityStep().getValue()));
+        writer.createElementValue(root, "rate", String.valueOf(settings.getRate().getValue()));
         writer.save("particles/systems/" + file.getName());
     }
 
@@ -75,7 +76,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
                 if (settings.getMode().isSelected()) {
                     if (now > lastFire + 1000000000) {
                         lastFire = now;
-                        emitter.fire(20);
+                        emitter.fire();
                     }
                 }
                 g.clearRect(0, 0, preview.getWidth(), preview.getHeight());
