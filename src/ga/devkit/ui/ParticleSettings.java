@@ -1,6 +1,5 @@
 package ga.devkit.ui;
 
-import com.sun.javafx.geom.Rectangle;
 import ga.engine.rendering.ParticleConfiguration;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,6 +10,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class ParticleSettings extends Interface implements Initializable {
@@ -31,8 +32,11 @@ public class ParticleSettings extends Interface implements Initializable {
     public Slider life;
     public Slider rate;
     public RadioButton point;
-    public RadioButton line;
     public RadioButton area;
+    public RadioButton circle;
+    public RadioButton square;
+    public RadioButton sprite;
+    public TextField areaBox;
 
     public ParticleSettings(Editor editor) {
         this.editor = editor;
@@ -93,12 +97,20 @@ public class ParticleSettings extends Interface implements Initializable {
         return point;
     }
 
-    public RadioButton getLine() {
-        return line;
-    }
-
     public RadioButton getArea() {
         return area;
+    }
+
+    public RadioButton getCircle() {
+        return circle;
+    }
+
+    public RadioButton getSquare() {
+        return square;
+    }
+
+    public TextField getAreaBox() {
+        return areaBox;
     }
 
     public void updateSliders(ParticleConfiguration c) {
@@ -114,10 +126,19 @@ public class ParticleSettings extends Interface implements Initializable {
         velocity.setValue(Double.valueOf(c.getValue("velocity")));
         velocityStep.setValue(Double.valueOf(c.getValue("velocityStep")));
         rate.setValue(Double.valueOf(c.getValue("rate")));
+        circle.setSelected(c.getValue("particleShape").equals("circle"));
+        square.setSelected(c.getValue("particleShape").equals("square"));
+        areaBox.setText(c.getValue("shape"));
+        if (Integer.parseInt(areaBox.getText().split(",")[0].trim()) > 1 && Integer.parseInt(areaBox.getText().split(",")[1].trim()) > 1) {
+            area.setSelected(true);
+            areaBox.setDisable(false);
+        } else {
+            areaBox.setDisable(true);
+        }
     }
 
     private void updatePreview() {
-        ParticleConfiguration c = ((ParticleEditor)editor).getConfig();
+        ParticleConfiguration c = ((ParticleEditor) editor).getConfig();
         c.setValue("color", String.format("#%X", color.getValue().hashCode()));
         c.setValue("size", String.valueOf(size.getValue()));
         c.setValue("sizeEnd", String.valueOf(sizeEnd.getValue()));
@@ -130,7 +151,9 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("velocityStep", String.valueOf(velocityStep.getValue()));
         c.setValue("life", String.valueOf(life.getValue()));
         c.setValue("rate", String.valueOf(rate.getValue()));
-        ((ParticleEditor)editor).updateConfig(c);
+        c.setValue("particleShape", square.isSelected() ? "square" : "circle");
+        c.setValue("shape", String.valueOf(areaBox.getText()));
+        ((ParticleEditor) editor).updateConfig(c);
     }
 
     public void initEvents() {
@@ -171,19 +194,27 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         point.setOnAction((ActionEvent event) -> {
-            if (point.isSelected()) {
-                ((ParticleEditor) editor).emitter.setShape(new Rectangle(1, 1));
-            }
-        });
-        line.setOnAction((ActionEvent event) -> {
-            if (line.isSelected()) {
-                ((ParticleEditor) editor).emitter.setShape(new Rectangle(-250, 0, 500, 1));
-            }
+            areaBox.setText("1, 1");
+            areaBox.setDisable(true);
         });
         area.setOnAction((ActionEvent event) -> {
-            if (area.isSelected()) {
-                ((ParticleEditor) editor).emitter.setShape(new Rectangle(-250, -250, 500, 500));
-            }
+            areaBox.setText("50, 50");
+            areaBox.setDisable(false);
+            updatePreview();
+        });
+        areaBox.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        circle.setOnAction((ActionEvent event) -> {
+            ((ParticleEditor) editor).emitter.setSprite(null);
+            updatePreview();
+        });
+        square.setOnAction((ActionEvent event) -> {
+            ((ParticleEditor) editor).emitter.setSprite(null);
+            updatePreview();
+        });
+        sprite.setOnAction((ActionEvent event) -> {
+            ((ParticleEditor) editor).emitter.setSprite(new Image(ParticleSettings.class.getResource("/ga/devkit/editor/nonrenderable.png").toExternalForm()));
         });
     }
 }

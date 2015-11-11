@@ -22,7 +22,7 @@ public class ParticleEmitter extends GameComponent {
     private final HashSet<Particle> particles;
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color;
-    protected String mode;
+    protected String mode, particleShape;
     protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate;
     public GameObject object;
     protected Image sprite;
@@ -118,6 +118,7 @@ public class ParticleEmitter extends GameComponent {
                     new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))).mul(velocity),
                     size, (int) ((life - 100) * Math.random() + 100), color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1));
             p.velocity = velocity;
+            p.shape = particleShape;
             if (sprite != null) {
                 p.sprite = sprite;
             }
@@ -167,6 +168,9 @@ public class ParticleEmitter extends GameComponent {
             velocity = Float.parseFloat(config.getValue("velocity"));
             velocityStep = Float.parseFloat(config.getValue("velocityStep"));
             rate = Float.parseFloat(config.getValue("rate"));
+            particleShape = config.getValue("particleShape");
+            shape = new Rectangle(Integer.parseInt((config.getValue("shape").split(",")[0].trim())), Integer.parseInt(config.getValue("shape").split(",")[1].trim()));
+            
         } catch (NullPointerException ex) {
             
         }

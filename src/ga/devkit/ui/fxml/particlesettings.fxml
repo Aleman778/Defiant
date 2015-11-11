@@ -8,7 +8,7 @@
 
 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="276.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <AnchorPane minHeight="0.0" prefHeight="708.0" prefWidth="187.0">
+      <AnchorPane minHeight="0.0" prefHeight="776.0" prefWidth="274.0">
          <children>
             <Slider fx:id="direction" blockIncrement="45.0" layoutX="16.0" layoutY="40.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
             <Label layoutX="20.0" layoutY="23.0" text="Direction" AnchorPane.leftAnchor="16.0" />
@@ -32,19 +32,28 @@
             <Label layoutX="27.0" layoutY="248.0" text="Size Step" AnchorPane.leftAnchor="16.0" />
             <Slider fx:id="velocity" blockIncrement="0.25" layoutX="18.0" layoutY="320.0" majorTickUnit="0.25" max="2.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
             <Label layoutX="21.0" layoutY="303.0" text="Velocity" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="velocityStep" blockIncrement="0.05" layoutX="16.0" layoutY="375.0" majorTickUnit="0.05" max="1.1" min="0.9" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+            <Slider fx:id="velocityStep" blockIncrement="0.01" layoutX="16.0" layoutY="375.0" majorTickUnit="0.01" max="1.025" min="0.975" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
             <Label layoutX="16.0" layoutY="358.0" text="Velocity Step" AnchorPane.leftAnchor="16.0" />
             <Slider fx:id="life" blockIncrement="50.0" layoutX="16.0" layoutY="485.0" majorTickUnit="50.0" max="200.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="100.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
             <Label layoutX="16.0" layoutY="468.0" text="Life" AnchorPane.leftAnchor="16.0" />
             <Slider fx:id="rate" blockIncrement="5.0" layoutX="16.0" layoutY="540.0" majorTickUnit="5.0" max="20.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
             <Label layoutX="16.0" layoutY="523.0" text="Rate" AnchorPane.leftAnchor="16.0" />
-            <RadioButton fx:id="point" layoutX="16.0" layoutY="667.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="16.0">
+            <RadioButton fx:id="point" layoutX="11.0" layoutY="689.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="11.0">
                <toggleGroup>
-                  <ToggleGroup fx:id="shape" />
+                  <ToggleGroup fx:id="emitterShape" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="line" layoutX="70.0" layoutY="667.0" mnemonicParsing="false" text="Line" toggleGroup="$shape" />
-            <RadioButton fx:id="area" layoutX="120.0" layoutY="667.0" mnemonicParsing="false" text="Area" toggleGroup="$shape" />
+            <RadioButton fx:id="area" layoutX="64.0" layoutY="689.0" mnemonicParsing="false" text="Area" toggleGroup="$emitterShape" />
+            <Label layoutX="14.0" layoutY="665.0" text="Emitter Shape" AnchorPane.leftAnchor="16.0" />
+            <Label layoutX="18.0" layoutY="714.0" text="Particle Shape" AnchorPane.leftAnchor="16.0" />
+            <RadioButton fx:id="circle" layoutX="11.0" layoutY="737.0" mnemonicParsing="false" selected="true" text="Circle" AnchorPane.leftAnchor="11.0">
+               <toggleGroup>
+                  <ToggleGroup fx:id="particleShape" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="square" layoutX="65.0" layoutY="737.0" mnemonicParsing="false" text="Square" toggleGroup="$particleShape" />
+            <RadioButton fx:id="sprite" layoutX="128.0" layoutY="737.0" mnemonicParsing="false" text="Sprite" toggleGroup="$particleShape" />
+            <TextField fx:id="areaBox" disable="true" layoutX="117.0" layoutY="685.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" />
          </children>
       </AnchorPane>
    </content>

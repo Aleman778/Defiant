@@ -18,6 +18,8 @@ public class ParticleConfiguration {
             put("velocity", "1");
             put("velocityStep", "1");
             put("rate", "1");
+            put("particleShape", "circle");
+            put("shape", "1, 1");
         }
     };
     
