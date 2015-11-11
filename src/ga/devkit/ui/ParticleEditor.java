@@ -1,6 +1,7 @@
 package ga.devkit.ui;
 
 import com.sun.javafx.geom.Dimension2D;
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.rendering.ParticleConfiguration;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
@@ -15,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TitledPane;
 import org.w3c.dom.Element;
 
 public class ParticleEditor extends Interface implements Initializable, Editor {
@@ -27,7 +27,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     private final File file;
     private final XMLWriter writer = new XMLWriter();
 
-    private ParticleEmitter emitter;
+    public ParticleEmitter emitter;
     private long lastFire = 0;
     private GraphicsContext g;
     private Dimension2D editorSize;
@@ -45,10 +45,17 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "direction", String.valueOf((int) settings.getDirection().getValue()));
         writer.createElementValue(root, "spread", String.valueOf((int) settings.getSpread().getValue()));
         writer.createElementValue(root, "size", String.valueOf((int) settings.getSize().getValue()));
-        //   writer.createElementValue(root, "life", String.valueOf(life));
+        writer.createElementValue(root, "sizeEnd", String.valueOf((int) settings.getSizeEnd().getValue()));
+        writer.createElementValue(root, "sizeStep", String.valueOf((int) settings.getSizeStep().getValue()));
+        writer.createElementValue(root, "life", String.valueOf((int)settings.getLife().getValue()));
         writer.createElementValue(root, "color", String.format("#%X", settings.getColor().getValue().hashCode()));
         writer.createElementValue(root, "mode", settings.getMode().isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         writer.createElementValue(root, "gravity", String.valueOf(settings.getGravity().getValue()));
+        writer.createElementValue(root, "velocity", String.valueOf(settings.getVelocity().getValue()));
+        writer.createElementValue(root, "velocityStep", String.valueOf(settings.getVelocityStep().getValue()));
+        writer.createElementValue(root, "rate", String.valueOf(settings.getRate().getValue()));
+        writer.createElementValue(root, "particleShape", settings.getSquare().isSelected() ? "square" : "circle");
+        writer.createElementValue(root, "shape", String.valueOf(settings.getAreaBox().getText()));
         writer.save("particles/systems/" + file.getName());
     }
 
@@ -57,13 +64,16 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         super.load();
         System.out.println("Loading " + "particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1) + " in particle editor");
         emitter = ParticleEmitter.loadXML("particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1));
-        emitter.gameobject = new GameObject(preview.getWidth() / 2, preview.getHeight() / 2);
+        emitter.gameobject = new GameObject(editorSize.width / 2, editorSize.height / 2);
         emitter.gameobject.addComponent(emitter);
         emitter.transform = emitter.gameobject.transform;
         preview.setWidth(editorSize.width);
         preview.setHeight(editorSize.height);
         g = preview.getGraphicsContext2D();
         settings.updateSliders(emitter.getConfig());
+        int x = Integer.parseInt((settings.areaBox.getText().split(",")[0].trim())),
+                y = Integer.parseInt(settings.areaBox.getText().split(",")[1].trim());
+        emitter.setShape(new Rectangle(-x / 2, -y / 2, x, y));
         settings.initEvents();
         new AnimationTimer() {
 
@@ -72,7 +82,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
                 if (settings.getMode().isSelected()) {
                     if (now > lastFire + 1000000000) {
                         lastFire = now;
-                        emitter.fire(20);
+                        emitter.fire();
                     }
                 }
                 g.clearRect(0, 0, preview.getWidth(), preview.getHeight());
@@ -93,7 +103,10 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     }
 
     public void updateConfig(ParticleConfiguration c) {
+        int x = Integer.parseInt((c.getValue("shape").split(",")[0].trim())),
+                y = Integer.parseInt(c.getValue("shape").split(",")[1].trim());
         emitter.setConfig(c);
+        emitter.setShape(new Rectangle(-x / 2, -y / 2, x, y));
     }
 
     public ParticleConfiguration getConfig() {

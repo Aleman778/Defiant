@@ -11,7 +11,8 @@ import javafx.scene.paint.Color;
 
 public class Particle {
 
-    public float size, life, lifeTime;
+    public float size, life, lifeTime, velocity;
+    public String shape;
     public ParticleBody body;
     public Image sprite;
     public Color color;
@@ -36,9 +37,19 @@ public class Particle {
         g.setGlobalAlpha(life / lifeTime);
         g.setFill(color);
         if (sprite != null) {
-            g.drawImage(sprite, body.transform.position.x, body.transform.position.y);
+            g.drawImage(sprite, body.transform.position.x, body.transform.position.y, size, size);
         } else {
-            g.fillOval(body.transform.position.x, body.transform.position.y, size * life / lifeTime, size * life / lifeTime);
+            switch (shape) {
+                case "circle":
+                    g.fillOval(body.transform.position.x - size / 2, body.transform.position.y - size / 2, size, size);
+                    break;
+                case "square":
+                    g.fillRect(body.transform.position.x - size / 2, body.transform.position.y - size / 2, size, size);
+                    break;
+                default:
+                    g.fillOval(body.transform.position.x - size / 2, body.transform.position.y - size / 2, size, size);
+            }
+            
         }
     }
 

@@ -9,10 +9,17 @@ public class ParticleConfiguration {
             put("direction", "0");
             put("spread", "360");
             put("size", "2");
+            put("sizeEnd", "2");
+            put("sizeStep", "0");
             put("mode", "MODE_CONTINUOUS");
             put("life", "100");
             put("color", "#0000FFFF");
-            put("gravity", "0.6");            
+            put("gravity", "0.6");
+            put("velocity", "1");
+            put("velocityStep", "1");
+            put("rate", "1");
+            put("particleShape", "circle");
+            put("shape", "1, 1");
         }
     };
     
