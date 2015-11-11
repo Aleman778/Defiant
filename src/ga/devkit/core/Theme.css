@@ -103,6 +103,10 @@
     -fx-background-color: white;
 }
 
+.check-box:selected:pressed .box .mark {
+    -fx-background-color: black;
+}
+
 .check-box:pressed .box .mark {
     -fx-background-color: black;
 }
