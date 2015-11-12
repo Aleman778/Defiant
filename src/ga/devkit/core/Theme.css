@@ -76,19 +76,39 @@
     -fx-background-color: #434343;
 }
 
-.button, .check-box .box {
+.button, .check-box .box, .color-picker {
     -fx-background-color: #5d5d5d;
     -fx-background-radius: 1.5px;
     -fx-text-fill: #e1e1e1;
 }
 
-.button:hover, .check-box:hover .box {
+.button:hover, .check-box:hover .box, .color-picker:hover {
     -fx-background-color: #5688a5;
 }
 
-.button:pressed, .check-box:pressed .box {
+.button:pressed, .check-box:pressed .box, .color-picker:pressed {
     -fx-background-color: #e1e1e1;
     -fx-text-fill: #434343;
+}
+
+.color-picker .arrow {
+    -fx-background-color: white;
+}
+
+.color-picker:hover .arrow {
+    -fx-background-color: white;
+}
+
+.color-picker:pressed .arrow{
+    -fx-background-color: black;
+}
+
+.color-picker:pressed .label {
+    -fx-text-fill: black;
+}
+
+.arrow-button {
+    -fx-background-color: transparent;
 }
 
 .check-box .box .mark {
@@ -121,6 +141,27 @@
 
 .button-icon:pressed {
     -fx-background-color: #5688a5;
+}
+
+.slider .thumb {
+    -fx-background-color: #e1e1e1;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #5688a5;
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #517084;
+}
+
+.slider .track {
+    -fx-background-color: #5d5d5d;
+}
+
+.slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: #e1e1e1;
 }
 
 .toggle-button {
