@@ -6,55 +6,72 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="276.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <AnchorPane minHeight="0.0" prefHeight="776.0" prefWidth="274.0">
-         <children>
-            <Slider fx:id="direction" blockIncrement="45.0" layoutX="16.0" layoutY="40.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="20.0" layoutY="23.0" text="Direction" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="spread" blockIncrement="45.0" layoutX="16.0" layoutY="95.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="360.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="21.0" layoutY="78.0" text="Spread" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="size" blockIncrement="2.0" layoutX="16.0" layoutY="150.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="19.0" layoutY="133.0" text="Size" AnchorPane.leftAnchor="16.0" />
-            <ColorPicker fx:id="color" editable="true" layoutX="17.0" layoutY="601.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="17.0" layoutY="578.0" text="Color" AnchorPane.leftAnchor="16.0" />
-            <CheckBox fx:id="mode" layoutX="34.0" layoutY="640.0" mnemonicParsing="false" text="Single Fire" AnchorPane.leftAnchor="32.0" />
-            <Label layoutX="9.0" layoutY="2.0" text="Particle Settings:" AnchorPane.leftAnchor="9.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Slider fx:id="gravity" blockIncrement="2.0" layoutX="16.0" layoutY="430.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="0.6" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="16.0" layoutY="413.0" text="Gravity" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="sizeEnd" blockIncrement="2.0" layoutX="24.0" layoutY="205.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="27.0" layoutY="188.0" text="Size End" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="sizeStep" blockIncrement="0.2" layoutX="24.0" layoutY="265.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="27.0" layoutY="248.0" text="Size Step" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="velocity" blockIncrement="0.25" layoutX="18.0" layoutY="320.0" majorTickUnit="0.25" max="2.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="21.0" layoutY="303.0" text="Velocity" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="velocityStep" blockIncrement="0.01" layoutX="16.0" layoutY="375.0" majorTickUnit="0.01" max="1.025" min="0.975" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="16.0" layoutY="358.0" text="Velocity Step" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="life" blockIncrement="50.0" layoutX="16.0" layoutY="485.0" majorTickUnit="50.0" max="200.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="100.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="16.0" layoutY="468.0" text="Life" AnchorPane.leftAnchor="16.0" />
-            <Slider fx:id="rate" blockIncrement="5.0" layoutX="16.0" layoutY="540.0" majorTickUnit="5.0" max="20.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-            <Label layoutX="16.0" layoutY="523.0" text="Rate" AnchorPane.leftAnchor="16.0" />
-            <RadioButton fx:id="point" layoutX="11.0" layoutY="689.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="11.0">
-               <toggleGroup>
-                  <ToggleGroup fx:id="emitterShape" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="area" layoutX="64.0" layoutY="689.0" mnemonicParsing="false" text="Area" toggleGroup="$emitterShape" />
-            <Label layoutX="14.0" layoutY="665.0" text="Emitter Shape" AnchorPane.leftAnchor="16.0" />
-            <Label layoutX="18.0" layoutY="714.0" text="Particle Shape" AnchorPane.leftAnchor="16.0" />
-            <RadioButton fx:id="circle" layoutX="11.0" layoutY="737.0" mnemonicParsing="false" selected="true" text="Circle" AnchorPane.leftAnchor="11.0">
-               <toggleGroup>
-                  <ToggleGroup fx:id="particleShape" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="square" layoutX="65.0" layoutY="737.0" mnemonicParsing="false" text="Square" toggleGroup="$particleShape" />
-            <RadioButton fx:id="sprite" layoutX="128.0" layoutY="737.0" mnemonicParsing="false" text="Sprite" toggleGroup="$particleShape" />
-            <TextField fx:id="areaBox" disable="true" layoutX="117.0" layoutY="685.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" />
-         </children>
-      </AnchorPane>
-   </content>
-</ScrollPane>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Particle System" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+      <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+         <tabs>
+            <Tab text="Particle Settings">
+               <content>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="840.0" prefWidth="276.0">
+                     <content>
+                        <AnchorPane minHeight="0.0" prefHeight="776.0" prefWidth="274.0">
+                           <children>
+                              <Slider fx:id="direction" blockIncrement="45.0" layoutX="16.0" layoutY="40.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="20.0" layoutY="23.0" text="Direction" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="spread" blockIncrement="45.0" layoutX="16.0" layoutY="95.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="360.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="21.0" layoutY="78.0" text="Spread" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="size" blockIncrement="2.0" layoutX="16.0" layoutY="150.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="19.0" layoutY="133.0" text="Size" AnchorPane.leftAnchor="16.0" />
+                              <ColorPicker fx:id="color" editable="true" layoutX="17.0" layoutY="601.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="17.0" layoutY="578.0" text="Color" AnchorPane.leftAnchor="16.0" />
+                              <CheckBox fx:id="mode" layoutX="34.0" layoutY="640.0" mnemonicParsing="false" text="Single Fire" AnchorPane.leftAnchor="32.0" />
+                              <Slider fx:id="gravity" blockIncrement="2.0" layoutX="16.0" layoutY="430.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="0.6" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="16.0" layoutY="413.0" text="Gravity" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="sizeEnd" blockIncrement="2.0" layoutX="24.0" layoutY="205.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="27.0" layoutY="188.0" text="Size End" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="sizeStep" blockIncrement="0.2" layoutX="24.0" layoutY="265.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="27.0" layoutY="248.0" text="Size Step" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="velocity" blockIncrement="0.25" layoutX="18.0" layoutY="320.0" majorTickUnit="0.25" max="2.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="21.0" layoutY="303.0" text="Velocity" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="velocityStep" blockIncrement="0.01" layoutX="16.0" layoutY="375.0" majorTickUnit="0.01" max="1.025" min="0.975" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="16.0" layoutY="358.0" text="Velocity Step" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="life" blockIncrement="50.0" layoutX="16.0" layoutY="485.0" majorTickUnit="50.0" max="200.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="100.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="16.0" layoutY="468.0" text="Life" AnchorPane.leftAnchor="16.0" />
+                              <Slider fx:id="rate" blockIncrement="5.0" layoutX="16.0" layoutY="540.0" majorTickUnit="5.0" max="20.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="16.0" layoutY="523.0" text="Rate" AnchorPane.leftAnchor="16.0" />
+                              <Label layoutX="17.0" layoutY="671.0" text="Particle Shape" AnchorPane.leftAnchor="17.0" />
+                              <RadioButton fx:id="circle" layoutX="29.0" layoutY="692.0" mnemonicParsing="false" selected="true" text="Circle" AnchorPane.leftAnchor="29.0">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="particleShape" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="square" layoutX="98.0" layoutY="692.0" mnemonicParsing="false" text="Square" toggleGroup="$particleShape" />
+                              <RadioButton fx:id="sprite" layoutX="177.0" layoutY="692.0" mnemonicParsing="false" text="Sprite" toggleGroup="$particleShape" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab text="Emitter Settings">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <RadioButton fx:id="point" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="14.0">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="emitterShape" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="area" layoutX="75.0" layoutY="31.0" mnemonicParsing="false" text="Area" toggleGroup="$emitterShape" />
+                        <Label layoutX="7.0" layoutY="6.0" text="Emitter Shape" AnchorPane.leftAnchor="7.0" />
+                        <TextField fx:id="areaBox" disable="true" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
