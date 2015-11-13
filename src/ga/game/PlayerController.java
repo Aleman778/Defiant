@@ -23,6 +23,7 @@ public class PlayerController extends GameComponent {
         {
             add(new Image("textures/player/Arm_Med_vapen1.png"));
             add(new Image("textures/player/Arm_Med_vapen2.png"));
+            add(new Image("textures/player/Arm_Med_vapen3.png"));
         }
     };
     private static final List<Image> playerAnimations = new ArrayList<Image>() {
