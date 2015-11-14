@@ -196,6 +196,7 @@ public class ParticleSettings extends Interface implements Initializable {
         point.setOnAction((ActionEvent event) -> {
             areaBox.setText("1, 1");
             areaBox.setDisable(true);
+            updatePreview();
         });
         area.setOnAction((ActionEvent event) -> {
             areaBox.setText("50, 50");
