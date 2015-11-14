@@ -1,5 +1,6 @@
 package ga.engine.rendering;
 
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -13,7 +14,7 @@ public class ImageRenderer extends GameComponent {
     }
     
     public ImageRenderer(String filepath) {
-        this(new Image(ImageRenderer.class.getResource("/" + filepath).toExternalForm()));
+        this(ResourceManager.get(filepath));
     }
 
     public void setImage(Image image) {

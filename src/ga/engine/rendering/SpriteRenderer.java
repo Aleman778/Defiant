@@ -1,5 +1,6 @@
 package ga.engine.rendering;
 
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -19,7 +20,7 @@ public class SpriteRenderer extends GameComponent {
     } 
 
     public SpriteRenderer(String filepath, int offsetX, int offsetY, int width, int height) {
-        this(new Image(ImageRenderer.class.getResource("/" + filepath).toExternalForm()), offsetX, offsetY, width, height);
+        this(ResourceManager.get(filepath), offsetX, offsetY, width, height);
     }
     
     public SpriteRenderer(Image sprite, int width, int height) {
@@ -27,7 +28,7 @@ public class SpriteRenderer extends GameComponent {
     }
     
     public SpriteRenderer(String filepath, int width, int height) {
-        this(new Image(ImageRenderer.class.getResource("/" + filepath).toExternalForm()), 0, 0, width, height);
+        this(ResourceManager.get(filepath), 0, 0, width, height);
     }
 
     @Override
