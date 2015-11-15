@@ -28,11 +28,6 @@ public abstract class Light extends GameComponent {
     public void start() {
         if (Application.getScene() != null) {
             System.exit(1000);
-            if (this instanceof AmbientLight) {
-                Application.getScene().getLightmap().setAmbientLight((AmbientLight) this);
-            } else {
-                Application.getScene().getLightmap().addLight(this);
-            }
         }
     }
 

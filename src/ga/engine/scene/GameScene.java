@@ -33,10 +33,7 @@ public final class GameScene {
     private final Input input;
     private final Canvas canvas;
     private final GraphicsContext g;
-    private final LightMap lightmap;
     public static Vector2D gravity = new Vector2D(0, 0.2);
-    
-    private PointLight pointlight;
     
     /**
      * Constructs a Scene from filepath scene
@@ -50,19 +47,6 @@ public final class GameScene {
         canvas = new Canvas(Application.getWidth(), Application.getHeight());
         group.getChildren().add(canvas);
         g = canvas.getGraphicsContext2D();
-        
-        lightmap = new LightMap();
-        AmbientLight ambient = new AmbientLight();
-        ambient.setColor(new Color(0.01, 0.01, 0.01, 1.0));
-        group.getChildren().add(lightmap);
-        
-        Transform2D transform = new Transform2D(null);
-        transform.scale = new Vector2D(300, 300);
-        GameObject light = new GameObject(transform);
-        pointlight = new PointLight();
-        light.addComponent(pointlight);
-        lightmap.addLight(pointlight);
-        lightmap.setAmbientLight(ambient);
         
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject player = new GameObject(320, 0)
@@ -110,16 +94,10 @@ public final class GameScene {
 
     public void setWidth(double width) {
         canvas.setWidth(width);
-        lightmap.refresh();
     }
 
     public void setHeight(double height) {
         canvas.setHeight(height);
-        lightmap.refresh();
-    }
-
-    public LightMap getLightmap() {
-        return lightmap;
     }
 
     public void update() {
@@ -146,11 +124,6 @@ public final class GameScene {
         
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
-        //renderAABB();
-        
-        //Render lightning
-        lightmap.refresh();
-        pointlight.refresh();
         
         //Clear Inputs
         input.clear();
