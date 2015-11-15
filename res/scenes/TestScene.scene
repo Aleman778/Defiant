@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<scene>
-    
+<scene width="640" height="480" tilesize="32">
+    <tilemap name="Background" depth="0">
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="0" ty="0"></tile>
+    </tilemap>
+    <gameobjects>
+        <object tag="untagged" name="Object" depth="0" tx="0" ty="0" rot="0" sx="0" sy="0">
+            <component name="SpriteRenderer">
+                <string var="image">textures/Player_Idle.png</string>
+            </component>
+        </object>
+    </gameobjects>
 </scene>

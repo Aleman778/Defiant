@@ -195,6 +195,18 @@
     -fx-background-color: red;
 }
 
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
 .split-pane {
     -fx-box-border: transparent;
     -fx-background-color: #353535;
@@ -366,4 +378,9 @@
 .scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
     -fx-background-color: null;
     -fx-padding: 0;
+}
+
+.remove-radius {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
 }

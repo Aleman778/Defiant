@@ -112,4 +112,9 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
     public ParticleConfiguration getConfig() {
         return emitter.getConfig();
     }
+
+    @Override
+    public File getFile() {
+        return file;
+    }
 }

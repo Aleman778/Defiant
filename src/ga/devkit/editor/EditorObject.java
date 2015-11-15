@@ -19,7 +19,7 @@ public class EditorObject extends GameObject {
         this.name = name;
     }
 
-    public EditorObject(String name, double x, double y, double z) {
+    public EditorObject(String name, double x, double y) {
         super(x, y);
         this.name = name;
     }

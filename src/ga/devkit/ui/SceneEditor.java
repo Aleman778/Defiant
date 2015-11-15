@@ -1,37 +1,31 @@
 package ga.devkit.ui;
 
-import com.sun.javafx.geom.Rectangle;
+import ga.devkit.editor.EditorLayer;
 import ga.devkit.editor.EditorObject;
+import ga.devkit.editor.EditorTile;
+import ga.devkit.editor.SelectionGroup;
+import ga.devkit.editor.SelectionType;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.JavaFXCanvasRenderer;
 import ga.engine.scene.GameObject;
-import ga.engine.scene.Transform2D;
+import ga.engine.xml.XMLReader;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
+import org.xml.sax.Attributes;
 
 public class SceneEditor extends Interface implements Initializable, Editor {
-
+    
     @FXML
     public Canvas canvas;
     public AnchorPane pane;
@@ -40,32 +34,27 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     public ObjectEditor object;
     public LayerView layer;
     
-    private final File file;
     private GraphicsContext g;
-    private int x, y, prevX, prevY;
-    private int width, height;
+    public boolean showGrid;
     private int tileSize;
-    private boolean showGrid;
-    private boolean dragging, transforming;
-    private Set<EditorObject> placingObjects;
-    private Set<EditorObject> selectedObjects;
-    private Rectangle selectionRange, placingRange;
+    private int width, height;
     
+    private final File file;
     private final EditorObject rootObject;
+    private final List<EditorLayer> layers;
+    
+    public final SelectionGroup selection;
+    public static SelectionGroup placement = null;
     
     public SceneEditor(File file) {
         this.file = file;
-        this.width = 0;
-        this.height = 0;
-        this.x = 0; this.y = 0;
-        this.prevX = 0; this.prevY = 0;
-        this.tileSize = 32;
         this.showGrid = true;
         this.rootObject = new EditorObject("root");
-        this.selectedObjects = new HashSet<>();
-        this.placingObjects = new HashSet<>();
-        this.selectionRange = null;
-        this.placingRange = null;
+        this.layers = new ArrayList<>();
+        this.selection = new SelectionGroup(SelectionType.SELECTION);
+        this.tileSize = 32;
+        this.width = 0;
+        this.height = 0;
         this.graph = new SceneGraph(this);
         this.graph.load();
         this.graph.refreshGraph(rootObject);
@@ -76,6 +65,11 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         SplitPane.setResizableWithParent(graph.root, false);
         SplitPane.setResizableWithParent(layer.root, true);
         SplitPane.setResizableWithParent(object.root, true);
+    }
+
+    @Override
+    public void load() {
+        super.load();
     }
     
     @Override
@@ -95,206 +89,28 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         canvas.setWidth(width);
         canvas.setHeight(height);
         g.clearRect(0, 0, width, height);
+        UIRenderUtils.renderCheckerboard(g);
         
-        renderCheckerboard();
-        
-        if (!placingObjects.isEmpty()) {
-            placingRange = getRange(placingObjects);
-            if (showGrid) {
-                placingRange.x = (int) (placingRange.x / 32) * 32;
-                placingRange.y = (int) (placingRange.y / 32) * 32;
-            }
-            g.setFill(new Color(0.0, 1.0, 0.0, 0.2));
-            g.fillRect(placingRange.x, placingRange.y, placingRange.width, placingRange.height);
+        //Render layers
+        for (EditorLayer l: layers) {
+            l.render(g);
         }
         
-        rootObject.render(g);
+        //Render Objects
+        List<GameObject> objects = new ArrayList<>();
+        rootObject.getGameObjects(objects);
+        JavaFXCanvasRenderer.renderAll(canvas, objects);
         
-        for (EditorObject object: selectedObjects) {
-            object.renderAABB(g);
-        }
-        if (!selectedObjects.isEmpty()) {
-            selectionRange = getRange(selectedObjects);
-            renderSelection(selectionRange);
-            renderResizeSelection(selectionRange);
-        }
+        //Render Selection Groups
+        selection.render(g, showGrid, tileSize);
+        if (placement != null)
+            placement.render(g, showGrid, tileSize);
         
-        if (!placingObjects.isEmpty()) {
-            g.setGlobalAlpha(0.8);
-            for (GameObject object: placingObjects) {
-                object.render(g);
-            }
-            g.setGlobalAlpha(1.0);
-        }
-        
-        if (showGrid)
-            renderGrid();
-    }
-    
-    private void renderGrid() {
-        g.setFill(new Color(1.0, 1.0, 1.0, 0.4));
-        for (int i = 1; i < width / tileSize; i++) {
-            g.fillRect(i * tileSize, 0, 1, height);
-        }
-        for (int j = 1; j < height / tileSize; j++) {
-            g.fillRect(0, j * tileSize, width, 1);
+        if (showGrid) {
+            UIRenderUtils.renderGrid(g, width, height, tileSize);
         }
     }
-    
-    private void renderSelection(Rectangle selection) {
-        g.setLineJoin(StrokeLineJoin.MITER);
-        g.setLineCap(StrokeLineCap.SQUARE);
-        g.setLineDashes(6.0);
-        
-        g.setFill(Color.rgb(67, 141, 215, 0.1));
-        g.fillRect(selection.x, selection.y, selection.width, selection.height);
-        
-        g.setStroke(Color.rgb(0, 0, 0, 1));
-        g.setLineDashOffset(6.0);
-        g.strokeLine(selection.x, selection.y, selection.x, selection.y + selection.height);
-        g.strokeLine(selection.x, selection.y, selection.x + selection.width, selection.y);
-        g.strokeLine(selection.x + selection.width, selection.y, selection.x + selection.width, selection.y + selection.height);
-        g.strokeLine(selection.x, selection.y + selection.height, selection.x + selection.width, selection.y + selection.height);
-        
-        g.setStroke(Color.rgb(67, 141, 215, 1));
-        g.setLineDashOffset(0.0);
-        g.strokeLine(selection.x, selection.y, selection.x, selection.y + selection.height);
-        g.strokeLine(selection.x, selection.y, selection.x + selection.width, selection.y);
-        g.strokeLine(selection.x + selection.width, selection.y, selection.x + selection.width, selection.y + selection.height);
-        g.strokeLine(selection.x, selection.y + selection.height, selection.x + selection.width, selection.y + selection.height);
-    }
-    
-    private void renderResizeSelection(Rectangle selection) {
-        renderDot(selection.x, selection.y);
-        renderDot(selection.x + selection.width / 2, selection.y);
-        renderDot(selection.x + selection.width, selection.y);
-        renderDot(selection.x, selection.y + selection.height / 2);
-        renderDot(selection.x, selection.y + selection.height);
-        renderDot(selection.x + selection.width / 2, selection.y + selection.height);
-        renderDot(selection.x + selection.width, selection.y + selection.height / 2);
-        renderDot(selection.x + selection.width, selection.y + selection.height);
-    }
-    
-    private void renderDot(int x, int y) {
-        g.setFill(Color.rgb(67, 141, 215, 1));
-        g.fillRect(x - 3, y - 3, 6, 6);
-        g.setFill(Color.WHITE);
-        g.fillRect(x - 2, y - 2, 4, 4);
-    }
-    
-    private void renderCheckerboard() {
-        for (int i = 0; i < canvas.getWidth() / 16; i++) {
-            for (int j = 0; j < canvas.getHeight() / 16; j++) {
-                if (i % 2 + j % 2 == 1) {
-                    g.setFill(new Color(0.25, 0.25, 0.25, 1.0));
-                } else {
-                    g.setFill(new Color(0.32, 0.32, 0.32, 1.0));
-                }
-                g.fillRect(i * 16, j * 16, 16, 16);
-            }
-        }
-    }
-    
-    public void addObject(EditorObject object) {
-        rootObject.addChild(object);
-        graph.refreshGraph(rootObject);
-    }
-    
-    public void clearSelectedObjects() {
-        selectedObjects.clear();
-    }
-    
-    public void addSelectedObject(EditorObject object) {
-        selectedObjects.add(object);
-    }
-    
-    public void removeSelectedObject(EditorObject object) {
-        try {
-            selectedObjects.remove(object);
-        } catch (Exception e) {
-        }
-    }
-    
-    public void transformObjects(Collection<EditorObject> objects, Transform2D transform) {
-        for (EditorObject object: objects) {
-            object.getTransform().translate(transform.position);
-            object.getTransform().rotate(transform.rotation);
-            object.getTransform().scale(transform.scale);
-        }
-    }
-    
-    private void gridTransformObjects(Collection<EditorObject> objects) {
-        for (EditorObject object: objects) {
-            object.getTransform().position.x = (int) (object.getTransform().position.x / 32) * 32;
-            object.getTransform().position.y = (int) (object.getTransform().position.y / 32) * 32;
-        }
-    }
-    
-    public void removeObject(EditorObject object) {
-        removeObject(rootObject, object);
-        graph.refreshGraph(rootObject); 
-    }
-    
-    private EditorObject removeObject(EditorObject in, EditorObject object) {
-        if (in.equals(object))
-            return object;
-        
-        for (GameObject o: in.getChildren()) {
-            EditorObject removed = removeObject((EditorObject) o, object);
-            if (removed != null) {
-                in.getChildren().remove(removed);
-                break;
-            }
-        }
-        
-        return null;
-    }
-    
-    private Rectangle getRange(Set<EditorObject> objects) {
-        int sx = Integer.MAX_VALUE;
-        int sy = Integer.MAX_VALUE;
-        int ex = Integer.MIN_VALUE;
-        int ey = Integer.MIN_VALUE;
-        
-        for (EditorObject object: objects) {
-            Rectangle bounds = object.localAABB();
-            if (bounds.x < sx)
-                sx = bounds.x;
-            if (bounds.x + bounds.width > ex)
-                ex = bounds.x + bounds.width;
-            if (bounds.y < sy)
-                sy = bounds.y;
-            if (bounds.y + bounds.height > ey)
-                ey = bounds.y + bounds.height;
-        }
-        
-        return new Rectangle(sx, sy, ex - sx, ey - sy);
-    }
-    
-    private EditorObject getObject(int x, int y) {
-        EditorObject result = null;
-        List<GameObject> objects = rootObject.getGameObjects(new ArrayList<>());
-        int depth = Integer.MIN_VALUE;
-        for (GameObject object: objects) {
-            if (object.localAABB().contains(x, y) && object.getTransform().depth > depth) {
-                result = (EditorObject) object;
-                depth = object.getTransform().depth;
-            }
-        }
-        return result;
-    }
-    
-    private List<EditorObject> getObjects(Rectangle bounds) {
-        List<GameObject> objects = rootObject.getGameObjects(new ArrayList<>());
-        List<EditorObject> result = new ArrayList<>();
-        for (GameObject object: objects) {
-            if (bounds.contains(object.localAABB())) {
-                result.add((EditorObject) object);
-            }
-        }
-        return result;
-    }
-    
+
     public int getWidth() {
         return width;
     }
@@ -329,162 +145,123 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         height = height / this.tileSize * this.tileSize;
         render();
     }
+    
+    public List<GameObject> getAllGameObjects() {
+        return rootObject.getGameObjects(new ArrayList<>());
+    }
+    
+    public List<EditorTile> getAllTiles() {
+        List<EditorTile> result = new ArrayList<>();
+        for (EditorLayer l: layers) {
+            result.addAll(l.getTiles());
+        }
+        return result;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         g = canvas.getGraphicsContext2D();
-        setSize(2000, 2000);
-        render();
+        
+        XMLReader reader = new XMLReader() {
+
+            public EditorLayer layer;
+            public EditorObject object;
+
+            @Override
+            public void documentStart() {
+            }
+
+            @Override
+            public void documentEnd() {
+            }
+
+            @Override
+            public void nodeStart(String element, Attributes attri) {
+                switch (element) {
+                    case "scene":
+                        setSize(Integer.parseInt(attri.getValue("width")),
+                                Integer.parseInt(attri.getValue("height"))
+                        );
+                        break;
+                    case "tilemap":
+                        layer = new EditorLayer(
+                                Integer.parseInt(attri.getValue("depth")),
+                                attri.getValue("name")
+                        );
+                        layers.add(layer);
+                        break;
+                    case "tile":
+                        if (layer != null) {
+                            EditorTile tile = new EditorTile(
+                                    attri.getValue("image"), layer.getDepth(),
+                                    Integer.parseInt(attri.getValue("tilex")),
+                                    Integer.parseInt(attri.getValue("tiley")),
+                                    Integer.parseInt(attri.getValue("width")),
+                                    Integer.parseInt(attri.getValue("height")),
+                                    new Vector2D(
+                                            Double.parseDouble(attri.getValue("tx")),
+                                            Double.parseDouble(attri.getValue("ty"))
+                                    )
+                            );
+                            layer.getTiles().add(tile);
+                        }
+                        break;
+                    case "object":
+                        
+                        break;
+                    case "component":
+                        
+                        break;
+                }
+            }
+
+            @Override
+            public void nodeEnd(String element, Attributes attri, String value) {
+                switch (element) {
+                    case "tilemap":
+                        layer = null;
+                        break;
+                    case "object":
+                        
+                        break;
+                }
+            }
+        };
+        reader.parse(file);
         
         pane.setOnMousePressed((MouseEvent event) -> {
-            x = (int) event.getX();
-            y = (int) event.getY();
-            prevX = (int) event.getX();
-            prevY = (int) event.getY();
-            if (selectionRange != null && !event.isControlDown() && !event.isShiftDown()) {
-                if (selectionRange.contains((int) event.getX(), (int) event.getY())) {
-                    transforming = true;
-                }
-            } else {
-                transforming = false;
+            selection.mousePressed(event, this);
+            if (placement != null) {
+                placement.mousePressed(event, this);
             }
         });
-        pane.setOnMouseDragged((MouseEvent event) -> {
-            dragging = true;
-
-            if (transforming) {
-                Vector2D translate = new Vector2D(event.getX() - prevX, event.getY() - prevY);
-                Vector2D scale = new Vector2D();
-                double rotate = 0;
-                
-                transformObjects(selectedObjects, new Transform2D(null, translate, new Vector2D(), rotate, scale, 0));
-                placingObjects.addAll(selectedObjects);
-                render();
-                
-            } else {
-                render();
-                int sx = Math.min(x, (int) event.getX());
-                int sy = Math.min(y, (int) event.getY());
-                int w = Math.max(x, (int) event.getX()) - sx;
-                int h = Math.max(y, (int) event.getY()) - sy;
-                renderSelection(new Rectangle(sx, sy, w, h));
-            }
-            
-            prevX = (int) event.getX();
-            prevY = (int) event.getY();
-        });
+        
         pane.setOnMouseReleased((MouseEvent event) -> {
-            if (!event.isControlDown() && !event.isShiftDown() && (!transforming || !dragging)) {
-                selectedObjects.clear();
-                selectionRange = null;
+            selection.mouseReleased(event, this);
+            if (placement != null) {
+                placement.mouseReleased(event, this);
             }
-            placingObjects.clear();
-            placingRange = null;
-            
-            if (showGrid) {
-                gridTransformObjects(selectedObjects);
+        });
+        
+        pane.setOnMouseDragged((MouseEvent event) -> {
+            selection.mouseDragged(event, this);
+            if (placement != null) {
+                placement.mouseDragged(event, this);
             }
+        });
+        
+        pane.setOnMouseMoved((MouseEvent event) -> {
+            selection.mouseMoved(event, this);
+            if (placement != null) {
+                placement.mouseMoved(event, this);
+            }
+        });
+        
+        render();
+    }
 
-            if (!transforming || !dragging) {
-                if (dragging) {
-                    int sx = Math.min(x, (int) event.getX());
-                    int sy = Math.min(y, (int) event.getY());
-                    int w = Math.max(x, (int) event.getX()) - sx;
-                    int h = Math.max(y, (int) event.getY()) - sy;
-
-                    List<EditorObject> objects = getObjects(new Rectangle(sx, sy, w, h));
-                    if (event.isControlDown()) {
-                        selectedObjects.removeAll(objects);
-                    } else {
-                        selectedObjects.addAll(objects);
-                    }
-                } else {
-                    EditorObject object = getObject((int) event.getX(), (int) event.getY());
-                    if (object != null) {
-                        if (event.isControlDown()) {
-                            selectedObjects.remove(object);
-                        } else {
-                            selectedObjects.add(object);
-                        }
-                    }
-                }
-            }
-            graph.setAllSelections(selectedObjects);
-            transforming = false;
-            dragging = false;
-            render();
-        });
-        pane.setOnKeyPressed((KeyEvent event) -> {
-            
-        });
-        pane.setOnDragDone((DragEvent event) -> {
-            placingObjects.clear();
-            placingRange = null;
-            render();
-        });
-        pane.setOnDragExited((DragEvent event) -> {
-            placingObjects.clear();
-            placingRange = null;
-            render();
-        });
-        pane.setOnDragDropped((DragEvent event) -> {
-            placingObjects.clear();
-            placingRange = null;
-            if (event.getDragboard().hasContent(DataFormat.FILES)) {
-                File resource = event.getDragboard().getFiles().get(0);
-                if (resource.exists()) {
-                    String ext = Core.getExtension(resource.getName());
-                    switch (ext) {
-                        case "png": case "jpg": case "gif":
-                            Image image = new Image("file:"+resource.getPath());
-                            Vector2D position = new Vector2D(event.getX(), event.getY());
-                            if (showGrid) {
-                                position.x = (int) (position.x / tileSize) * tileSize;
-                                position.y = (int) (position.y / tileSize) * tileSize;
-                            }
-                            EditorObject result = new EditorObject(Core.getFilename(resource.getName()), new Transform2D(null, position.x, position.y));
-                            result.setAABB(0, 0, (int) image.getWidth(), (int) image.getHeight());
-                            result.addComponent(new ImageRenderer(image));
-                            addObject(result);
-                            selectedObjects.clear();
-                            selectedObjects.add(result);
-                            graph.setSelection(result);
-                            render();
-                            break;
-                    }
-                }
-            } else if (event.getDragboard().hasContent(DataFormat.PLAIN_TEXT)) {
-                
-            }
-        });
-        pane.setOnDragOver((DragEvent event) -> {
-            if (event.getDragboard().hasContent(DataFormat.FILES)) {
-                File resource = event.getDragboard().getFiles().get(0);
-                if (resource.exists()) {
-                    String ext = Core.getExtension(resource.getName());
-                    event.acceptTransferModes(TransferMode.MOVE);
-                    if (placingObjects.isEmpty()) { 
-                        switch (ext) {
-                            case "png": case "jpg": case "gif":
-                                Image image = new Image("file:"+resource.getPath());
-                                EditorObject object = new EditorObject("");
-                                object.setAABB(0, 0, (int) image.getWidth(), (int) image.getHeight());
-                                object.addComponent(new ImageRenderer(image));
-                                placingObjects.add(object);
-                                break;
-                        }
-                    }
-                    if (!placingObjects.isEmpty()) {
-                        for (EditorObject object: placingObjects) {
-                            object.getTransform().position.x = event.getX();
-                            object.getTransform().position.y = event.getY();
-                        }
-                        render();
-                    }
-                }
-            } else if (event.getDragboard().hasContent(DataFormat.PLAIN_TEXT)) {
-                
-            }
-        });
+    @Override
+    public File getFile() {
+        return file;
     }
 }

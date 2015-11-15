@@ -63,6 +63,10 @@ public class Application extends javafx.application.Application {
         return scene;
     }
     
+    public static Stage getStage() {
+        return window;
+    }
+    
     public static double getWidth() {
         return window.getWidth();
     }

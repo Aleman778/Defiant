@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SelectionMode;
@@ -32,13 +31,13 @@ public class SceneGraph extends Interface implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         graph.showRootProperty().setValue(false);
         graph.setOnMouseReleased((MouseEvent event) -> {
-            editor.clearSelectedObjects();
-            for (TreeItem<String> item: graph.getSelectionModel().getSelectedItems()) {
-                EditorObject object = objects.get(item.getValue());
-                if (object != null) {
-                    editor.addSelectedObject(object);
-                }
-            }
+//            editor.clearSelectedObjects();
+//            for (TreeItem<String> item: graph.getSelectionModel().getSelectedItems()) {
+//                EditorObject object = objects.get(item.getValue());
+//                if (object != null) {
+//                    editor.addSelectedObject(object);
+//                }
+//            }
             refreshObjectEditor();
             editor.render();
         });

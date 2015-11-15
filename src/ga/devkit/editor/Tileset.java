@@ -1,5 +1,6 @@
 package ga.devkit.editor;
 
+import ga.engine.resource.ResourceManager;
 import ga.engine.xml.XMLReader;
 import java.io.File;
 import javafx.scene.image.Image;
@@ -8,6 +9,7 @@ import org.xml.sax.Attributes;
 public class Tileset {
     
     public Image tilesheet;
+    public String imagepath;
     public int offsetX, offsetY;
     public int width, height;
     
@@ -30,7 +32,8 @@ public class Tileset {
             public void nodeEnd(String element, Attributes attri, String value) {
                 switch (element) {
                     case "image":
-                        tilesheet = new Image(Tileset.class.getResource("/" + value).toExternalForm());
+                        tilesheet = ResourceManager.get(value);
+                        imagepath = value;
                         break;
                     case "offsetX":
                         offsetX = Integer.parseInt(value);
@@ -56,6 +59,10 @@ public class Tileset {
 
     public void setTilesheet(Image tilesheet) {
         this.tilesheet = tilesheet;
+    }
+    
+    public String getPath() {
+        return imagepath;
     }
 
     public int getOffsetX() {
