@@ -169,4 +169,13 @@ public class RigidBody extends Body {
             }
         }
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

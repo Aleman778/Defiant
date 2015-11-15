@@ -33,4 +33,13 @@ public class ImageRenderer extends GameComponent {
     public void render(GraphicsContext g) {
         g.drawImage(image, 0, 0);
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

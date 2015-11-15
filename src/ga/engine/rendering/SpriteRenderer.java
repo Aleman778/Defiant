@@ -75,4 +75,13 @@ public class SpriteRenderer extends GameComponent {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

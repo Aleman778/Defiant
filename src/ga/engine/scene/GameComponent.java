@@ -2,11 +2,14 @@ package ga.engine.scene;
 
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class GameComponent {
+    
+    public static final HashMap<String, GameComponent> components = new HashMap<>();
     
     public Transform2D transform;
     public GameObject gameobject;
@@ -14,17 +17,20 @@ public abstract class GameComponent {
     public GameComponent() {
     }
     
-    public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
+    public final <T extends GameComponent> GameComponent getComponent(Class<T> component) {
         return gameobject.getComponent(component);
     }
-    public <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
+    public final <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
         return gameobject.getComponents(component);
     }
     
-    public List<GameComponent> getAllComponents() {
+    public final List<GameComponent> getAllComponents() {
         return gameobject.getAllComponents();
     }
-     
+    
+    public abstract GameComponent instantiate();
+    public abstract void xmlvar(String name, String value);
+    
     //EVENTS
     public void awoke() {}
     public void start() {}

@@ -7,7 +7,7 @@
     <gameobjects>
         <object tag="untagged" name="Object" depth="0" tx="0" ty="0" rot="0" sx="0" sy="0">
             <component name="SpriteRenderer">
-                <string var="image">textures/Player_Idle.png</string>
+                <var name="image">textures/Player_Idle.png</var>
             </component>
         </object>
     </gameobjects>

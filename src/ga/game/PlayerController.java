@@ -194,4 +194,13 @@ public class PlayerController extends GameComponent {
         jumpEmitter.object.transform.position = new Vector2D(16, 45);
         landEmitter.object.transform.position = new Vector2D(16, 50);
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

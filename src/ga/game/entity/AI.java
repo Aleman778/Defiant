@@ -59,4 +59,13 @@ public class AI extends GameComponent {
             timeSinceLastJump = 0;
         }
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

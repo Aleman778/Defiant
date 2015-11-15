@@ -44,4 +44,13 @@ public class AnimationController extends GameComponent {
         }
         animation.animate((int) frame);
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }

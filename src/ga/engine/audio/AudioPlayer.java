@@ -46,4 +46,13 @@ public class AudioPlayer extends GameComponent implements Runnable {
     @Override
     public void run() {
     }
+
+    @Override
+    public GameComponent instantiate() {
+        return null;
+    }
+
+    @Override
+    public void xmlvar(String name, String value) {
+    }
 }
