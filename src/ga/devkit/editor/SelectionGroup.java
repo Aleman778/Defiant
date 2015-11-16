@@ -117,6 +117,19 @@ public class SelectionGroup {
         selection = getRange();
     }
     
+    public void clear() {
+        objects.clear();
+        tiles.clear();
+    }
+    
+    public void clearObjects() {
+        objects.clear();
+    }
+    
+    public void clearTiles() {
+        tiles.clear();
+    }
+    
     public void translate(int x, int y) {
         selection.x += x;
         selection.y += y;
@@ -176,7 +189,7 @@ public class SelectionGroup {
         return new Rectangle(sx, sy, ex - sx, ey - sy);
     }
     
-    public void render(GraphicsContext g, boolean showGrid, int tileSize) {
+    public void render(GraphicsContext g, boolean showGrid, int gridSize) {
         if (objects.size() + tiles.size() == 0)
             return;
         
@@ -187,15 +200,19 @@ public class SelectionGroup {
             case TRANSFORMATION:
                 if (showGrid) {
                     g.setFill(new Color(0.0, 1.0, 0.0, 0.1));
-                    g.fillRect((int) (selection.x / tileSize + 1) * tileSize, 
-                            (int) (selection.y / tileSize + 1) * tileSize,
+                    g.fillRect((int) (selection.x / gridSize + 1) * gridSize, 
+                            (int) (selection.y / gridSize + 1) * gridSize,
                             selection.width, selection.height);
                 }
                 UIRenderUtils.renderSelection(g, selection);
                 break;
             case PLACEMENT:
                 g.setGlobalAlpha(0.4);
-                renderObjects(g);
+                if (showGrid) {
+                    renderObjects(g, gridSize);
+                } else {
+                    renderObjects(g);
+                }
                 g.setGlobalAlpha(1.0); 
                 break;
             case DRAGBOARD:
@@ -240,6 +257,15 @@ public class SelectionGroup {
         }
         for (EditorTile tile: tiles) {
             tile.render(g);
+        }
+    }
+    
+    private void renderObjects(GraphicsContext g, int gridsize) {
+        for (EditorObject object: objects) {
+            object.renderGrid(g, gridsize);
+        }
+        for (EditorTile tile: tiles) {
+            tile.renderGrid(g, gridsize);
         }
     }
 }
