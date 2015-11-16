@@ -20,6 +20,9 @@ public class ParticleConfiguration {
             put("rate", "1");
             put("particleShape", "circle");
             put("shape", "1, 1");
+            put("colorMid", "");
+            put("colorEnd", "");
+            put("colorPoint", "0.5");
         }
     };
     

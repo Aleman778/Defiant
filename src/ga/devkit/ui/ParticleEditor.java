@@ -56,6 +56,9 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "rate", String.valueOf(settings.getRate().getValue()));
         writer.createElementValue(root, "particleShape", settings.getSquare().isSelected() ? "square" : "circle");
         writer.createElementValue(root, "shape", String.valueOf(settings.getAreaBox().getText()));
+        writer.createElementValue(root, "colorMid", String.format("#%X", settings.getColorMid().getValue().hashCode()));
+        writer.createElementValue(root, "colorEnd", String.format("#%X", settings.getColorEnd().getValue().hashCode()));
+        writer.createElementValue(root, "colorPoint", String.valueOf(settings.getColorPoint().getValue()));
         writer.save("particles/systems/" + file.getName());
     }
 
@@ -71,6 +74,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         preview.setHeight(editorSize.height);
         g = preview.getGraphicsContext2D();
         settings.updateSliders(emitter.getConfig());
+        settings.updatePreview();
         int x = Integer.parseInt((settings.areaBox.getText().split(",")[0].trim())),
                 y = Integer.parseInt(settings.areaBox.getText().split(",")[1].trim());
         emitter.setShape(new Rectangle(-x / 2, -y / 2, x, y));

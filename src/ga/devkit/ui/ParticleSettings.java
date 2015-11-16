@@ -19,23 +19,10 @@ public class ParticleSettings extends Interface implements Initializable {
     private Editor editor;
 
     @FXML
-    public Slider direction;
-    public Slider spread;
-    public Slider size;
-    public Slider sizeEnd;
-    public Slider sizeStep;
-    public ColorPicker color;
-    public CheckBox mode;
-    public Slider gravity;
-    public Slider velocity;
-    public Slider velocityStep;
-    public Slider life;
-    public Slider rate;
-    public RadioButton point;
-    public RadioButton area;
-    public RadioButton circle;
-    public RadioButton square;
-    public RadioButton sprite;
+    public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityStep, life, rate, colorPoint;
+    public ColorPicker color, colorMid, colorEnd;
+    public CheckBox mode, colorLock;
+    public RadioButton point, area, circle, square, sprite;
     public TextField areaBox;
 
     public ParticleSettings(Editor editor) {
@@ -113,6 +100,22 @@ public class ParticleSettings extends Interface implements Initializable {
         return areaBox;
     }
 
+    public Slider getColorPoint() {
+        return colorPoint;
+    }
+
+    public ColorPicker getColorMid() {
+        return colorMid;
+    }
+
+    public ColorPicker getColorEnd() {
+        return colorEnd;
+    }
+
+    public CheckBox getColorLock() {
+        return colorLock;
+    }
+
     public void updateSliders(ParticleConfiguration c) {
         color.setValue(Color.web(c.getValue("color")));
         size.setValue(Double.valueOf(c.getValue("size")));
@@ -129,6 +132,14 @@ public class ParticleSettings extends Interface implements Initializable {
         circle.setSelected(c.getValue("particleShape").equals("circle"));
         square.setSelected(c.getValue("particleShape").equals("square"));
         areaBox.setText(c.getValue("shape"));
+        if (c.getValue("colorEnd").equals("")) {
+            colorMid.setValue(color.getValue());
+            colorEnd.setValue(color.getValue());
+        } else {
+            colorMid.setValue(Color.web(c.getValue("colorMid")));
+            colorEnd.setValue(Color.web(c.getValue("colorEnd")));
+        }
+        colorPoint.setValue(Double.valueOf(c.getValue("colorPoint")));
         if (Integer.parseInt(areaBox.getText().split(",")[0].trim()) > 1 && Integer.parseInt(areaBox.getText().split(",")[1].trim()) > 1) {
             area.setSelected(true);
             areaBox.setDisable(false);
@@ -137,8 +148,12 @@ public class ParticleSettings extends Interface implements Initializable {
         }
     }
 
-    private void updatePreview() {
+    public void updatePreview() {
         ParticleConfiguration c = ((ParticleEditor) editor).getConfig();
+        if (colorLock.isSelected()) {
+            colorEnd.setValue(color.getValue());
+            colorMid.setValue(color.getValue());
+        }
         c.setValue("color", String.format("#%X", color.getValue().hashCode()));
         c.setValue("size", String.valueOf(size.getValue()));
         c.setValue("sizeEnd", String.valueOf(sizeEnd.getValue()));
@@ -153,6 +168,9 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("rate", String.valueOf(rate.getValue()));
         c.setValue("particleShape", square.isSelected() ? "square" : "circle");
         c.setValue("shape", String.valueOf(areaBox.getText()));
+        c.setValue("colorMid", String.format("#%X", colorMid.getValue().hashCode()));
+        c.setValue("colorEnd", String.format("#%X", colorEnd.getValue().hashCode()));
+        c.setValue("colorPoint", String.valueOf(colorPoint.getValue()));
         ((ParticleEditor) editor).updateConfig(c);
     }
 
@@ -216,6 +234,18 @@ public class ParticleSettings extends Interface implements Initializable {
         });
         sprite.setOnAction((ActionEvent event) -> {
             ((ParticleEditor) editor).emitter.setSprite(new Image(ParticleSettings.class.getResource("/ga/devkit/editor/nonrenderable.png").toExternalForm()));
+        });
+        colorPoint.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        colorMid.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        colorEnd.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        colorLock.setOnAction((ActionEvent event) -> {
+            updatePreview();
         });
     }
 }

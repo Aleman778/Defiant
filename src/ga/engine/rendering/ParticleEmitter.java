@@ -21,9 +21,9 @@ public class ParticleEmitter extends GameComponent {
 
     private final HashSet<Particle> particles;
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
-    protected Color color;
+    protected Color color, colorMid, colorEnd;
     protected String mode, particleShape;
-    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate;
+    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate, colorPoint;
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
@@ -133,6 +133,13 @@ public class ParticleEmitter extends GameComponent {
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
             Particle p = it.next();
+            
+            if (p.life / p.lifeTime < colorPoint) {
+                p.color = color.interpolate(colorMid, (p.life / p.lifeTime) / colorPoint);
+            } else {
+                p.color = colorMid.interpolate(colorEnd, ((p.life / p.lifeTime) - colorPoint));
+            }
+            
             p.render(g);
         }
     }
@@ -170,6 +177,14 @@ public class ParticleEmitter extends GameComponent {
             rate = Float.parseFloat(config.getValue("rate"));
             particleShape = config.getValue("particleShape");
             shape = new Rectangle(Integer.parseInt((config.getValue("shape").split(",")[0].trim())), Integer.parseInt(config.getValue("shape").split(",")[1].trim()));
+            if (config.getValue("colorEnd").equals("")) {
+                colorMid = color;
+                colorEnd = color;
+            } else {
+                colorMid = Color.web(config.getValue("colorMid"));
+                colorEnd = Color.web(config.getValue("colorEnd"));
+            }
+            colorPoint = Float.parseFloat(config.getValue("colorPoint"));
             
         } catch (NullPointerException ex) {
             
