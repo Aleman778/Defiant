@@ -40,16 +40,17 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     private int width, height;
     
     private final File file;
-    private final EditorObject rootObject;
+    private final EditorObject rootobject;
     private final List<EditorLayer> layers;
     
     public final SelectionGroup selection;
     public static SelectionGroup placement = null;
+    public EditorLayer currentLayer;
     
     public SceneEditor(File file) {
         this.file = file;
         this.showGrid = true;
-        this.rootObject = new EditorObject("root");
+        this.rootobject = new EditorObject("root");
         this.layers = new ArrayList<>();
         this.selection = new SelectionGroup(SelectionType.SELECTION);
         this.tileSize = 32;
@@ -57,7 +58,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         this.height = 0;
         this.graph = new SceneGraph(this);
         this.graph.load();
-        this.graph.refreshGraph(rootObject);
+        this.graph.refreshGraph(rootobject);
         this.object = new ObjectEditor();
         this.object.load();
         this.layer = new LayerView();
@@ -98,7 +99,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         
         //Render Objects
         List<GameObject> objects = new ArrayList<>();
-        rootObject.getGameObjects(objects);
+        rootobject.getGameObjects(objects);
         JavaFXCanvasRenderer.renderAll(canvas, objects);
         
         //Render Selection Groups
@@ -146,8 +147,20 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         render();
     }
     
+    public void addObject(EditorObject object) {
+        rootobject.addChild(object);
+        selection.clear();
+        selection.addObject(object);
+    }
+    
+    public void addTile(EditorTile tile) {
+        
+        selection.clear();
+        selection.addTile(tile);
+    }
+    
     public List<GameObject> getAllGameObjects() {
-        return rootObject.getGameObjects(new ArrayList<>());
+        return rootobject.getGameObjects(new ArrayList<>());
     }
     
     public List<EditorTile> getAllTiles() {

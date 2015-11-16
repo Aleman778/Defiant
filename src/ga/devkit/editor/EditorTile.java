@@ -27,6 +27,10 @@ public class EditorTile {
     public void render(GraphicsContext g) {
         g.drawImage(image, tileX, tileY, width, height, position.x, position.y, width, height);
     }
+
+    public void renderGrid(GraphicsContext g, int gridsize) {
+        g.drawImage(image, tileX, tileY, width, height, (int) (position.x / gridsize + 0.5) * gridsize, (int) (position.y / gridsize + 0.5) * gridsize,  width, height);
+    }
     
     public Image getImage() {
         return image;
