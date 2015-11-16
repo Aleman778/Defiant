@@ -35,6 +35,11 @@ public class Input {
             mousePosition.x = event.getX();
             mousePosition.y = event.getY();
         });
+        scene.setOnMouseDragged((MouseEvent event) -> {
+            mousePosition.x = event.getX();
+            mousePosition.y = event.getY();
+            mouseButton = event.getButton();
+        });
         scene.setOnMousePressed((MouseEvent event) -> {
             mouseButton = event.getButton();
         });
