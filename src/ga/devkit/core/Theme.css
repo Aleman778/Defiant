@@ -164,6 +164,17 @@
     -fx-stroke: #e1e1e1;
 }
 
+.slider-min {
+}
+
+.slider-max .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
+    visibility: hidden;
+}
+
+.slider-max .track {
+    visibility: hidden;
+}
+
 .toggle-button {
     -fx-background-color: #5d5d5d;
     -fx-background-radius: 1.5px;
