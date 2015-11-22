@@ -9,7 +9,7 @@ public class EditorLayer {
     private final List<EditorTile> tiles;
     private int depth;
     private String name;
-
+    
     public EditorLayer(int depth, String name) {
         this.tiles = new ArrayList<>();
         this.depth = depth;
@@ -37,7 +37,7 @@ public class EditorLayer {
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }

@@ -14,8 +14,8 @@ public class EditorTile {
     private int width, height;
     private Vector2D position;
 
-    public EditorTile(String image, int depth, int tileX, int tileY, int width, int height, Vector2D position) {
-        this.image = ResourceManager.get(image);
+    public EditorTile(Image image, int depth, int tileX, int tileY, int width, int height, Vector2D position) {
+        this.image = image;
         this.depth = depth;
         this.tileX = tileX;
         this.tileY = tileY;
@@ -23,13 +23,13 @@ public class EditorTile {
         this.height = height;
         this.position = position;
     }
+    
+    public EditorTile(String image, int depth, int tileX, int tileY, int width, int height, Vector2D position) {
+        this(ResourceManager.get(image), depth, tileX, tileY, width, height, position);
+    }
 
     public void render(GraphicsContext g) {
         g.drawImage(image, tileX, tileY, width, height, position.x, position.y, width, height);
-    }
-
-    public void renderGrid(GraphicsContext g, int gridsize) {
-        g.drawImage(image, tileX, tileY, width, height, (int) (position.x / gridsize + 0.5) * gridsize, (int) (position.y / gridsize + 0.5) * gridsize,  width, height);
     }
     
     public Image getImage() {
@@ -90,5 +90,12 @@ public class EditorTile {
     
     public Rectangle localAABB() {
         return new Rectangle((int) position.x, (int) position.y, width, height);
+    }
+    
+    public EditorTile instantiate() {
+        Vector2D pos = new Vector2D();
+        pos.x = position.x;
+        pos.y = position.y;
+        return new EditorTile(image, depth, tileX, tileY, width, height, pos);
     }
 }

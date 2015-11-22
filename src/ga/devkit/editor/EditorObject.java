@@ -35,26 +35,6 @@ public class EditorObject extends GameObject {
         super.render(g);
     }
     
-    public void renderGrid(GraphicsContext g, int gridsize) {
-        Vector2D position = transform.localPosition();
-        position.x = (int) (position.x / gridsize + 0.5) * gridsize;
-        position.y = (int) (position.y / gridsize + 0.5) * gridsize;
-        double rotation = transform.localRotation();
-        Vector2D scale = transform.scale;
-        scale.x = (int) (scale.x / gridsize + 0.5) * gridsize;
-        scale.y = (int) (scale.y / gridsize + 0.5) * gridsize;
-        g.save();
-        Affine affine = new Affine();
-        affine.appendTranslation((int) position.x, (int) position.y);
-        affine.appendRotation(rotation, transform.pivot.x, transform.pivot.y);
-        affine.appendScale(scale.x, scale.y, transform.pivot.x, transform.pivot.y);
-        g.setTransform(affine);
-        for (GameComponent component : getAllComponents()) {
-            component.render(g);
-        }
-        g.restore();
-    }
-    
     public void renderAABB(GraphicsContext g) {
         Vector2D position = transform.localPosition();
         g.save();

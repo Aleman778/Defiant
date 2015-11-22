@@ -17,8 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 
 public class AssetPreview extends Interface implements Initializable {
     
@@ -38,7 +36,7 @@ public class AssetPreview extends Interface implements Initializable {
     
     public void refreshFile(File file) {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        SceneEditor.placement = null;
+        SceneEditor.placement.clear();
         type = "File";
         switch (Core.getExtension(file.getName())) {
             case "png": case "jpg": case "gif":
@@ -53,7 +51,8 @@ public class AssetPreview extends Interface implements Initializable {
                 Tileset tileset = new Tileset(file);
                 drawTileset(tileset, 0, 0, 1, 1);
                 EditorTile baseTile = new EditorTile(tileset.getPath(), 0, 0, 0, tileset.width, tileset.height, new Vector2D());
-                SceneEditor.placement = new SelectionGroup(SelectionType.PLACEMENT);
+                SceneEditor.placement.clear();
+                SceneEditor.placement.setSelectionType(SelectionType.PLACEMENT);
                 SceneEditor.placement.addTile(baseTile);
                 canvas.setOnMousePressed((MouseEvent event) -> {
                     x = (int) (event.getX() / tileset.getWidth());
@@ -74,7 +73,8 @@ public class AssetPreview extends Interface implements Initializable {
                     int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
                     EditorTile tile = new EditorTile(tileset.getPath(), 0, minX * tileset.width, minY * tileset.height,
                             (maxX - minX) * tileset.width, (maxY - minY) * tileset.height, new Vector2D());
-                    SceneEditor.placement = new SelectionGroup(SelectionType.PLACEMENT);
+                    SceneEditor.placement.clear();
+                    SceneEditor.placement.setSelectionType(SelectionType.PLACEMENT);
                     SceneEditor.placement.addTile(tile);
                 });
                 type = "Tileset";

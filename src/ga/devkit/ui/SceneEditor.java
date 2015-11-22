@@ -1,28 +1,30 @@
 package ga.devkit.ui;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.devkit.editor.EditorLayer;
 import ga.devkit.editor.EditorObject;
 import ga.devkit.editor.EditorTile;
+import ga.devkit.editor.SceneEditorParser;
 import ga.devkit.editor.SelectionGroup;
 import ga.devkit.editor.SelectionType;
-import ga.engine.physics.Vector2D;
-import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
 import ga.engine.scene.GameObject;
-import ga.engine.xml.XMLReader;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import org.xml.sax.Attributes;
 
 public class SceneEditor extends Interface implements Initializable, Editor {
     
@@ -41,17 +43,15 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     
     private final File file;
     private final EditorObject rootobject;
-    private final List<EditorLayer> layers;
+    private EditorLayer currentLayer = null;
     
     public final SelectionGroup selection;
-    public static SelectionGroup placement = null;
-    public EditorLayer currentLayer;
+    public static final SelectionGroup placement = new SelectionGroup(SelectionType.PLACEMENT);
     
     public SceneEditor(File file) {
         this.file = file;
         this.showGrid = true;
         this.rootobject = new EditorObject("root");
-        this.layers = new ArrayList<>();
         this.selection = new SelectionGroup(SelectionType.SELECTION);
         this.tileSize = 32;
         this.width = 0;
@@ -61,7 +61,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         this.graph.refreshGraph(rootobject);
         this.object = new ObjectEditor();
         this.object.load();
-        this.layer = new LayerView();
+        this.layer = new LayerView(this);
         this.layer.load();
         SplitPane.setResizableWithParent(graph.root, false);
         SplitPane.setResizableWithParent(layer.root, true);
@@ -93,8 +93,12 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         UIRenderUtils.renderCheckerboard(g);
         
         //Render layers
-        for (EditorLayer l: layers) {
+        for (EditorLayer l: layer.getLayers()) {
+            if (l != getLayer()) {
+                g.setGlobalAlpha(0.5);
+            }
             l.render(g);
+            g.setGlobalAlpha(1.0);
         }
         
         //Render Objects
@@ -147,16 +151,111 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         render();
     }
     
+    public void setLayer(EditorLayer layer) {
+        currentLayer = layer;
+    }
+    
+    public EditorLayer getLayer() {
+        return currentLayer;
+    }
+    
     public void addObject(EditorObject object) {
         rootobject.addChild(object);
-        selection.clear();
-        selection.addObject(object);
     }
     
     public void addTile(EditorTile tile) {
+        if (getLayer() != null) {
+            getLayer().getTiles().add(tile);
+        }
+    }
+    
+    public void removeObject(EditorObject object) {
         
+    }
+    
+    public void removeTile(EditorTile tile) {
+        if (getLayer() != null) {
+            getLayer().getTiles().remove(tile);
+        }
+    }
+    
+    public void addObjects(Collection<EditorObject> objects) {
+        for (EditorObject o: objects) {
+            addObject(o);
+        }
+    }
+    
+    public void addTiles(Collection<EditorTile> tiles) {
+        if (getLayer() == null)
+            return;
+        
+        for (EditorTile tile: tiles) {
+            addTile(tile);
+        }
+    }
+    
+    public Set<EditorObject> getObjects(int x, int y) {
+        Set<EditorObject> result = new HashSet<>();
+        for (GameObject o: getAllGameObjects()) {
+            if (o.localAABB().contains(x, y)) {
+                result.add((EditorObject) o);
+            }
+        }
+        return result;
+    }
+    
+    public Set<EditorTile> getTiles(int x, int y) {
+        Set<EditorTile> result = new HashSet<>();
+        for (EditorLayer l: layer.getLayers()) {
+            for (EditorTile tile: l.getTiles()) {
+                if (tile.localAABB().contains(x, y)) {
+                    result.add(tile);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public Set<EditorObject> getObjects(Rectangle rectangle) {
+        Set<EditorObject> result = new HashSet<>();
+        for (GameObject o: getAllGameObjects()) {
+            if (rectangle.contains(o.localAABB())) {
+                result.add((EditorObject) o);
+            }
+        }
+        return result;
+    }
+    
+    public Set<EditorTile> getTiles(Rectangle rectangle) {
+        Set<EditorTile> result = new HashSet<>();
+        for (EditorLayer l: layer.getLayers()) {
+            for (EditorTile tile: l.getTiles()) {
+                if (rectangle.contains(tile.localAABB())) {
+                    result.add(tile);
+                }
+            }
+        }
+        return result;
+    }
+    
+    public void addSelection(SelectionGroup group) {
         selection.clear();
-        selection.addTile(tile);
+        for (EditorObject o: group.getObjects()) {
+            addObject(o);
+        }
+        
+        if (getLayer() != null) {
+            for (EditorTile tile: group.getTiles()) {
+                EditorTile result = tile.instantiate();
+                if (showGrid) {
+                    result.getPosition().x = (int) (result.getPosition().x / (double) tileSize + 0.5) * tileSize;
+                    result.getPosition().y = (int) (result.getPosition().y / (double) tileSize + 0.5) * tileSize;
+                }
+                addTile(result);
+                selection.setTile(result);
+            }
+        }
+        selection.setObjects(group.getObjects());
     }
     
     public List<GameObject> getAllGameObjects() {
@@ -165,7 +264,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     
     public List<EditorTile> getAllTiles() {
         List<EditorTile> result = new ArrayList<>();
-        for (EditorLayer l: layers) {
+        for (EditorLayer l: layer.getLayers()) {
             result.addAll(l.getTiles());
         }
         return result;
@@ -174,100 +273,52 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         g = canvas.getGraphicsContext2D();
-        
-        XMLReader reader = new XMLReader() {
-
-            public EditorLayer layer;
-            public EditorObject object;
-
-            @Override
-            public void documentStart() {
-            }
-
-            @Override
-            public void documentEnd() {
-            }
-
-            @Override
-            public void nodeStart(String element, Attributes attri) {
-                switch (element) {
-                    case "scene":
-                        setSize(Integer.parseInt(attri.getValue("width")),
-                                Integer.parseInt(attri.getValue("height"))
-                        );
-                        break;
-                    case "tilemap":
-                        layer = new EditorLayer(
-                                Integer.parseInt(attri.getValue("depth")),
-                                attri.getValue("name")
-                        );
-                        layers.add(layer);
-                        break;
-                    case "tile":
-                        if (layer != null) {
-                            EditorTile tile = new EditorTile(
-                                    attri.getValue("image"), layer.getDepth(),
-                                    Integer.parseInt(attri.getValue("tilex")),
-                                    Integer.parseInt(attri.getValue("tiley")),
-                                    Integer.parseInt(attri.getValue("width")),
-                                    Integer.parseInt(attri.getValue("height")),
-                                    new Vector2D(
-                                            Double.parseDouble(attri.getValue("tx")),
-                                            Double.parseDouble(attri.getValue("ty"))
-                                    )
-                            );
-                            layer.getTiles().add(tile);
-                        }
-                        break;
-                    case "object":
-                        
-                        break;
-                    case "component":
-                        
-                        break;
-                }
-            }
-
-            @Override
-            public void nodeEnd(String element, Attributes attri, String value) {
-                switch (element) {
-                    case "tilemap":
-                        layer = null;
-                        break;
-                    case "object":
-                        
-                        break;
-                }
-            }
-        };
-        reader.parse(file);
+        if (file.exists()) {
+            SceneEditorParser parser = new SceneEditorParser();
+            parser.parse(file);
+            layer.clear();
+            layer.addLayers(parser.getLayers());
+            setTileSize(parser.getTilesize());
+            setWidth(parser.getWidth());
+            setHeight(parser.getHeight());
+        }
         
         pane.setOnMousePressed((MouseEvent event) -> {
-            selection.mousePressed(event, this);
-            if (placement != null) {
-                placement.mousePressed(event, this);
+            if (event.getButton() == MouseButton.PRIMARY) {
+                Set<EditorObject> objects = getObjects((int) event.getX(), (int) event.getY());
+                Set<EditorTile> tiles = getTiles((int) event.getX(), (int) event.getY());
+                
+                if (event.isShiftDown()) {
+                    selection.addObjects(objects);
+                    selection.addTiles(tiles);
+                } else if (event.isControlDown()) {
+                    selection.removeObjects(objects);
+                    selection.removeTiles(tiles);
+                } else {
+                    if (!selection.getSelection().contains((int) event.getX(), (int) event.getY())) {
+                        selection.setObjects(objects);
+                        selection.setTiles(tiles);
+                    }
+                }
             }
+            
+            selection.mousePressed(event, this);
+            placement.mousePressed(event, this);
         });
         
         pane.setOnMouseReleased((MouseEvent event) -> {
             selection.mouseReleased(event, this);
-            if (placement != null) {
-                placement.mouseReleased(event, this);
-            }
+            placement.mouseReleased(event, this);
         });
         
         pane.setOnMouseDragged((MouseEvent event) -> {
             selection.mouseDragged(event, this);
-            if (placement != null) {
-                placement.mouseDragged(event, this);
-            }
+            placement.mouseDragged(event, this);
         });
         
         pane.setOnMouseMoved((MouseEvent event) -> {
             selection.mouseMoved(event, this);
-            if (placement != null) {
-                placement.mouseMoved(event, this);
-            }
+            placement.mouseMoved(event, this);
         });
         
         render();

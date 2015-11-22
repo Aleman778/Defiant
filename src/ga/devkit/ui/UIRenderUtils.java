@@ -23,7 +23,7 @@ public class UIRenderUtils {
         g.setLineCap(StrokeLineCap.SQUARE);
         g.setLineDashes(6.0);
         
-        g.setFill(Color.rgb(67, 141, 215, 0.1));
+        g.setFill(Color.rgb(67, 141, 215, 0.2));
         g.fillRect(selection.x, selection.y, selection.width, selection.height);
         
         g.setStroke(Color.rgb(0, 0, 0, 1));
@@ -39,6 +39,28 @@ public class UIRenderUtils {
         g.strokeLine(selection.x, selection.y, selection.x + selection.width, selection.y);
         g.strokeLine(selection.x + selection.width, selection.y, selection.x + selection.width, selection.y + selection.height);
         g.strokeLine(selection.x, selection.y + selection.height, selection.x + selection.width, selection.y + selection.height);
+    }
+    
+    public static void renderTransformingSelection(GraphicsContext g, Rectangle selection) {
+        g.setFill(Color.rgb(215, 204, 0, 0.2));
+        g.fillRect(selection.x, selection.y, selection.width, selection.height);
+        
+        g.setFill(Color.rgb(215, 204, 0, 1.0));
+        g.fillRect(selection.x - 1, selection.y - 1, 1, selection.height + 3);
+        g.fillRect(selection.x - 1, selection.y - 1, selection.width + 3, 1);
+        g.fillRect(selection.x + 1 + selection.width, selection.y, 1, selection.height + 2);
+        g.fillRect(selection.x, selection.y + selection.height + 1, selection.width + 1, 1);
+        
+        g.fillRect(selection.x + 1, selection.y + 1, 1, selection.height - 2);
+        g.fillRect(selection.x + 1, selection.y + 1, selection.width - 2, 1);
+        g.fillRect(selection.x - 1 + selection.width, selection.y, 1, selection.height - 1);
+        g.fillRect(selection.x, selection.y + selection.height - 1, selection.width, 1);
+        
+        g.setFill(Color.rgb(255, 242, 0, 1.0));
+        g.fillRect(selection.x, selection.y, 1, selection.height);
+        g.fillRect(selection.x, selection.y, selection.width, 1);
+        g.fillRect(selection.x + selection.width, selection.y, 1, selection.height + 1);
+        g.fillRect(selection.x, selection.y + selection.height, selection.width, 1);
     }
     
     public static void renderResizeSelection(GraphicsContext g, Rectangle selection) {
