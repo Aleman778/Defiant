@@ -36,6 +36,7 @@ public class ParticleEmitter extends GameComponent {
         config.setValue("direction", String.valueOf(direction));
         config.setValue("spread", String.valueOf(spread));
         config.setValue("size", String.valueOf(size));
+        config.setValue("sizeEnd", String.valueOf(size));
         config.setValue("color", String.format("#%X", color.hashCode()));
         setConfig(config);
         this.particles = new HashSet<>();
