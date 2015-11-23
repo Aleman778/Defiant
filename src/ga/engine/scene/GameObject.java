@@ -144,7 +144,7 @@ public class GameObject implements Comparator<GameObject> {
             Body physicsBody = it.next();
 
             if (Math.signum(physicsBody.getVelocity().normalize().x) != 0 && Math.abs(physicsBody.getVelocity().x) > 0.5 && physicsBody.gameobject.getComponent(PlayerController.class) == null) {
-                physicsBody.transform.rotation = Math.min(Math.signum(physicsBody.getVelocity().normalize().x) * 180, 0);
+                physicsBody.transform.scale.x = Math.signum(physicsBody.getVelocity().normalize().x);
             }
 
             Vector2D normal = body.physicsUpdate(physicsBody);
@@ -213,6 +213,7 @@ public class GameObject implements Comparator<GameObject> {
 
     public void setAABB(int x, int y, int w, int h) {
         AABB = new Rectangle(x, y, w, h);
+        transform.pivot = new Vector2D(w / 2, h / 2);
     }
 
     public Rectangle getAABB() {
