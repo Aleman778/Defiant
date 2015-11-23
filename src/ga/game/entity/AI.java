@@ -12,7 +12,7 @@ public class AI extends GameComponent {
 
     protected double SPEED = 0.1,
             JUMP_HEIGHT = 7,
-            FOLLOW_DISTANCE = 0;
+            FOLLOW_DISTANCE = 5;
     private double timeSinceLastJump;
     private final boolean canMoveInAir = true;
     private final double AIR_SPEED = 0.05;
@@ -39,7 +39,7 @@ public class AI extends GameComponent {
     public void fixedUpdate() {
         super.fixedUpdate();
         timeSinceLastJump++;
-        Vector2D distToPlayer = player.getTransform().position.sub(gameobject.getTransform().position);
+        Vector2D distToPlayer = player.getTransform().position.sub(gameobject.getTransform().position.add(new Vector2D(gameobject.getAABB().width / 2, 0)));
         if (Math.abs(distToPlayer.x) > FOLLOW_DISTANCE) {
             if (!canMoveInAir) {
                 if (gameobject.getBody().isGrounded()) {
