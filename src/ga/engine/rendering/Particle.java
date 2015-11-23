@@ -30,7 +30,7 @@ public class Particle {
 
     public boolean update() {
         life--;
-        return life > 0;
+        return life > 0 || size > 0;
     }
 
     public void render(GraphicsContext g) {
