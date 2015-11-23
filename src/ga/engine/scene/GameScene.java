@@ -4,9 +4,6 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
-import ga.engine.lighting.AmbientLight;
-import ga.engine.lighting.LightMap;
-import ga.engine.lighting.PointLight;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
@@ -14,6 +11,7 @@ import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
 import ga.engine.rendering.SpriteRenderer;
 import ga.game.PlayerController;
+import ga.game.entity.AI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,7 +59,7 @@ public final class GameScene {
         root.addChild(player);
         player.transform.depth = -1;
         
-        for (int i = 0; i < 320; i += 32) {
+        for (int i = 0; i < 320 * 3; i += 32) {
             GameObject box = new GameObject(320 + i, 320)
                     .addComponent(new ImageRenderer("textures/Jordlabb.png"));
             box.getTransform().pivot = new Vector2D(0, 0);
@@ -71,11 +69,12 @@ public final class GameScene {
             root.addChild(box);
         }
 //        
-//        GameObject ant = new GameObject(700, 100)
-//                .addComponent(new ImageRenderer("textures/myr.png"));
-//        ant.addComponent(new RigidBody(1, 3));
-//        ant.addComponent(new AI(this, 0.2, 4));
-//        root.addChild(ant);
+        GameObject ant = new GameObject(1120, 0)
+                .addComponent(new ImageRenderer("textures/AntBase.png"));
+        ant.addComponent(new RigidBody(1, 3));
+        ant.addComponent(new AI(this, 0.2, 4));
+        ant.setAABB(0, 0, 91, 45);
+        root.addChild(ant);
 //        
 //        GameObject spider = new GameObject(800, 100)
 //                .addComponent(new ImageRenderer("textures/SpiderR.png"));
