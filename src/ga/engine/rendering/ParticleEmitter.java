@@ -31,6 +31,9 @@ public class ParticleEmitter extends GameComponent {
     protected double gravityScale = 0.6;
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
+    public boolean interpolate = false;
+    public int interpolationScale = 8;
+    protected Vector2D lastPosition;
 
     public ParticleEmitter(float direction, float spread, float size, String mode, float life, Color color) {
         config.setValue("mode", String.valueOf(mode));
@@ -100,7 +103,7 @@ public class ParticleEmitter extends GameComponent {
             addParticles(amount);
         }
     }
-    
+
     public void fire() {
         if (mode.equals("MODE_SINGLE_MIRRORED")) {
             addParticles((int) ((rate * 10) / 2));
@@ -113,6 +116,28 @@ public class ParticleEmitter extends GameComponent {
     }
 
     private void addParticles(int amount) {
+        if (interpolate) {
+            if (lastPosition != null) {
+                Vector2D pos = object.transform.position;
+                interpolate = false;
+                int x = (int) ((transform.position.x - lastPosition.x) / 2), y = (int) ((transform.position.y - lastPosition.y) / 2);
+                while (x > 1 || y > 1) {
+                    object.transform.position.x += x;
+                    object.transform.position.y += y;
+                    addParticles(amount);
+                    object.transform.position.x -= 2 * x;
+                    object.transform.position.y -= 2 * y;
+                    addParticles(amount);
+                    object.transform.position.x += x;
+                    object.transform.position.y += y;
+                    x /= interpolationScale;
+                    y /= interpolationScale;
+                }
+                interpolate = true;
+                object.transform.position = pos;
+            }
+            lastPosition = transform.position;
+        }
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
             Vector2D pos = new Vector2D((Math.random() * shape.width), (Math.random() * shape.height));
@@ -136,13 +161,13 @@ public class ParticleEmitter extends GameComponent {
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
             Particle p = it.next();
-            
+
             if (p.life / p.lifeTime < colorPoint) {
                 p.color = color.interpolate(colorMid, (p.life / p.lifeTime) / colorPoint);
             } else {
                 p.color = colorMid.interpolate(colorEnd, ((p.life / p.lifeTime) - colorPoint));
             }
-            
+
             p.render(g);
         }
     }
@@ -188,9 +213,9 @@ public class ParticleEmitter extends GameComponent {
                 colorEnd = Color.web(config.getValue("colorEnd"));
             }
             colorPoint = Float.parseFloat(config.getValue("colorPoint"));
-            
+
         } catch (NullPointerException ex) {
-            
+
         }
         if (sizeStep == 0 && size != sizeEnd) {
             sizeStep = (sizeEnd - size) / life;
