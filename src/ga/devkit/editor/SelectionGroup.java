@@ -164,8 +164,12 @@ public class SelectionGroup {
         tiles.clear();
     }
     
+    public int size() {
+        return tiles.size() + objects.size();
+    }
+    
     public boolean isEmpty() {
-        return (tiles.isEmpty() && tiles.isEmpty());
+        return (tiles.isEmpty() && objects.isEmpty());
     }
 
     public boolean isVisible() {
@@ -273,12 +277,12 @@ public class SelectionGroup {
                             (int) (selection.y / (double) gridSize + 0.5) * gridSize,
                             selection.width, selection.height);
                 }
-                renderObjects(g);
+                renderSelection(g);
                 UIRenderUtils.renderTransformingSelection(g, selection);
                 break;
             case PLACEMENT:
                 g.setGlobalAlpha(0.4);
-                renderObjects(g);
+                renderSelection(g);
                 g.setGlobalAlpha(1.0); 
                 break;
             case DRAGGING:
@@ -288,7 +292,7 @@ public class SelectionGroup {
                             (int) (selection.y / (double) gridSize + 0.5) * gridSize,
                             selection.width, selection.height);
                 }
-                renderObjects(g);
+                renderSelection(g);
                 break;
             case REMOVING:
                 g.setFill(new Color(1.0, 0.0, 0.0, 0.2));
@@ -303,7 +307,7 @@ public class SelectionGroup {
         }
     }
     
-    private void renderObjects(GraphicsContext g) {
+    private void renderSelection(GraphicsContext g) {
         for (EditorObject object: objects) {
             object.render(g);
         }
@@ -323,10 +327,11 @@ public class SelectionGroup {
                 } else {
                     setSelectionType(SelectionType.REMOVING);
                 }
+                editor.render();
                 break;
             case SELECTION:
-                if (editor.selection.selection.contains((int) event.getX(), (int) event.getY())) {
-                    SceneEditor.placement.setVisible(false);
+                if (editor.SELECTION.selection.contains((int) event.getX(), (int) event.getY())) {
+                    SceneEditor.PLACEMENT.setVisible(false);
                     setSelectionType(SelectionType.TRANSLATION);
                     translateBegin((int) event.getX(), (int) event.getY());
                 }
@@ -354,8 +359,8 @@ public class SelectionGroup {
                     selection = getRange();
                 }
                 setSelectionType(SelectionType.SELECTION);
-                SceneEditor.placement.setVisible(true);
-                SceneEditor.placement.setTranslation((int) event.getX() - selection.width / 2, (int) event.getY() - selection.height / 2);
+                SceneEditor.PLACEMENT.setVisible(true);
+                SceneEditor.PLACEMENT.setTranslation((int) event.getX() - selection.width / 2, (int) event.getY() - selection.height / 2);
                 editor.render();
                 break;
         }
@@ -367,7 +372,9 @@ public class SelectionGroup {
         
         switch (type) {
             case PLACEMENT:
-                setSelectionType(SelectionType.DRAGGING);
+                setTranslation((int) event.getX() - selection.width / 2, (int) event.getY() - selection.height / 2);
+                editor.render();
+                break;
             case DRAGGING: case REMOVING:
                 setTranslation((int) event.getX() - selection.width / 2, (int) event.getY() - selection.height / 2);
                 editor.render();

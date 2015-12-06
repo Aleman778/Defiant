@@ -54,6 +54,11 @@ public class GameObject implements Comparator<GameObject> {
         children.add(object);
         return object;
     }
+    
+    public GameObject removeChild(GameObject object) {
+        children.remove(object);
+        return object;
+    }
 
     public List<GameObject> getChildren() {
         return children;

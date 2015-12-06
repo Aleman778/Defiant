@@ -3,6 +3,8 @@ package ga.engine.physics;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
+import java.util.List;
+import java.util.Map;
 
 public class RigidBody extends Body {
 
@@ -176,6 +178,11 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

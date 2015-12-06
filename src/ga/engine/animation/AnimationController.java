@@ -2,6 +2,8 @@ package ga.engine.animation;
 
 import ga.engine.scene.GameComponent;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnimationController extends GameComponent {
     
@@ -51,6 +53,11 @@ public class AnimationController extends GameComponent {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

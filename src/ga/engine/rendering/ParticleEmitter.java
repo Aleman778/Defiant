@@ -9,6 +9,8 @@ import ga.engine.scene.GameScene;
 import ga.engine.xml.XMLReader;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -235,6 +237,11 @@ public class ParticleEmitter extends GameComponent {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

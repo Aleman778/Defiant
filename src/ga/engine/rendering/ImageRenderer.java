@@ -2,10 +2,18 @@ package ga.engine.rendering;
 
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class ImageRenderer extends GameComponent {
+    
+    private static final HashMap<String, Integer> variables = new HashMap<>();
+    
+    static {
+        variables.put("image", GameComponent.TYPE_STRING);
+    }
     
     protected Image image;
     
@@ -36,10 +44,20 @@ public class ImageRenderer extends GameComponent {
 
     @Override
     public GameComponent instantiate() {
-        return null;
+        return new ImageRenderer(image);
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return variables;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
+        switch (name) {
+            case "image":
+                image = ResourceManager.get(value);
+                break;
+        }
     }
 }

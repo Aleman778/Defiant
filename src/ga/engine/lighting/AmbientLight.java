@@ -2,6 +2,8 @@ package ga.engine.lighting;
 
 import ga.engine.core.Application;
 import ga.engine.scene.GameComponent;
+import java.util.List;
+import java.util.Map;
 
 public class AmbientLight extends Light {
 
@@ -19,6 +21,11 @@ public class AmbientLight extends Light {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

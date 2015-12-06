@@ -13,9 +13,9 @@ import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class PlayerController extends GameComponent {
 
@@ -201,6 +201,11 @@ public class PlayerController extends GameComponent {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

@@ -1,11 +1,14 @@
 package ga.devkit.ui;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.devkit.editor.EditorComponent;
+import ga.devkit.editor.EditorObject;
 import ga.devkit.editor.EditorTile;
-import ga.devkit.editor.SelectionGroup;
 import ga.devkit.editor.SelectionType;
 import ga.devkit.editor.Tileset;
 import ga.engine.physics.Vector2D;
+import ga.engine.rendering.ImageRenderer;
+import ga.engine.resource.ResourceManager;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,57 +37,73 @@ public class AssetPreview extends Interface implements Initializable {
         title.setText("");
     }
     
-    public void refreshFile(File file) {
+    public void refreshFile(File file, String resfilepath) {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        SceneEditor.placement.clear();
+        canvas.setOnMousePressed(null);
+        canvas.setOnMouseReleased(null);
+        canvas.setOnMouseDragged(null);
+        SceneEditor.PLACEMENT.clear();
         type = "File";
-        switch (Core.getExtension(file.getName())) {
-            case "png": case "jpg": case "gif":
-                Image image = new Image("file:" + file.getPath());
-                canvas.setWidth(image.getWidth());
-                canvas.setHeight(image.getHeight());
-                UIRenderUtils.renderCheckerboard(g);
-                g.drawImage(image, 0, 0);
-                type = "Image";
-                break;
-            case "tileset":
-                Tileset tileset = new Tileset(file);
-                drawTileset(tileset, 0, 0, 1, 1);
-                EditorTile baseTile = new EditorTile(tileset.getPath(), 0, 0, 0, tileset.width, tileset.height, new Vector2D());
-                SceneEditor.placement.clear();
-                SceneEditor.placement.setSelectionType(SelectionType.PLACEMENT);
-                SceneEditor.placement.addTile(baseTile);
-                canvas.setOnMousePressed((MouseEvent event) -> {
-                    x = (int) (event.getX() / tileset.getWidth());
-                    y = (int) (event.getY() / tileset.getHeight());
-                    drawTileset(tileset, (int) (event.getX() / tileset.getWidth()), (int) (event.getY() / tileset.getHeight()), 1, 1);
-                });
-                canvas.setOnMouseDragged((MouseEvent event) -> {
-                    int minX = Math.min(x, (int) (event.getX() / tileset.getWidth()));
-                    int minY = Math.min(y, (int) (event.getY() / tileset.getHeight()));
-                    int maxX = Math.max(x, (int) (event.getX() / tileset.getWidth())) + 1;
-                    int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
-                    drawTileset(tileset, minX, minY, maxX - minX, maxY - minY);
-                });
-                canvas.setOnMouseReleased((MouseEvent event) -> {
-                    int minX = Math.min(x, (int) (event.getX() / tileset.getWidth()));
-                    int minY = Math.min(y, (int) (event.getY() / tileset.getHeight()));
-                    int maxX = Math.max(x, (int) (event.getX() / tileset.getWidth())) + 1;
-                    int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
-                    EditorTile tile = new EditorTile(tileset.getPath(), 0, minX * tileset.width, minY * tileset.height,
-                            (maxX - minX) * tileset.width, (maxY - minY) * tileset.height, new Vector2D());
-                    SceneEditor.placement.clear();
-                    SceneEditor.placement.setSelectionType(SelectionType.PLACEMENT);
-                    SceneEditor.placement.addTile(tile);
-                });
-                type = "Tileset";
-                break;
-            case "blueprint":
-                type = "Blueprint";
-                break;
-            case "mp3": case "m4a": case "waw": case "midi":
-                type = "Audio";
-                break;
+        
+        if (file.isDirectory()) {
+            type = "Directory";
+        } else {
+            switch (Core.getExtension(file.getName())) {
+                case "png": case "jpg": case "gif":
+                    Image image = ResourceManager.get(resfilepath);
+                    canvas.setWidth(image.getWidth());
+                    canvas.setHeight(image.getHeight());
+                    UIRenderUtils.renderCheckerboard(g);
+                    g.drawImage(image, 0, 0);
+
+                    EditorObject object = new EditorObject(Core.getFilename(file.getName()));
+                    ImageRenderer renderer = new ImageRenderer(image);
+                    object.addComponent(new EditorComponent(renderer));
+                    object.setAABB(0, 0, (int) image.getWidth(), (int) image.getHeight());
+                    SceneEditor.PLACEMENT.setSelectionType(SelectionType.PLACEMENT);
+                    SceneEditor.PLACEMENT.addObject(object);
+                    System.out.println(SceneEditor.PLACEMENT.getObjects().size());
+                    type = "Image";
+                    break;
+                case "tileset":
+                    Tileset tileset = new Tileset(file);
+                    drawTileset(tileset, 0, 0, 1, 1);
+
+                    EditorTile baseTile = new EditorTile(tileset.getPath(), 0, 0, 0, tileset.width, tileset.height, new Vector2D());
+                    SceneEditor.PLACEMENT.setSelectionType(SelectionType.PLACEMENT);
+                    SceneEditor.PLACEMENT.addTile(baseTile);
+                    canvas.setOnMousePressed((MouseEvent event) -> {
+                        x = (int) (event.getX() / tileset.getWidth());
+                        y = (int) (event.getY() / tileset.getHeight());
+                        drawTileset(tileset, (int) (event.getX() / tileset.getWidth()), (int) (event.getY() / tileset.getHeight()), 1, 1);
+                    });
+                    canvas.setOnMouseDragged((MouseEvent event) -> {
+                        int minX = Math.min(x, (int) (event.getX() / tileset.getWidth()));
+                        int minY = Math.min(y, (int) (event.getY() / tileset.getHeight()));
+                        int maxX = Math.max(x, (int) (event.getX() / tileset.getWidth())) + 1;
+                        int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
+                        drawTileset(tileset, minX, minY, maxX - minX, maxY - minY);
+                    });
+                    canvas.setOnMouseReleased((MouseEvent event) -> {
+                        int minX = Math.min(x, (int) (event.getX() / tileset.getWidth()));
+                        int minY = Math.min(y, (int) (event.getY() / tileset.getHeight()));
+                        int maxX = Math.max(x, (int) (event.getX() / tileset.getWidth())) + 1;
+                        int maxY = Math.max(y, (int) (event.getY() / tileset.getHeight())) + 1;
+                        EditorTile tile = new EditorTile(tileset.getPath(), 0, minX * tileset.width, minY * tileset.height,
+                                (maxX - minX) * tileset.width, (maxY - minY) * tileset.height, new Vector2D());
+                        SceneEditor.PLACEMENT.clear();
+                        SceneEditor.PLACEMENT.setSelectionType(SelectionType.PLACEMENT);
+                        SceneEditor.PLACEMENT.addTile(tile);
+                    });
+                    type = "Tileset";
+                    break;
+                case "blueprint":
+                    type = "Blueprint";
+                    break;
+                case "mp3": case "m4a": case "waw": case "midi":
+                    type = "Audio";
+                    break;
+            }
         }
         
         title.setText(type + ": " + file.getName());

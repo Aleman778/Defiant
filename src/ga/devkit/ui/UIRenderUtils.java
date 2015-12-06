@@ -24,7 +24,8 @@ public class UIRenderUtils {
         g.setLineDashes(6.0);
         
         g.setFill(Color.rgb(67, 141, 215, 0.2));
-        g.fillRect(selection.x, selection.y, selection.width, selection.height);
+        g.fillRect(Math.min(selection.x, selection.width + selection.x), Math.min(selection.y, selection.height + selection.y), 
+                Math.abs(selection.width), Math.abs(selection.height));
         
         g.setStroke(Color.rgb(0, 0, 0, 1));
         g.setLineDashOffset(6.0);
@@ -43,7 +44,8 @@ public class UIRenderUtils {
     
     public static void renderTransformingSelection(GraphicsContext g, Rectangle selection) {
         g.setFill(Color.rgb(215, 204, 0, 0.2));
-        g.fillRect(selection.x, selection.y, selection.width, selection.height);
+        g.fillRect(Math.min(selection.x, selection.width + selection.x), Math.min(selection.y, selection.height + selection.y), 
+                Math.abs(selection.width), Math.abs(selection.height));
         
         g.setFill(Color.rgb(215, 204, 0, 1.0));
         g.fillRect(selection.x - 1, selection.y - 1, 1, selection.height + 3);

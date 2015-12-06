@@ -1,6 +1,8 @@
 package ga.engine.lighting;
 
 import ga.engine.scene.GameComponent;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -46,6 +48,11 @@ public class PointLight extends Light {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

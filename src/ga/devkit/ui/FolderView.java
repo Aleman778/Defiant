@@ -12,7 +12,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -47,6 +46,7 @@ public class FolderView extends Interface implements Initializable {
     }
     
     public File[] refreshFiles(File folder) {
+        previewAsset(folder);
         if (!folder.isDirectory())
             return null;
         
@@ -56,8 +56,8 @@ public class FolderView extends Interface implements Initializable {
         
         boxes.clear();
         title.setText("Folder: " + folder.getPath());
-        content.getChildren().clear();
         this.folder = folder.getPath();
+        content.getChildren().clear();
         for (File file: result) {
             if (!file.isDirectory())
                 addFile(file);
@@ -86,28 +86,28 @@ public class FolderView extends Interface implements Initializable {
         name.setMaxWidth(86);
         name.setAlignment(Pos.CENTER);
         VBox box = new VBox(image, name);
-        box.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), new CornerRadii(2), new Insets(4))));
+        box.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), CornerRadii.EMPTY, new Insets(4))));
         box.setPrefWidth(96);
         box.setPrefHeight(96);
         box.setAlignment(Pos.CENTER);
         content.getChildren().add(box);
         box.setOnMousePressed((MouseEvent event) -> {
             for (VBox b: boxes) {
-                b.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), new CornerRadii(2), new Insets(4))));
+                b.setBackground(new Background(new BackgroundFill(new Color(0.22, 0.22, 0.22, 1.0), CornerRadii.EMPTY, new Insets(4))));
                 b.setBorder(Border.EMPTY);
             }
             
-            box.setBackground(new Background(new BackgroundFill(new Color(0.28, 0.28, 0.28, 1.0), new CornerRadii(2), new Insets(4))));
-            box.setBorder(new Border(new BorderStroke(new Color(0.1, 0.6, 0.9, 1.0), BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1), new Insets(2))));
+            box.setBackground(new Background(new BackgroundFill(new Color(0.28, 0.28, 0.28, 1.0), CornerRadii.EMPTY, new Insets(4))));
+            box.setBorder(new Border(new BorderStroke(new Color(0.1, 0.6, 0.9, 1.0), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1.5), new Insets(2))));
             previewAsset(file);
         });
         box.setOnDragDetected((MouseEvent event) -> {
             final Dragboard db = box.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
+            ClipboardContent clipboardContent = new ClipboardContent();
             List<File> files = new ArrayList<>();
             files.add(file);
-            content.put(DataFormat.FILES, files);
-            db.setContent(content);
+            clipboardContent.put(DataFormat.FILES, files);
+            db.setContent(clipboardContent);
             event.consume();
         });
         boxes.add(box);
@@ -117,7 +117,7 @@ public class FolderView extends Interface implements Initializable {
         if (!preview.isReady())
             return;
         
-        preview.refreshFile(file);
+        preview.refreshFile(file, file.getPath().replace("\\", "/").substring(4));
     }
     
     @Override

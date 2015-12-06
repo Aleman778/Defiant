@@ -5,6 +5,7 @@ import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
 import ga.game.PlayerController;
+import java.util.Map;
 
 public class AI extends GameComponent {
 
@@ -66,6 +67,11 @@ public class AI extends GameComponent {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }

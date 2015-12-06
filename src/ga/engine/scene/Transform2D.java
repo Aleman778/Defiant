@@ -66,7 +66,7 @@ public class Transform2D {
         return rotation;
     }
 
-    public double getDepth() {
+    public int getDepth() {
         return depth;
     }
 

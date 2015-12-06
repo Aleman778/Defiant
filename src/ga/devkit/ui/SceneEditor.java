@@ -33,7 +33,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     public AnchorPane pane;
     
     public SceneGraph graph;
-    public ObjectEditor object;
+    public ObjectEditor objeditor;
     public LayerView layer;
     
     private GraphicsContext g;
@@ -45,27 +45,27 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     private final EditorObject rootobject;
     private EditorLayer currentLayer = null;
     
-    public final SelectionGroup selection;
-    public static final SelectionGroup placement = new SelectionGroup(SelectionType.PLACEMENT);
+    public final SelectionGroup SELECTION;
+    public static final SelectionGroup PLACEMENT = new SelectionGroup(SelectionType.PLACEMENT);
     
     public SceneEditor(File file) {
         this.file = file;
         this.showGrid = true;
         this.rootobject = new EditorObject("root");
-        this.selection = new SelectionGroup(SelectionType.SELECTION);
+        this.SELECTION = new SelectionGroup(SelectionType.SELECTION);
         this.tileSize = 32;
         this.width = 0;
         this.height = 0;
         this.graph = new SceneGraph(this);
         this.graph.load();
         this.graph.refreshGraph(rootobject);
-        this.object = new ObjectEditor();
-        this.object.load();
+        this.objeditor = new ObjectEditor();
+        this.objeditor.load();
         this.layer = new LayerView(this);
         this.layer.load();
         SplitPane.setResizableWithParent(graph.root, false);
         SplitPane.setResizableWithParent(layer.root, true);
-        SplitPane.setResizableWithParent(object.root, true);
+        SplitPane.setResizableWithParent(objeditor.root, true);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         sidebar.setDividerPositions(0.3, 0.5);
         sidebar.getItems().add(graph.root);
         sidebar.getItems().add(layer.root);
-        sidebar.getItems().add(object.root);
+        sidebar.getItems().add(objeditor.root);
     }
     
     public void render() {
@@ -107,9 +107,10 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         JavaFXCanvasRenderer.renderAll(canvas, objects);
         
         //Render Selection Groups
-        selection.render(g, showGrid, tileSize);
-        if (placement != null)
-            placement.render(g, showGrid, tileSize);
+        SELECTION.render(g, showGrid, tileSize);
+        if (SELECTION.isEmpty()) {
+            PLACEMENT.render(g, showGrid, tileSize);
+        }
         
         if (showGrid) {
             UIRenderUtils.renderGrid(g, width, height, tileSize);
@@ -161,6 +162,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     
     public void addObject(EditorObject object) {
         rootobject.addChild(object);
+        graph.refreshGraph(rootobject);
     }
     
     public void addTile(EditorTile tile) {
@@ -170,7 +172,15 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     }
     
     public void removeObject(EditorObject object) {
-        
+        rootobject.removeChild(object);
+        graph.refreshGraph(rootobject);
+    }
+    
+    public void removeObjects(Collection<EditorObject> objects) {
+        for (EditorObject object: objects) {
+            rootobject.removeChild(object);
+        }
+        graph.refreshGraph(rootobject);
     }
     
     public void removeTile(EditorTile tile) {
@@ -179,9 +189,17 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         }
     }
     
+    public void removeTiles(Collection<EditorTile> tiles) {
+        if (getLayer() != null) {
+            for (EditorTile tile: tiles) {
+                getLayer().getTiles().remove(tile);
+            }
+        }
+    }
+    
     public void addObjects(Collection<EditorObject> objects) {
-        for (EditorObject o: objects) {
-            addObject(o);
+        for (EditorObject object: objects) {
+            addObject(object);
         }
     }
     
@@ -204,6 +222,20 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         return result;
     }
     
+    public EditorObject getObject(int x, int y) {
+        EditorObject result = null;
+        int depth = Integer.MIN_VALUE;
+        for (GameObject object: getAllGameObjects()) {
+            if (object.localAABB().contains(x, y)) {
+                if (object.getTransform().getDepth() >= depth) { //TODO: Replace with the rendering order
+                    result = (EditorObject) object;
+                    depth = object.getTransform().getDepth();
+                }
+            }
+        }
+        return result;
+    }
+    
     public Set<EditorTile> getTiles(int x, int y) {
         Set<EditorTile> result = new HashSet<>();
         for (EditorLayer l: layer.getLayers()) {
@@ -216,11 +248,27 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         return result;
     }
     
+    public EditorTile getTile(int x, int y) {
+        EditorTile result = null;
+        int depth = Integer.MIN_VALUE;
+        for (EditorLayer l: layer.getLayers()) {
+            for (EditorTile tile: l.getTiles()) {
+                if (tile.localAABB().contains(x, y)) {
+                    if (tile.getDepth() >= depth) { //TODO: Replace with the rendering order
+                        result = tile;
+                        depth = tile.getDepth();
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
     public Set<EditorObject> getObjects(Rectangle rectangle) {
         Set<EditorObject> result = new HashSet<>();
-        for (GameObject o: getAllGameObjects()) {
-            if (rectangle.contains(o.localAABB())) {
-                result.add((EditorObject) o);
+        for (GameObject object: getAllGameObjects()) {
+            if (Core.rectIntersection(rectangle, object.localAABB())) {
+                result.add((EditorObject) object);
             }
         }
         return result;
@@ -230,7 +278,7 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         Set<EditorTile> result = new HashSet<>();
         for (EditorLayer l: layer.getLayers()) {
             for (EditorTile tile: l.getTiles()) {
-                if (rectangle.contains(tile.localAABB())) {
+                if (Core.rectIntersection(rectangle, tile.localAABB())) {
                     result.add(tile);
                 }
             }
@@ -239,9 +287,14 @@ public class SceneEditor extends Interface implements Initializable, Editor {
     }
     
     public void addSelection(SelectionGroup group) {
-        selection.clear();
+        SELECTION.clear();
         for (EditorObject o: group.getObjects()) {
-            addObject(o);
+            EditorObject result = o.instantiate();
+            if (showGrid) {
+                result.getTransform().position.x = (int) (result.getTransform().position.x / (double) tileSize + 0.5) * tileSize;
+                result.getTransform().position.y = (int) (result.getTransform().position.y / (double) tileSize + 0.5) * tileSize;
+            }
+            addObject(result);
         }
         
         if (getLayer() != null) {
@@ -252,10 +305,29 @@ public class SceneEditor extends Interface implements Initializable, Editor {
                     result.getPosition().y = (int) (result.getPosition().y / (double) tileSize + 0.5) * tileSize;
                 }
                 addTile(result);
-                selection.setTile(result);
             }
         }
-        selection.setObjects(group.getObjects());
+    }
+    
+    public void removeSelection(int x, int y) {
+        if (PLACEMENT.isEmpty()) {
+            EditorObject object = getObject(x, y);
+            EditorTile tile = getTile(x, y);
+            if (object != null)
+                removeObject(object);
+            if (tile != null)
+                removeTile(tile);
+        } else {
+            Rectangle selection = PLACEMENT.getSelection();
+            if (showGrid) {
+                selection.x = (int) (selection.x / (double) tileSize + 0.5) * tileSize;
+                selection.y = (int) (selection.y / (double) tileSize + 0.5) * tileSize;
+            }
+            
+            removeObjects(getObjects(selection));
+            removeTiles(getTiles(selection));
+        }
+        render();
     }
     
     public List<GameObject> getAllGameObjects() {
@@ -284,41 +356,77 @@ public class SceneEditor extends Interface implements Initializable, Editor {
         }
         
         pane.setOnMousePressed((MouseEvent event) -> {
+            EditorObject object = getObject((int) event.getX(), (int) event.getY());
+            EditorTile tile = getTile((int) event.getX(), (int) event.getY());
+            
             if (event.getButton() == MouseButton.PRIMARY) {
-                Set<EditorObject> objects = getObjects((int) event.getX(), (int) event.getY());
-                Set<EditorTile> tiles = getTiles((int) event.getX(), (int) event.getY());
-                
                 if (event.isShiftDown()) {
-                    selection.addObjects(objects);
-                    selection.addTiles(tiles);
-                } else if (event.isControlDown()) {
-                    selection.removeObjects(objects);
-                    selection.removeTiles(tiles);
+                    if (object != null)
+                        SELECTION.addObject(object);
+                    if (tile != null)
+                        SELECTION.addTile(tile);
                 } else {
-                    if (!selection.getSelection().contains((int) event.getX(), (int) event.getY())) {
-                        selection.setObjects(objects);
-                        selection.setTiles(tiles);
+                    if (SELECTION.isEmpty() || !SELECTION.getSelection().contains((int) event.getX(), (int) event.getY())) {
+                        if (object != null || tile != null)
+                            SELECTION.clear();
+                        
+                        if (object != null)
+                            SELECTION.setObject(object);
+                        if (tile != null)
+                            SELECTION.setTile(tile);
+                    }
+                }
+                render();
+            } else if (event.getButton() == MouseButton.SECONDARY) {
+                PLACEMENT.mousePressed(event, this);
+                removeSelection((int) event.getX(), (int) event.getY());
+            }
+            
+            SELECTION.mousePressed(event, this);
+            
+            if (SELECTION.isEmpty()) {
+                PLACEMENT.mousePressed(event, this);
+            } else {
+                if (event.isControlDown()) {
+                    if (object != null)
+                        SELECTION.removeObject(object);
+                    if (tile != null)
+                        SELECTION.removeTile(tile);
+                } else {
+                    if (!SELECTION.getSelection().contains((int) event.getX(), (int) event.getY())) {
+                        SELECTION.clear();
+                        PLACEMENT.mouseMoved(event, this);
                     }
                 }
             }
-            
-            selection.mousePressed(event, this);
-            placement.mousePressed(event, this);
         });
         
         pane.setOnMouseReleased((MouseEvent event) -> {
-            selection.mouseReleased(event, this);
-            placement.mouseReleased(event, this);
+            SELECTION.mouseReleased(event, this);
+            
+            if (SELECTION.isEmpty()) {
+                PLACEMENT.mouseReleased(event, this);
+            }
         });
         
         pane.setOnMouseDragged((MouseEvent event) -> {
-            selection.mouseDragged(event, this);
-            placement.mouseDragged(event, this);
+            if (event.getButton() == MouseButton.SECONDARY) {
+                removeSelection((int) event.getX(), (int) event.getY());
+            }
+            
+            SELECTION.mouseDragged(event, this);
+            
+            if (SELECTION.isEmpty()) {
+                PLACEMENT.mouseDragged(event, this);
+            }
         });
         
         pane.setOnMouseMoved((MouseEvent event) -> {
-            selection.mouseMoved(event, this);
-            placement.mouseMoved(event, this);
+            SELECTION.mouseMoved(event, this);
+            
+            if (SELECTION.isEmpty()) {
+                PLACEMENT.mouseMoved(event, this);
+            }
         });
         
         render();

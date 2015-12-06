@@ -1,6 +1,7 @@
 package ga.devkit.ui;
 
 import com.sun.javafx.geom.Dimension2D;
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.core.Application;
 import java.io.File;
 import java.net.URL;
@@ -147,6 +148,13 @@ public class Core extends Interface implements Initializable {
         if (index < 0)
             return filename;
         return filename.substring(0, index);
+    }
+    
+    public static boolean rectIntersection(Rectangle A, Rectangle B) {
+        return !(A.x + A.width - 1 < B.x || 
+                 A.y + A.height - 1 < B.y || 
+                 A.x > B.x + B.width - 1 || 
+                 A.y > B.y + B.height - 1);
     }
     
     public static ProjectView getProject() {

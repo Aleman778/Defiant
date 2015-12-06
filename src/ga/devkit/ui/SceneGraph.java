@@ -45,9 +45,9 @@ public class SceneGraph extends Interface implements Initializable {
     
     private void refreshObjectEditor() {
         if (graph.getSelectionModel().getSelectedItems().size() == 1) {
-            editor.object.setObject(objects.get(graph.getSelectionModel().getSelectedItems().get(0).getValue()));
+            editor.objeditor.setObject(objects.get(graph.getSelectionModel().getSelectedItems().get(0).getValue()));
         } else {
-            editor.object.setObject(null);
+            editor.objeditor.setObject(null);
         }
     }
     

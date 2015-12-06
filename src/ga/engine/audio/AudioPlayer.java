@@ -1,6 +1,8 @@
 package ga.engine.audio;
 
 import ga.engine.scene.GameComponent;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.media.AudioClip;
 
 public class AudioPlayer extends GameComponent implements Runnable {
@@ -53,6 +55,11 @@ public class AudioPlayer extends GameComponent implements Runnable {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        return null;
+    }
+    
+    @Override
+    public void xmlVar(String name, String value) {
     }
 }
