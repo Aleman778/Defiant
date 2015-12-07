@@ -14,6 +14,7 @@ public class Application extends javafx.application.Application {
     private static Stage window;
     private static GameScene scene;
     private static Devkit devkit;
+    public static long now;
     
     @Override
     public void start(Stage primaryStage) {
@@ -30,6 +31,7 @@ public class Application extends javafx.application.Application {
 
             @Override
             public void handle(long now) {
+                Application.now = now;
                 if (scene != null && !devmode) {
                     scene.update();
                     scene.render();
