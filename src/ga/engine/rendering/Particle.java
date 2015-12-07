@@ -1,7 +1,8 @@
 package ga.engine.rendering;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
-import ga.engine.physics.ParticleBody;
+import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
@@ -13,12 +14,14 @@ public class Particle {
 
     public float size, life, lifeTime, velocity;
     public String shape;
-    public ParticleBody body;
+    public SimpleBody body;
     public Image sprite;
     public Color color;
+    public boolean interpolate;
+    protected Vector2D lastPosition;
 
     public Particle(Vector2D position, Vector2D velocity, float size, float life, Color color) {
-        body = new ParticleBody(this, 1, 5);
+        body = new SimpleBody(new Rectangle(0, 0, (int) size / 2, (int) size / 2), 1, 5);
         body.gameobject = new GameObject();
         body.transform = new Transform2D(body.gameobject, position.x, position.y);
         body.velocity = velocity;
@@ -30,10 +33,32 @@ public class Particle {
 
     public boolean update() {
         life--;
-        return life > 0 || size > 0;
+        return life > 0 && size > 0;
     }
 
     public void render(GraphicsContext g) {
+        if (interpolate) {
+            if (lastPosition != null) {
+                Vector2D pos = body.transform.position;
+                interpolate = false;
+                int x = (int) ((body.transform.position.x - lastPosition.x) / 2), y = (int) ((body.transform.position.y - lastPosition.y) / 2);
+                while (x > 1 || y > 1) {
+                    body.transform.position.x += x;
+                    body.transform.position.y += y;
+                    render(g);
+                    body.transform.position.x -= 2 * x;
+                    body.transform.position.y -= 2 * y;
+                    render(g);
+                    body.transform.position.x += x;
+                    body.transform.position.y += y;
+                    x /= 8;
+                    y /= 8;
+                }
+                interpolate = true;
+                body.transform.position = pos;
+            }
+            lastPosition = body.transform.position;
+        }
         g.setGlobalAlpha(life / lifeTime);
         g.setFill(color);
         if (sprite != null) {

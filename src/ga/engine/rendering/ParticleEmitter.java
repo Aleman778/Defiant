@@ -21,7 +21,7 @@ import org.xml.sax.Attributes;
 
 public class ParticleEmitter extends GameComponent {
 
-    private final HashSet<Particle> particles;
+    protected final HashSet<Particle> particles;
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color, colorMid, colorEnd;
     protected String mode, particleShape;
@@ -150,6 +150,7 @@ public class ParticleEmitter extends GameComponent {
             if (sprite != null) {
                 p.sprite = sprite;
             }
+            p.interpolate = interpolate;
             particles.add(p);
         }
     }
@@ -220,6 +221,10 @@ public class ParticleEmitter extends GameComponent {
         if (sizeStep == 0 && size != sizeEnd) {
             sizeStep = (sizeEnd - size) / life;
         }
+    }
+    
+    public void interpolate(boolean interpolate) {
+        this.interpolate = interpolate;
     }
 
     public static ParticleEmitter loadXML(String filepath) {
