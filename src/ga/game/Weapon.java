@@ -8,8 +8,11 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
+import ga.engine.xml.XMLReader;
+import java.util.HashMap;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
+import org.xml.sax.Attributes;
 
 public class Weapon {
 
@@ -18,6 +21,7 @@ public class Weapon {
     public long lastFire = 0, cooldown;
     private double spread, velocity = 20;
     public boolean single = true;
+    private static HashMap<String, String> config = new HashMap<>();
 
     public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, boolean burst) {
         image = new ImageRenderer(imagePath);
@@ -79,4 +83,28 @@ public class Weapon {
     public void render(GraphicsContext g) {
         image.render(g);
     }
+    
+    public static Weapon loadXML(String filepath) {
+        reader.parse(filepath);
+        return new Weapon(config.get("sprite"), Integer.parseInt(config.get("clip")), Integer.parseInt(config.get("ammo")), Integer.parseInt(config.get("spread")), Long.parseLong(config.get("cooldown")), Boolean.valueOf((config.get("burst"))));
+    }
+    
+    private static final XMLReader reader = new XMLReader() {
+
+        @Override
+        public void documentStart() {}
+
+        @Override
+        public void documentEnd() {}
+
+        @Override
+        public void nodeStart(String element, Attributes attri) {}
+
+        @Override
+        public void nodeEnd(String element, Attributes attri, String value) {
+            if (!element.equals("Weapon")) {
+                config.put(element, value);
+            }
+        }
+    };
 }

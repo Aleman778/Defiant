@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Weapon>
+    <sprite>textures/player/Arm_Med_vapen2.png</sprite>
+    <clip>4</clip>
+    <ammo>40</ammo>
+    <spread>1</spread>
+    <cooldown>1000</cooldown>
+    <burst>false</burst>
+</Weapon>
