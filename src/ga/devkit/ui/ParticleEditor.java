@@ -89,6 +89,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
                         emitter.fire();
                     }
                 }
+                emitter.interpolate = settings.getInterpolate().isSelected();
                 g.clearRect(0, 0, preview.getWidth(), preview.getHeight());
                 emitter.update();
                 emitter.physicsUpdate(new HashSet<>());

@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Particle System" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+      <Label layoutX="-26.0" prefWidth="296.0" text="Particle System" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
       <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
          <tabs>
             <Tab text="Particle Settings">
@@ -62,14 +62,15 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <RadioButton fx:id="point" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="14.0">
+                        <RadioButton fx:id="point" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" selected="true" text="Point" AnchorPane.leftAnchor="16.0">
                            <toggleGroup>
                               <ToggleGroup fx:id="emitterShape" />
                            </toggleGroup>
                         </RadioButton>
                         <RadioButton fx:id="area" layoutX="75.0" layoutY="31.0" mnemonicParsing="false" text="Area" toggleGroup="$emitterShape" />
                         <Label layoutX="7.0" layoutY="6.0" text="Emitter Shape" AnchorPane.leftAnchor="7.0" />
-                        <TextField fx:id="areaBox" disable="true" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" />
+                        <TextField fx:id="areaBox" disable="true" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" AnchorPane.leftAnchor="16.0" />
+                        <CheckBox fx:id="interpolate" layoutX="14.0" layoutY="94.0" mnemonicParsing="false" text="Interpolate" AnchorPane.leftAnchor="16.0" />
                      </children>
                   </AnchorPane>
               </content>

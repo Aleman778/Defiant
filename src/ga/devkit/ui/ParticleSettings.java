@@ -21,7 +21,7 @@ public class ParticleSettings extends Interface implements Initializable {
     @FXML
     public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityStep, life, rate, colorPoint;
     public ColorPicker color, colorMid, colorEnd;
-    public CheckBox mode, colorLock;
+    public CheckBox mode, colorLock, interpolate;
     public RadioButton point, area, circle, square, sprite;
     public TextField areaBox;
 
@@ -114,6 +114,10 @@ public class ParticleSettings extends Interface implements Initializable {
 
     public CheckBox getColorLock() {
         return colorLock;
+    }
+
+    public CheckBox getInterpolate() {
+        return interpolate;
     }
 
     public void updateSliders(ParticleConfiguration c) {
@@ -245,6 +249,9 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         colorLock.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        mode.setOnAction((ActionEvent event) -> {
             updatePreview();
         });
     }
