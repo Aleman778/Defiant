@@ -6,6 +6,7 @@ import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 
@@ -71,7 +72,13 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public void xmlvar(String name, String value) {
+    public Map<String, Integer> getVars() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void xmlVar(String name, String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

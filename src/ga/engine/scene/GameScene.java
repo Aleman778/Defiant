@@ -6,7 +6,6 @@ import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
-import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
