@@ -6,6 +6,7 @@ import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
+import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
@@ -138,5 +139,9 @@ public final class GameScene {
             Vector2D position = object.getTransform().localPosition();
             g.fillRect(position.x + aabb.x, position.y + aabb.y, aabb.width, aabb.height);
         }
+    }
+    
+    public GameObject getRoot() {
+        return root;
     }
 }

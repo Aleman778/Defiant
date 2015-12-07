@@ -21,24 +21,32 @@ public class GameObject implements Comparator<GameObject> {
     private Rectangle AABB = new Rectangle();
     private final List<GameObject> children;
     private final List<GameComponent> components;
+    private final List<GameObject> objectsToAdd;
+    private final List<GameObject> objectsToRemove;
     private Body body = null;
 
     public GameObject() {
         this.transform = new Transform2D(this);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
+        this.objectsToAdd = new ArrayList<>();
+        this.objectsToRemove = new ArrayList<>();
     }
 
     public GameObject(Transform2D transform) {
         this.transform = new Transform2D(this, transform);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
+        this.objectsToAdd = new ArrayList<>();
+        this.objectsToRemove = new ArrayList<>();
     }
 
     public GameObject(double x, double y) {
         this.transform = new Transform2D(this, x, y);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
+        this.objectsToAdd = new ArrayList<>();
+        this.objectsToRemove = new ArrayList<>();
     }
 
     public GameObject addChild(GameObject object) {
@@ -52,11 +60,6 @@ public class GameObject implements Comparator<GameObject> {
         }
 
         children.add(object);
-        return object;
-    }
-    
-    public GameObject removeChild(GameObject object) {
-        children.remove(object);
         return object;
     }
 
@@ -129,6 +132,14 @@ public class GameObject implements Comparator<GameObject> {
     }
 
     public void fixedUpdate() {
+        for (GameObject o : objectsToAdd) {
+            addChild(o);
+        }
+        objectsToAdd.clear();
+        for (GameObject o : objectsToRemove) {
+            children.remove(o);
+        }
+        objectsToRemove.clear();
         for (GameComponent component : components) {
             component.fixedUpdate();
         }
@@ -141,7 +152,7 @@ public class GameObject implements Comparator<GameObject> {
     public void physicsUpdate(Set<Body> retrievedBodies) {
         boolean colliding = false;
         if (body.getMass() != 0) {
-            body.setVelocity(body.getVelocity().add(GameScene.gravity));
+            body.setVelocity(body.getVelocity().add(body.gravity));
         }
         transform.translate(body.getVelocity().x, body.getVelocity().y);
         Iterator<Body> it = retrievedBodies.iterator();
@@ -220,6 +231,10 @@ public class GameObject implements Comparator<GameObject> {
         AABB = new Rectangle(x, y, w, h);
         transform.pivot = new Vector2D(w / 2, h / 2);
     }
+    
+    public void setAABB(Rectangle AABB) {
+        this.AABB = AABB;
+    }
 
     public Rectangle getAABB() {
         return AABB;
@@ -232,5 +247,17 @@ public class GameObject implements Comparator<GameObject> {
     @Override
     public int compare(GameObject o1, GameObject o2) {
         return o2.transform.depth - o1.transform.depth;
+    }
+    
+    public void addObject(GameObject o) {
+        objectsToAdd.add(o);
+    }
+    
+    public void removeObject(GameObject o) {
+        objectsToRemove.add(o);
+    }
+    
+    public void destroy() {
+        parent.removeObject(this);
     }
 }
