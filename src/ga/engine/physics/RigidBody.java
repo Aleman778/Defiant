@@ -27,6 +27,9 @@ public class RigidBody extends Body {
         if (velocity.x + velocity.y == 0) {
             return null;
         }
+        if (otherBody.gameobject.parent == null) {
+            return null;
+        }
 
         Rectangle bounds = gameobject.getAABB();
         Rectangle otherBounds = otherBody.gameobject.getAABB();
@@ -126,7 +129,7 @@ public class RigidBody extends Body {
         }
         double percent = 0;
         if (!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) {
-            if (getID() == body.getID() || getCollide().contains(body.getID())) {
+            if (getID() == body.getID() || getCollide().contains(body.getID()) || body.getCollide().contains(id)) {
                 impulse = impulse / (invMass + otherInvMass);
                 if (bounce == 0) {
                     if (Math.abs(normal.x) == 1) {
