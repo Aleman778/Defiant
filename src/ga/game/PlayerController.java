@@ -38,14 +38,13 @@ public class PlayerController extends GameComponent {
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
     private float armRotation, headRotation;
-    private int selectedWeapon;
     private RigidBody body;
     private Vector2D armPivot;
     private GameObject head, arm;
-    private ImageRenderer armRenderable;
     private SpriteRenderer renderable;
     private AnimationController AC;
     private ParticleEmitter jumpEmitter, landEmitter;
+    private WeaponController weaponcontroller = new WeaponController();
 
     @Override
     public void start() {
@@ -59,11 +58,10 @@ public class PlayerController extends GameComponent {
         head.getTransform().depth = -2;
 
         arm = new GameObject(12, 10);
-        arm.addComponent(new ImageRenderer(weapons.get(0)));
+        arm.addComponent(weaponcontroller);
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         arm.getTransform().depth = -3;
-        armRenderable = (ImageRenderer) arm.getComponent(ImageRenderer.class);
 
         gameobject.addChild(head);
         gameobject.addChild(arm);
@@ -156,20 +154,6 @@ public class PlayerController extends GameComponent {
         }
         arm.getTransform().rotation = armRotation;
         head.getTransform().rotation = headRotation;
-
-        //Weapon Select
-        if (Input.getScrollPosition() != 0) {
-            selectedWeapon += Input.getScrollPosition();
-            if (selectedWeapon < 0) {
-                selectedWeapon = weapons.size() - 1;
-            }
-            if (selectedWeapon > weapons.size() - 1) {
-                selectedWeapon = 0;
-            }
-            armRenderable.setImage(weapons.get(selectedWeapon));
-            arm.transform.pivot = armPivot;
-            Input.scrollPosition = 0;
-        }
     }
 
     @Override
