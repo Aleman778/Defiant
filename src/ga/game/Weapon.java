@@ -16,7 +16,7 @@ public class Weapon {
     private ImageRenderer image;
     private int clipSize, maxAmmo;
     public long lastFire = 0, cooldown;
-    private double spread;
+    private double spread, velocity = 4;
 
     public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown) {
         image = new ImageRenderer(imagePath);
@@ -30,7 +30,8 @@ public class Weapon {
         return cooldown;
     }
 
-    public GameObject fire() {
+    public GameObject fire(double direction) {
+        direction = Math.toRadians(direction);
         GameObject o = new GameObject() {
             @Override
             public void fixedUpdate() {
@@ -40,10 +41,12 @@ public class Weapon {
                 }
             }
         };
+        ImageRenderer renderer = new ImageRenderer("textures/projektil.png");
+        o.addComponent(renderer);
         SimpleBody body = new SimpleBody(new Rectangle(1, 1), 1, 1);
-        body.gravity = new Vector2D(0, 0.1);
+        body.gravity = new Vector2D(0, 0.01);
         body.setNoCollide(2);
-        body.setVelocity(new Vector2D(20, 0));
+        body.setVelocity(new Vector2D(velocity * Math.cos(direction), velocity * Math.sin(direction)));
         o.addComponent(body);
         ParticleEmitter e = new ParticleEmitter() {
             @Override
@@ -65,6 +68,7 @@ public class Weapon {
         };
         e.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/WeaponTrail.psystem"));
         e.interpolate(true);
+        e.object.transform.position = new Vector2D(0, renderer.getImage().getHeight() / 2);
         o.addComponent(e);
         o.setAABB(0, 0, 1, 1);
         return o;

@@ -35,7 +35,7 @@ public class WeaponController extends GameComponent {
         Weapon w = getSelected();
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown) {
             w.lastFire = Application.now;
-            GameObject projectile = w.fire();
+            GameObject projectile = w.fire(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
             projectile.getTransform().position = gameobject.getParent().transform.position;
             Application.getScene().getRoot().addObject(projectile);
         }
