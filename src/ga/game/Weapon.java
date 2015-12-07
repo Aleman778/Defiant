@@ -16,7 +16,7 @@ public class Weapon {
     private ImageRenderer image;
     private int clipSize, maxAmmo;
     public long lastFire = 0, cooldown;
-    private double spread, velocity = 4;
+    private double spread, velocity = 20;
 
     public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown) {
         image = new ImageRenderer(imagePath);
@@ -41,7 +41,7 @@ public class Weapon {
                 }
             }
         };
-        ImageRenderer renderer = new ImageRenderer("textures/projektil.png");
+        ImageRenderer renderer = new ImageRenderer("textures/bullet_round.png");
         o.addComponent(renderer);
         SimpleBody body = new SimpleBody(new Rectangle(1, 1), 1, 1);
         body.gravity = new Vector2D(0, 0.01);
