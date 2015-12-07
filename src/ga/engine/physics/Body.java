@@ -1,5 +1,6 @@
 package ga.engine.physics;
 
+import ga.engine.scene.GameScene;
 import ga.engine.scene.GameComponent;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ public abstract class Body extends GameComponent {
     private boolean grounded = false;
     private ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<>();
     protected int id = 1;
+    public Vector2D gravity;
 
     public Body(int id) {
         this.id = id;
@@ -24,6 +26,7 @@ public abstract class Body extends GameComponent {
     public void awoke() {
         collide.add(1);
         noCollide.add(0);
+        this.gravity = GameScene.gravity;
     }
 
     @Override
@@ -90,6 +93,7 @@ public abstract class Body extends GameComponent {
     
     public void setNoCollide(int... id) {
         noCollide.clear();
+        noCollide.add(0);
         for (int i : id) {
             noCollide.add(i);
         }
