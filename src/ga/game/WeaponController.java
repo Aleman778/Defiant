@@ -18,7 +18,7 @@ public class WeaponController extends GameComponent {
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
             add(Weapon.loadXML("weapons/Pistol.weapon"));
-            add(Weapon.loadXML("weapons/Large.weapon"));
+            add(Weapon.loadXML("weapons/SMG.weapon"));
             add(Weapon.loadXML("weapons/Flamethrower.weapon"));
         }
     };

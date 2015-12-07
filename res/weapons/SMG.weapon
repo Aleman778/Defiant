@@ -4,6 +4,6 @@
     <clip>4</clip>
     <ammo>40</ammo>
     <spread>1</spread>
-    <cooldown>1000</cooldown>
-    <burst>false</burst>
+    <cooldown>75</cooldown>
+    <burst>true</burst>
 </Weapon>
