@@ -17,9 +17,9 @@ public class WeaponController extends GameComponent {
     
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
-            add(new Weapon("textures/player/Arm_Med_vapen1.png", 8, 90, 1, 200));
-            add(new Weapon("textures/player/Arm_Med_vapen2.png", 4, 40, 1, 1000));
-            add(new Weapon("textures/player/Arm_Med_vapen3.png", 200, 0, 1, 0));
+            add(new Weapon("textures/player/Arm_Med_vapen1.png", 8, 90, 1, 200, false));
+            add(new Weapon("textures/player/Arm_Med_vapen2.png", 4, 40, 1, 1000, false));
+            add(new Weapon("textures/player/Arm_Med_vapen3.png", 200, 0, 1, 0, true));
         }
     };
     
@@ -62,7 +62,9 @@ public class WeaponController extends GameComponent {
         }
         if (Input.getMouseButton(MouseButton.PRIMARY)) {
             fire();
-            Input.mouseButton = MouseButton.NONE;
+            if (selected.single) {
+                Input.mouseButton = MouseButton.NONE;
+            }
         }
     }
     

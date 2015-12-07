@@ -17,13 +17,15 @@ public class Weapon {
     private int clipSize, maxAmmo;
     public long lastFire = 0, cooldown;
     private double spread, velocity = 20;
+    public boolean single = true;
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown) {
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, boolean burst) {
         image = new ImageRenderer(imagePath);
         this.clipSize = clipSize;
         this.maxAmmo = maxAmmo;
         this.spread = spread;
         this.cooldown = cooldown;
+        this.single = !burst;
     }
 
     public double getCooldown() {
