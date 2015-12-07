@@ -14,6 +14,7 @@ import javafx.scene.input.ScrollEvent;
 public class Input {
     
     public static MouseButton mouseButton;
+    public static MouseButton mouseButtonDrag;
     public static double scrollPosition;
     public static Vector2D mousePosition;
     
@@ -38,7 +39,7 @@ public class Input {
         scene.setOnMouseDragged((MouseEvent event) -> {
             mousePosition.x = event.getX();
             mousePosition.y = event.getY();
-            mouseButton = event.getButton();
+            mouseButtonDrag = event.getButton();
         });
         scene.setOnMousePressed((MouseEvent event) -> {
             mouseButton = event.getButton();
