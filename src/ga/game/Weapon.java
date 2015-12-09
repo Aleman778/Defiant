@@ -7,6 +7,7 @@ import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameObject;
 import ga.engine.xml.XMLReader;
 import java.util.HashMap;
@@ -38,16 +39,17 @@ public class Weapon {
 
     public GameObject fire(double direction) {
         direction = Math.toRadians(direction);
-        GameObject o = new GameObject() {
+        GameObject o = new GameObject();
+        ImageRenderer renderer = new ImageRenderer("textures/bullet_round.png") {
+
             @Override
             public void fixedUpdate() {
                 super.fixedUpdate();
-                if (true) {
-                    
+                if (gameobject.getBody().velocity.x == 0 && gameobject.getBody().velocity.y == 0) {
+                    image = ResourceManager.get("<HIT_MARKER>");
                 }
             }
         };
-        ImageRenderer renderer = new ImageRenderer("textures/bullet_round.png");
         o.addComponent(renderer);
         SimpleBody body = new SimpleBody(new Rectangle(1, 1), 1, 1);
         body.gravity = new Vector2D(0, 0.01);

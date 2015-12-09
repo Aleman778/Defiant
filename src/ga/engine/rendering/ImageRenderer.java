@@ -39,7 +39,9 @@ public class ImageRenderer extends GameComponent {
 
     @Override
     public void render(GraphicsContext g) {
-        g.drawImage(image, 0, 0);
+        if (image != null) {
+            g.drawImage(image, 0, 0);
+        }
     }
 
     @Override
