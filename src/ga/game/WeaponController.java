@@ -2,6 +2,7 @@ package ga.game;
 
 import ga.engine.core.Application;
 import ga.engine.input.Input;
+import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
@@ -35,8 +36,9 @@ public class WeaponController extends GameComponent {
         Weapon w = getSelected();
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown) {
             w.lastFire = Application.now;
-            GameObject projectile = w.fire(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
-            projectile.getTransform().position = gameobject.getParent().transform.position;
+            double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
+            GameObject projectile = w.fire(dir);
+            projectile.getTransform().position = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(w.getImage().getWidth() / 2, w.getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             Application.getScene().getRoot().addObject(projectile);
         }
     }

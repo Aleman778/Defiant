@@ -13,6 +13,7 @@ import ga.engine.xml.XMLReader;
 import java.util.HashMap;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import org.xml.sax.Attributes;
 
 public class Weapon {
@@ -38,7 +39,6 @@ public class Weapon {
     }
 
     public GameObject fire(double direction) {
-        direction = Math.toRadians(direction);
         GameObject o = new GameObject();
         ImageRenderer renderer = new ImageRenderer("textures/bullet_round.png") {
 
@@ -89,6 +89,10 @@ public class Weapon {
 
     public void render(GraphicsContext g) {
         image.render(g);
+    }
+    
+    public Image getImage() {
+        return image.getImage();
     }
     
     public static Weapon loadXML(String filepath) {

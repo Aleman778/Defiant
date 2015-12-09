@@ -19,13 +19,6 @@ import javafx.scene.input.KeyCode;
 
 public class PlayerController extends GameComponent {
 
-    private static final List<Image> weapons = new ArrayList<Image>() {
-        {
-            add(new Image("textures/player/Arm_Med_vapen1.png"));
-            add(new Image("textures/player/Arm_Med_vapen2.png"));
-            add(new Image("textures/player/Arm_Med_vapen3.png"));
-        }
-    };
     private static final List<Image> playerAnimations = new ArrayList<Image>() {
         {
             add(new Image("textures/player/Player_Idle.png"));
