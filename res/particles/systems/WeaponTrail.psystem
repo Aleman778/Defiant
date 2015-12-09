@@ -5,7 +5,7 @@
     <size>2</size>
     <sizeEnd>0</sizeEnd>
     <sizeStep>0</sizeStep>
-    <life>200</life>
+    <life>20</life>
     <color>#666666FF</color>
     <mode>MODE_CONTINUOUS</mode>
     <gravity>0.0</gravity>

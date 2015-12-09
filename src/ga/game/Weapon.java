@@ -59,7 +59,11 @@ public class Weapon {
             public void physicsUpdate(Set<Body> retrievedBodies) {
                 super.physicsUpdate(retrievedBodies);
                 Body b = gameobject.getBody();
-                if (b.velocity.x == 0 && b.velocity.y == 0 || gameobject.transform.position.x > Application.getWidth() * 1.2 || gameobject.transform.position.y > Application.getHeight() * 1.2) {
+                if (b.velocity.x == 0 && b.velocity.y == 0
+                        || gameobject.transform.position.x > Application.getWidth() * 1.2
+                        || gameobject.transform.position.y > Application.getHeight() * 1.2
+                        || gameobject.transform.position.x < -Application.getWidth() * 0.2
+                        || gameobject.transform.position.y < -Application.getHeight() * 0.2) {
                     rate = 0;
                 }
             }
@@ -74,6 +78,7 @@ public class Weapon {
         };
         e.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/WeaponTrail.psystem"));
         e.interpolate(true);
+        e.physics(false);
         e.object.transform.position = new Vector2D(0, renderer.getImage().getHeight() / 2);
         o.addComponent(e);
         o.setAABB(0, 0, 1, 1);
