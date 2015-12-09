@@ -9,7 +9,6 @@ import ga.engine.scene.GameScene;
 import ga.engine.xml.XMLReader;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
@@ -31,7 +30,7 @@ public class ParticleEmitter extends GameComponent {
     protected double gravityScale = 0.6;
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
-    public boolean interpolate = false;
+    public boolean interpolate = false, physics = true;
     public int interpolationScale = 8;
     protected Vector2D lastPosition;
 
@@ -85,10 +84,12 @@ public class ParticleEmitter extends GameComponent {
                 p.body.setVelocity(p.body.getVelocity().add(GameScene.gravity.mul(gravityScale)).mul(p.velocity));
                 p.body.transform.position = p.body.transform.position.add(p.body.velocity);
             }
-            Iterator<Body> bodyIt = retrievedBodies.iterator();
-            while (bodyIt.hasNext()) {
-                Body physicsBody = bodyIt.next();
-                p.physicsUpdate(physicsBody);
+            if (physics) {
+                Iterator<Body> bodyIt = retrievedBodies.iterator();
+                while (bodyIt.hasNext()) {
+                    Body physicsBody = bodyIt.next();
+                    p.physicsUpdate(physicsBody);
+                }
             }
         }
     }
@@ -222,9 +223,13 @@ public class ParticleEmitter extends GameComponent {
             sizeStep = (sizeEnd - size) / life;
         }
     }
-    
+
     public void interpolate(boolean interpolate) {
         this.interpolate = interpolate;
+    }
+
+    public void physics(boolean physics) {
+        this.physics = physics;
     }
 
     public static ParticleEmitter loadXML(String filepath) {
@@ -270,7 +275,7 @@ public class ParticleEmitter extends GameComponent {
     public Map<String, Integer> getVars() {
         return null;
     }
-    
+
     @Override
     public void xmlVar(String name, String value) {
     }
