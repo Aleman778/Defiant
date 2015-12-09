@@ -78,6 +78,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         int x = Integer.parseInt((settings.areaBox.getText().split(",")[0].trim())),
                 y = Integer.parseInt(settings.areaBox.getText().split(",")[1].trim());
         emitter.setShape(new Rectangle(-x / 2, -y / 2, x, y));
+        emitter.physics(false);
         settings.initEvents();
         new AnimationTimer() {
 
