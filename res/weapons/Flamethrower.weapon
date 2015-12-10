@@ -3,7 +3,7 @@
     <sprite>textures/player/Arm_Med_vapen3.png</sprite>
     <clip>0</clip>
     <ammo>200</ammo>
-    <spread>1</spread>
+    <spread>0</spread>
     <cooldown>0</cooldown>
     <burst>true</burst>
 </Weapon>

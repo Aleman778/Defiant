@@ -39,6 +39,7 @@ public class WeaponController extends GameComponent {
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown) {
             w.lastFire = Application.now;
             double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
+            dir += -(w.spread / 2) / 10 + Math.random() * (w.spread / 2) / 10;
             GameObject projectile = w.fire(dir);
             Vector2D end = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(w.getImage().getWidth() / 2, w.getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             projectile.getTransform().position = end;
@@ -46,6 +47,7 @@ public class WeaponController extends GameComponent {
             spark.direction = (float) Math.toDegrees(dir);
             spark.object.transform.position = transform.position.add(new Vector2D(w.getImage().getWidth(), w.getImage().getHeight()).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             spark.fire();
+            gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
         }
     }
 
