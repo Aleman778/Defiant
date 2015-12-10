@@ -4,6 +4,7 @@
     <clip>0</clip>
     <ammo>200</ammo>
     <spread>0</spread>
+    <recoil>0</recoil>
     <cooldown>0</cooldown>
     <burst>true</burst>
 </Weapon>

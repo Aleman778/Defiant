@@ -6,6 +6,8 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +15,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 
 public class WeaponController extends GameComponent {
-    
+
     private int index = 0;
     private Weapon selected;
     private ParticleEmitter spark;
-    
+
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
             add(Weapon.loadXML("weapons/Pistol.weapon"));
@@ -25,15 +27,15 @@ public class WeaponController extends GameComponent {
             add(Weapon.loadXML("weapons/Flamethrower.weapon"));
         }
     };
-    
+
     public WeaponController() {
         selected = weapons.get(index);
     }
-    
+
     public Weapon getSelected() {
         return selected;
     }
-    
+
     public void fire() {
         Weapon w = getSelected();
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown) {
@@ -48,6 +50,8 @@ public class WeaponController extends GameComponent {
             spark.object.transform.position = transform.position.add(new Vector2D(w.getImage().getWidth(), w.getImage().getHeight()).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             spark.fire();
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
+            Point p = MouseInfo.getPointerInfo().getLocation();
+//            Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
         }
     }
 
@@ -80,12 +84,12 @@ public class WeaponController extends GameComponent {
             }
         }
     }
-    
+
     private void init() {
         spark = ParticleEmitter.loadXML("particles/systems/Spark.psystem");
         gameobject.parent.queueComponent(spark);
     }
-    
+
     @Override
     public GameComponent instantiate() {
         return null;
@@ -100,5 +104,5 @@ public class WeaponController extends GameComponent {
     public void xmlVar(String name, String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

@@ -2,8 +2,12 @@ package ga.engine.input;
 
 import ga.engine.core.Application;
 import ga.engine.physics.Vector2D;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +27,7 @@ public class Input {
     private static Set<KeyCode> keysReleased;
     
     private final Scene scene;
+    private static Robot robot;
     
     public Input(Scene scene) {
         this.scene = scene;
@@ -55,6 +60,11 @@ public class Input {
         keysReleased = new HashSet<>();
         mousePosition = new Vector2D();
         mouseButton = MouseButton.NONE;
+        try {
+            robot = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(Input.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void pressedKey(KeyCode keyCode) {
@@ -105,6 +115,10 @@ public class Input {
     
     public static Vector2D getMousePosition() {
         return mousePosition;
+    }
+    
+    public static void setMousePosition(Vector2D pos) {
+        robot.mouseMove((int) pos.x, (int) pos.y);
     }
 
     public static double getScrollPosition() {
