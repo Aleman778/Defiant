@@ -21,7 +21,7 @@ public class Weapon {
     private ImageRenderer image;
     private int clipSize, maxAmmo;
     public long lastFire = 0, cooldown;
-    private double spread, velocity = 20;
+    public double spread, velocity = 20;
     public boolean single = true;
     private static HashMap<String, String> config = new HashMap<>();
 
@@ -97,7 +97,7 @@ public class Weapon {
     
     public static Weapon loadXML(String filepath) {
         reader.parse(filepath);
-        return new Weapon(config.get("sprite"), Integer.parseInt(config.get("clip")), Integer.parseInt(config.get("ammo")), Integer.parseInt(config.get("spread")), Long.parseLong(config.get("cooldown")), Boolean.valueOf((config.get("burst"))));
+        return new Weapon(config.get("sprite"), Integer.parseInt(config.get("clip")), Integer.parseInt(config.get("ammo")), Double.parseDouble(config.get("spread")), Long.parseLong(config.get("cooldown")), Boolean.valueOf((config.get("burst"))));
     }
     
     private static final XMLReader reader = new XMLReader() {
