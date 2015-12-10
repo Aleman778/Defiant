@@ -23,6 +23,7 @@ public class ParticleConfiguration {
             put("colorMid", "");
             put("colorEnd", "");
             put("colorPoint", "0.5");
+            put("random", "0");
         }
     };
     

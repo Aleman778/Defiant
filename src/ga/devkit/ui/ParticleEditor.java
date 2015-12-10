@@ -59,6 +59,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "colorMid", String.format("#%X", settings.getColorMid().getValue().hashCode()));
         writer.createElementValue(root, "colorEnd", String.format("#%X", settings.getColorEnd().getValue().hashCode()));
         writer.createElementValue(root, "colorPoint", String.valueOf(settings.getColorPoint().getValue()));
+        writer.createElementValue(root, "random", String.valueOf(settings.getRandom().getValue()));
         writer.save("particles/systems/" + file.getName());
     }
 

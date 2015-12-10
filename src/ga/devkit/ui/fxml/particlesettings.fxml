@@ -13,9 +13,9 @@
          <tabs>
             <Tab text="Particle Settings">
                <content>
-                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="840.0" prefWidth="276.0">
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="896.0" prefWidth="308.0">
                      <content>
-                        <AnchorPane minHeight="0.0" prefHeight="834.0" prefWidth="276.0">
+                        <AnchorPane minHeight="0.0" prefHeight="780.0" prefWidth="308.0">
                            <children>
                               <Slider fx:id="direction" blockIncrement="45.0" layoutX="16.0" layoutY="25.0" majorTickUnit="45.0" max="360.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="8.0" text="Direction" AnchorPane.leftAnchor="16.0" />
@@ -23,14 +23,14 @@
                               <Label layoutX="16.0" layoutY="63.0" text="Spread" AnchorPane.leftAnchor="16.0" />
                               <Slider fx:id="size" blockIncrement="2.0" layoutX="16.0" layoutY="135.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="118.0" text="Size" AnchorPane.leftAnchor="16.0" />
-                              <ColorPicker fx:id="colorEnd" editable="true" layoutX="16.0" layoutY="586.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-                              <Label layoutX="16.0" layoutY="563.0" text="Color" AnchorPane.leftAnchor="16.0" />
-                              <CheckBox fx:id="mode" layoutX="27.0" layoutY="708.0" mnemonicParsing="false" text="Single Fire" AnchorPane.leftAnchor="27.0" />
+                              <ColorPicker fx:id="colorEnd" editable="true" layoutX="16.0" layoutY="584.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Label layoutX="16.0" layoutY="561.0" text="Color" AnchorPane.leftAnchor="16.0" />
+                              <CheckBox fx:id="mode" layoutX="27.0" layoutY="706.0" mnemonicParsing="false" text="Single Fire" AnchorPane.leftAnchor="27.0" />
                               <Slider fx:id="gravity" blockIncrement="2.0" layoutX="16.0" layoutY="415.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="0.6" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="398.0" text="Gravity" AnchorPane.leftAnchor="16.0" />
                               <Slider fx:id="sizeEnd" blockIncrement="2.0" layoutX="16.0" layoutY="190.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="2.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="173.0" text="Size End" AnchorPane.leftAnchor="16.0" />
-                              <Slider fx:id="sizeStep" blockIncrement="0.2" layoutX="16.0" layoutY="250.0" majorTickUnit="0.2" max="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <Slider fx:id="sizeStep" blockIncrement="0.2" layoutX="16.0" layoutY="250.0" majorTickUnit="0.2" max="1.0" min="-1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="233.0" text="Size Step" AnchorPane.leftAnchor="16.0" />
                               <Slider fx:id="velocity" blockIncrement="0.25" layoutX="16.0" layoutY="305.0" majorTickUnit="0.25" max="2.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="288.0" text="Velocity" AnchorPane.leftAnchor="16.0" />
@@ -40,18 +40,18 @@
                               <Label layoutX="16.0" layoutY="453.0" text="Life" AnchorPane.leftAnchor="16.0" />
                               <Slider fx:id="rate" blockIncrement="5.0" layoutX="16.0" layoutY="525.0" majorTickUnit="5.0" max="20.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                               <Label layoutX="16.0" layoutY="508.0" text="Rate" AnchorPane.leftAnchor="16.0" />
-                              <Label layoutX="16.0" layoutY="728.0" text="Particle Shape" AnchorPane.leftAnchor="16.0" />
-                              <RadioButton fx:id="circle" layoutX="28.0" layoutY="749.0" mnemonicParsing="false" selected="true" text="Circle" AnchorPane.leftAnchor="28.0">
+                              <Label layoutX="16.0" layoutY="726.0" text="Particle Shape" AnchorPane.leftAnchor="16.0" />
+                              <RadioButton fx:id="circle" layoutX="28.0" layoutY="747.0" mnemonicParsing="false" selected="true" text="Circle" AnchorPane.leftAnchor="28.0">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="particleShape" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="square" layoutX="97.0" layoutY="749.0" mnemonicParsing="false" text="Square" toggleGroup="$particleShape" />
-                              <RadioButton fx:id="sprite" layoutX="176.0" layoutY="749.0" mnemonicParsing="false" text="Sprite" toggleGroup="$particleShape" />
-                              <ColorPicker fx:id="colorMid" editable="true" layoutX="16.0" layoutY="620.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-                              <ColorPicker fx:id="color" editable="true" layoutX="16.0" layoutY="672.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-                              <CheckBox fx:id="colorLock" layoutX="126.0" layoutY="708.0" mnemonicParsing="false" text="Lock Colors" />
-                              <Slider fx:id="colorPoint" blockIncrement="0.2" layoutX="16.0" layoutY="651.0" majorTickUnit="0.2" max="1.0" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <RadioButton fx:id="square" layoutX="97.0" layoutY="747.0" mnemonicParsing="false" text="Square" toggleGroup="$particleShape" />
+                              <RadioButton fx:id="sprite" layoutX="176.0" layoutY="747.0" mnemonicParsing="false" text="Sprite" toggleGroup="$particleShape" />
+                              <ColorPicker fx:id="colorMid" editable="true" layoutX="16.0" layoutY="618.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <ColorPicker fx:id="color" editable="true" layoutX="16.0" layoutY="670.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                              <CheckBox fx:id="colorLock" layoutX="126.0" layoutY="706.0" mnemonicParsing="false" text="Lock Colors" />
+                              <Slider fx:id="colorPoint" blockIncrement="0.2" layoutX="16.0" layoutY="649.0" majorTickUnit="0.2" max="1.0" value="1.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -71,6 +71,8 @@
                         <Label layoutX="7.0" layoutY="6.0" text="Emitter Shape" AnchorPane.leftAnchor="7.0" />
                         <TextField fx:id="areaBox" disable="true" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="66.0" text="1, 1" AnchorPane.leftAnchor="16.0" />
                         <CheckBox fx:id="interpolate" layoutX="14.0" layoutY="94.0" mnemonicParsing="false" text="Interpolate" AnchorPane.leftAnchor="16.0" />
+                        <Slider fx:id="random" blockIncrement="0.1" layoutX="12.0" layoutY="143.0" majorTickUnit="0.5" max="1.0" minorTickCount="2" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" />
+                        <Label layoutX="10.0" layoutY="119.0" text="Randomness" AnchorPane.leftAnchor="16.0" />
                      </children>
                   </AnchorPane>
               </content>

@@ -19,7 +19,7 @@ public class ParticleSettings extends Interface implements Initializable {
     private Editor editor;
 
     @FXML
-    public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityStep, life, rate, colorPoint;
+    public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityStep, life, rate, colorPoint, random;
     public ColorPicker color, colorMid, colorEnd;
     public CheckBox mode, colorLock, interpolate;
     public RadioButton point, area, circle, square, sprite;
@@ -120,6 +120,10 @@ public class ParticleSettings extends Interface implements Initializable {
         return interpolate;
     }
 
+    public Slider getRandom() {
+        return random;
+    }
+
     public void updateSliders(ParticleConfiguration c) {
         color.setValue(Color.web(c.getValue("color")));
         size.setValue(Double.valueOf(c.getValue("size")));
@@ -150,6 +154,7 @@ public class ParticleSettings extends Interface implements Initializable {
         } else {
             areaBox.setDisable(true);
         }
+        random.setValue(Double.valueOf(c.getValue("random")));
     }
 
     public void updatePreview() {
@@ -175,6 +180,7 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("colorMid", String.format("#%X", colorMid.getValue().hashCode()));
         c.setValue("colorEnd", String.format("#%X", colorEnd.getValue().hashCode()));
         c.setValue("colorPoint", String.valueOf(colorPoint.getValue()));
+        c.setValue("random", String.valueOf(random.getValue()));
         ((ParticleEditor) editor).updateConfig(c);
     }
 
@@ -252,6 +258,9 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         mode.setOnAction((ActionEvent event) -> {
+            updatePreview();
+        });
+        random.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
     }

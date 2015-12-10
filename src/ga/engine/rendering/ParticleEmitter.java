@@ -24,7 +24,7 @@ public class ParticleEmitter extends GameComponent {
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color, colorMid, colorEnd;
     protected String mode, particleShape;
-    protected float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate, colorPoint;
+    public float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate, colorPoint, random;
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
@@ -146,7 +146,9 @@ public class ParticleEmitter extends GameComponent {
                     .add(pos),
                     new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))).mul(velocity),
                     size, (int) ((life - 100) * Math.random() + 100), color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1));
-            p.velocity = velocity;
+            if (random > 0) {
+                p.velocity = (float) (velocity * (0.95 + Math.random() * random));
+            }
             p.shape = particleShape;
             if (sprite != null) {
                 p.sprite = sprite;
@@ -222,6 +224,7 @@ public class ParticleEmitter extends GameComponent {
         if (sizeStep == 0 && size != sizeEnd) {
             sizeStep = (sizeEnd - size) / life;
         }
+        random = Float.parseFloat(config.getValue("random"));
     }
 
     public void interpolate(boolean interpolate) {
