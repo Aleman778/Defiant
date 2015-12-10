@@ -23,6 +23,7 @@ public class GameObject implements Comparator<GameObject> {
     private final List<GameComponent> components;
     private final List<GameObject> objectsToAdd;
     private final List<GameObject> objectsToRemove;
+    private final List<GameComponent> componentsToAdd;
     private Body body = null;
 
     public GameObject() {
@@ -31,6 +32,7 @@ public class GameObject implements Comparator<GameObject> {
         this.components = new ArrayList<>();
         this.objectsToAdd = new ArrayList<>();
         this.objectsToRemove = new ArrayList<>();
+        this.componentsToAdd = new ArrayList<>();
     }
 
     public GameObject(Transform2D transform) {
@@ -39,6 +41,7 @@ public class GameObject implements Comparator<GameObject> {
         this.components = new ArrayList<>();
         this.objectsToAdd = new ArrayList<>();
         this.objectsToRemove = new ArrayList<>();
+        this.componentsToAdd = new ArrayList<>();
     }
 
     public GameObject(double x, double y) {
@@ -47,6 +50,7 @@ public class GameObject implements Comparator<GameObject> {
         this.components = new ArrayList<>();
         this.objectsToAdd = new ArrayList<>();
         this.objectsToRemove = new ArrayList<>();
+        this.componentsToAdd = new ArrayList<>();
     }
 
     public GameObject addChild(GameObject object) {
@@ -144,6 +148,11 @@ public class GameObject implements Comparator<GameObject> {
         for (GameObject o : objectsToRemove) {
             children.remove(o);
         }
+        for (GameComponent c : componentsToAdd) {
+            addComponent(c);
+        }
+        componentsToAdd.clear();
+        objectsToAdd.clear();
         objectsToRemove.clear();
         for (GameComponent component : components) {
             component.fixedUpdate();
@@ -254,7 +263,7 @@ public class GameObject implements Comparator<GameObject> {
         return o2.transform.depth - o1.transform.depth;
     }
     
-    public void addObject(GameObject o) {
+    public void queueObject(GameObject o) {
         objectsToAdd.add(o);
     }
     
@@ -264,5 +273,9 @@ public class GameObject implements Comparator<GameObject> {
     
     public void destroy() {
         parent.removeObject(this);
+    }
+    
+    public void queueComponent(GameComponent c) {
+        componentsToAdd.add(c);
     }
 }
