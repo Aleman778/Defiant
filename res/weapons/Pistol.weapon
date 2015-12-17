@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
     <sprite>textures/player/Arm_Med_vapen1.png</sprite>
+    <damage>10</damage>
     <clip>8</clip>
     <ammo>90</ammo>
     <spread>0.5</spread>

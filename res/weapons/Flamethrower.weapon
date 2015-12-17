@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
     <sprite>textures/player/Arm_Med_vapen3.png</sprite>
+    <type>flamethrower</type>
+    <damage>0.001</damage>
     <clip>0</clip>
     <ammo>200</ammo>
     <spread>0</spread>

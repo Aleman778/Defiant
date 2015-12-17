@@ -6,6 +6,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
+import ga.engine.scene.Transform2D;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -45,8 +46,10 @@ public class WeaponController extends GameComponent {
             dir += -(w.spread / 2) / 10 + Math.random() * (w.spread / 2) / 10;
             GameObject projectile = w.fire(dir);
             Vector2D end = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(w.getImage().getWidth() / 2, w.getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
-            projectile.getTransform().position = end;
-            Application.getScene().getRoot().queueObject(projectile);
+            if (projectile != null) {
+                projectile.getTransform().position = end;
+                Application.getScene().getRoot().queueObject(projectile);
+            }
             spark.direction = (float) Math.toDegrees(dir);
             spark.object.transform.position = transform.position.add(new Vector2D(w.getImage().getWidth(), w.getImage().getHeight()).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             spark.fire();
@@ -76,6 +79,10 @@ public class WeaponController extends GameComponent {
                 index = 0;
             }
             selected = weapons.get(index);
+            Transform2D t = spark.transform;
+            spark = selected.spark;
+            spark.transform = t;
+            gameobject.parent.queueComponent(spark);
             Input.scrollPosition = 0;
         }
         if (Input.getMouseButton(MouseButton.PRIMARY)) {

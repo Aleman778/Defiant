@@ -30,8 +30,8 @@ public class ParticleEmitter extends GameComponent {
     protected double gravityScale = 0.6;
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
-    public boolean interpolate = false, physics = true;
-    public int interpolationScale = 8;
+    public boolean interpolate = false, physics = true, physicsEvent = false;
+    public int interpolationScale = 8, id = 0;
     protected Vector2D lastPosition;
 
     public ParticleEmitter(float direction, float spread, float size, String mode, float life, Color color) {
@@ -142,10 +142,14 @@ public class ParticleEmitter extends GameComponent {
         for (int i = 0; i < amount; i++) {
             float dir = (float) (direction + (spread * Math.random() - (spread / 2)));
             Vector2D pos = new Vector2D((Math.random() * shape.width), (Math.random() * shape.height));
-            Particle p = new Particle(transform.position.add(object.transform.position).add(new Vector2D(shape.x, shape.y))
+            Particle p = new Particle(gameobject, transform.position.add(object.transform.position).add(new Vector2D(shape.x, shape.y))
                     .add(pos),
                     new Vector2D(Math.cos(Math.toRadians(dir)), Math.sin(Math.toRadians(dir))).mul(velocity),
-                    size, (int) ((life - 100) * Math.random() + 100), color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1));
+                    size,
+                    (int) ((life - 100) * Math.random() + 100),
+                    color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1),
+                    physicsEvent,
+                    id);
             if (random > 0) {
                 p.velocity = (float) (velocity * (0.95 + Math.random() * random));
             }

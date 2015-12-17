@@ -12,6 +12,7 @@ import ga.engine.rendering.JavaFXCanvasRenderer;
 import ga.engine.rendering.SpriteRenderer;
 import ga.game.PlayerController;
 import ga.game.entity.AI;
+import ga.game.entity.HealthComponent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -73,6 +74,7 @@ public final class GameScene {
                 .addComponent(new ImageRenderer("textures/AntBase.png"));
         ant.addComponent(new RigidBody(1, 3));
         ant.addComponent(new AI(this, 0.2, 4));
+        ant.addComponent(new HealthComponent(45));
         ant.setAABB(0, 0, 91, 45);
         root.addChild(ant);
 //        

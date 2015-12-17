@@ -151,7 +151,6 @@ public class PlayerController extends GameComponent {
 
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
-        System.out.println("Enter");
         if (body.getMass() == 0 && body.getVelocity().sub(gameobject.getBody().getVelocity()).y > 2 && normal.equals(new Vector2D(0, 1))) {
             if (body.gameobject.getComponent(ImageRenderer.class) != null) {
                 Image i = ((ImageRenderer)body.gameobject.getComponent(ImageRenderer.class)).getImage();

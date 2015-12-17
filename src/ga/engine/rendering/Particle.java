@@ -19,10 +19,15 @@ public class Particle {
     public Color color;
     public boolean interpolate;
     protected Vector2D lastPosition;
+    protected GameObject emitter;
 
-    public Particle(Vector2D position, Vector2D velocity, float size, float life, Color color) {
-        body = new SimpleBody(new Rectangle(0, 0, (int) size / 2, (int) size / 2), 1, 5);
-        body.gameobject = new GameObject();
+    public Particle(GameObject emitter, Vector2D position, Vector2D velocity, float size, float life, Color color, boolean eventOnly, int id) {
+        body = new SimpleBody(new Rectangle(0, 0, (int) size / 2, (int) size / 2), 1, id);
+        body.addCollide(1);
+        body.addNoCollide(2);
+        body.eventOnly = eventOnly;
+        this.emitter = emitter;
+        body.gameobject = emitter;
         body.transform = new Transform2D(body.gameobject, position.x, position.y);
         body.velocity = velocity;
         this.size = (int) (0.75 * size * Math.random() + size / 2);
