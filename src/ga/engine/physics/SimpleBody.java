@@ -1,11 +1,13 @@
 package ga.engine.physics;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.engine.scene.GameComponent;
 import ga.engine.scene.Transform2D;
 
 public class SimpleBody extends RigidBody {
 
     Rectangle AABB;
+    public boolean eventOnly = false;
 
     public SimpleBody(Rectangle AABB, double mass, int id) {
         super(mass, id);
@@ -23,11 +25,23 @@ public class SimpleBody extends RigidBody {
         if (this == otherBody) {
             return null;
         }
+        if (otherBody instanceof SimpleBody) {
+            return null;
+        }
 
-        Rectangle bounds = gameobject.getAABB();
+        Transform2D t;
+        Rectangle bounds;
+        if (gameobject.getBody() instanceof SimpleBody) {
+            t = gameobject.transform;
+            bounds = gameobject.getAABB();
+        } else {
+            t = transform;
+            bounds = new Rectangle(1, 1);
+        }
+
         Rectangle otherBounds = otherBody.gameobject.getAABB();
-        double x = gameobject.transform.position.x,
-                y = gameobject.transform.position.y,
+        double x = t.position.x,
+                y = t.position.y,
                 xMax = x + bounds.width,
                 yMax = y + bounds.height,
                 otherX = otherBody.transform.position.x,
@@ -47,10 +61,17 @@ public class SimpleBody extends RigidBody {
 
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
-        if (!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) {
+        if ((!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) || id == 1 || body.getID() == 1) {
             if (getID() == body.getID() || getCollide().contains(body.getID()) || body.getCollide().contains(id)) {
-                velocity = new Vector2D();
-                mass = 0;
+                if (!eventOnly) {
+                    velocity = new Vector2D();
+                    mass = 0;
+                }
+                for (GameComponent comp : gameobject.getAllComponents()) {
+                    if (comp.getClass() != SimpleBody.class) {
+                        comp.onCollision(body, normal, penetration);
+                    }
+                }
             }
         }
     }
