@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Weapon>
+    <!-- GEP = Golden Eagle Pistol -->
+    <sprite>textures/player/Arm_Med_vapen5.png</sprite>
+    <damage>20</damage>
+    <clip>4</clip>
+    <ammo>40</ammo>
+    <spread>0.2</spread>
+    <recoil>2</recoil>
+    <cooldown>190</cooldown>
+    <burst>false</burst>
+</Weapon>
