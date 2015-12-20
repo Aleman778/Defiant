@@ -121,6 +121,7 @@ public class Weapon {
     }
 
     public static Weapon loadXML(String filepath) {
+        config.clear();
         reader.parse(filepath);
         if (config.get("type") != null) {
             if (config.get("type").equals("flamethrower")) {
