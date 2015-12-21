@@ -10,6 +10,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
 import ga.engine.rendering.SpriteRenderer;
+import ga.game.HUD;
 import ga.game.PlayerController;
 import ga.game.entity.AI;
 import ga.game.entity.HealthComponent;
@@ -57,6 +58,7 @@ public final class GameScene {
         body.setSoftness(0);
         player.addComponent(body);
         ((PlayerController)player.getComponent(PlayerController.class)).initParticles();
+        player.addComponent(new HUD());
         root.addChild(player);
         player.transform.depth = -1;
         
