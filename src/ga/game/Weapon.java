@@ -1,12 +1,14 @@
 package ga.game;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.engine.animation.Animation;
 import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
+import ga.engine.rendering.SpriteRenderer;
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameObject;
 import ga.engine.xml.XMLReader;
@@ -19,40 +21,57 @@ import org.xml.sax.Attributes;
 
 public class Weapon {
 
-    private ImageRenderer image;
-    private int clipSize, maxAmmo;
-    public long lastFire = 0, cooldown;
+    public SpriteRenderer image;
+    public int clipSize, maxAmmo, ammo, spareAmmo;
+    public long lastFire = 0, cooldown, reload, lastReload = 0;
     public double spread, velocity = 20, recoil = 0, damage;
     public boolean single = true;
     private static HashMap<String, String> config = new HashMap<>();
     public ParticleEmitter spark;
+    public Image reloadImage = ResourceManager.get("<RELOAD>");
+    public Image idleImage;
+    public Animation reloadAnimation = new Animation(1) {
+        
+        @Override
+        public void animate(int frame) {
+            image.setOffsetX(frame * 32);
+            image.setOffsetY(0);
+            image.setSprite(reloadImage);
+            image.setWidth((int) reloadImage.getWidth() / getFrames());
+            image.setHeight((int) reloadImage.getHeight());
+        }
+    },
+    idleAnimation = new Animation(1) {
+        
+        @Override
+        public void animate(int frame) {
+            image.setOffsetX(0);
+            image.setOffsetY(0);
+            image.setSprite(idleImage);
+            image.setWidth((int) idleImage.getWidth() / getFrames());
+            image.setHeight((int) idleImage.getHeight());
+        }
+    };
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, boolean burst) {
-        image = new ImageRenderer(imagePath);
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst) {
+        image = new SpriteRenderer(imagePath);
         spark = ParticleEmitter.loadXML("particles/systems/Spark.psystem");
+        idleImage = image.getSprite();
         this.clipSize = clipSize;
         this.maxAmmo = maxAmmo;
+        this.ammo = clipSize;
+        this.spareAmmo = maxAmmo;
         this.spread = spread;
         this.cooldown = cooldown;
         this.recoil = recoil;
         this.damage = damage;
+        this.reload = reload;
         this.single = !burst;
     }
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, boolean burst, String flashPath) {
-        image = new ImageRenderer(imagePath);
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, String flashPath) {
+        this(imagePath, clipSize, maxAmmo, spread, cooldown, recoil, damage, reload, burst);
         spark = ParticleEmitter.loadXML(flashPath);
-        this.clipSize = clipSize;
-        this.maxAmmo = maxAmmo;
-        this.spread = spread;
-        this.cooldown = cooldown;
-        this.recoil = recoil;
-        this.damage = damage;
-        this.single = !burst;
-    }
-
-    public double getCooldown() {
-        return cooldown;
     }
 
     public GameObject fire(double direction) {
@@ -117,7 +136,7 @@ public class Weapon {
     }
 
     public Image getImage() {
-        return image.getImage();
+        return image.getSprite();
     }
 
     public static Weapon loadXML(String filepath) {
@@ -132,6 +151,7 @@ public class Weapon {
                         Long.parseLong(config.get("cooldown")),
                         Double.valueOf(config.get("recoil")),
                         Double.valueOf(config.get("damage")),
+                        Long.parseLong(config.get("reload")),
                         Boolean.valueOf((config.get("burst")))) {
 
                             @Override
@@ -163,6 +183,7 @@ public class Weapon {
                 Long.parseLong(config.get("cooldown")),
                 Double.valueOf(config.get("recoil")),
                 Double.valueOf(config.get("damage")),
+                Long.parseLong(config.get("reload")),
                 Boolean.valueOf((config.get("burst"))));
     }
 

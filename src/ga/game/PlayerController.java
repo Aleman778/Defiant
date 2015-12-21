@@ -33,7 +33,7 @@ public class PlayerController extends GameComponent {
     private float armRotation, headRotation;
     private RigidBody body;
     private Vector2D armPivot;
-    private GameObject head, arm;
+    public GameObject head, arm;
     private SpriteRenderer renderable;
     private AnimationController AC;
     private ParticleEmitter jumpEmitter, landEmitter;
@@ -55,6 +55,7 @@ public class PlayerController extends GameComponent {
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         arm.getTransform().depth = -3;
+        arm.addComponent(new AnimationController());
 
         gameobject.addChild(head);
         gameobject.addChild(arm);

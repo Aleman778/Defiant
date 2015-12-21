@@ -7,5 +7,6 @@
     <spread>2</spread>
     <recoil>5</recoil>
     <cooldown>75</cooldown>
+    <reload>2000</reload>
     <burst>true</burst>
 </Weapon>

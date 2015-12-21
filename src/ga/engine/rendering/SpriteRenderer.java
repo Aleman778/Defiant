@@ -42,6 +42,10 @@ public class SpriteRenderer extends GameComponent {
     public SpriteRenderer(String filepath, int width, int height) {
         this(ResourceManager.get(filepath), 0, 0, width, height);
     }
+    
+    public SpriteRenderer(String filepath) {
+        this(ResourceManager.get(filepath), 0, 0, (int) ResourceManager.get(filepath).getWidth(), (int) ResourceManager.get(filepath).getHeight());
+    }
 
     @Override
     public void render(GraphicsContext g) {
