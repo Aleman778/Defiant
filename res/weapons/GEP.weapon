@@ -8,5 +8,6 @@
     <spread>0.2</spread>
     <recoil>2</recoil>
     <cooldown>190</cooldown>
+    <reload>1000</reload>
     <burst>false</burst>
 </Weapon>
