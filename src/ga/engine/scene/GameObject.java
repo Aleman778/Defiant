@@ -25,6 +25,7 @@ public class GameObject implements Comparator<GameObject> {
     private final List<GameObject> objectsToRemove;
     private final List<GameComponent> componentsToAdd;
     private Body body = null;
+    private boolean prevCollide = false;
 
     public GameObject() {
         this.transform = new Transform2D(this);
@@ -183,11 +184,11 @@ public class GameObject implements Comparator<GameObject> {
                     colliding = true;
                 }
             }
-
         }
-        if (!colliding) {
+        if (!colliding && !prevCollide) {
             body.setGrounded(false);
         }
+        prevCollide = colliding;
 
         if (getComponent(ParticleEmitter.class) != null) {
             for (GameComponent emitter : getComponents(ParticleEmitter.class)) {
