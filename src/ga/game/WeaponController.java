@@ -111,7 +111,7 @@ public class WeaponController extends GameComponent {
             selected.lastReload = Application.now;
             Input.mouseButton = MouseButton.NONE;
         }
-        if ((Application.now - selected.lastReload) / 1000000 > selected.reload && AC.getState().equals("reload")) {
+        if ((Application.now - selected.lastReload) / 1000000 > selected.reload - (selected.ammo > 0 ? selected.reload * 0.4 : 0) && AC.getState().equals("reload")) {
             AC.setState("idle");
             int ammoToLoad = Math.min(selected.clipSize - selected.ammo, selected.spareAmmo);
             selected.spareAmmo -= ammoToLoad;
