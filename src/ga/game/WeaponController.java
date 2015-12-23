@@ -99,6 +99,7 @@ public class WeaponController extends GameComponent {
             Input.scrollPosition = 0;
             AC.addAnimation("reload", selected.reloadAnimation);
             AC.addAnimation("idle", selected.idleAnimation);
+            AC.setState("idle");
         }
         if (Input.getMouseButton(MouseButton.PRIMARY)) {
             fire();
