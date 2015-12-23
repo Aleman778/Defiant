@@ -156,7 +156,7 @@ public class RigidBody extends Body {
 
                 final double tolerance = 0.01;
                 Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
-                velocity = velocity.sub(correction.mul(invMass));
+                velocity = velocity.sub(correction);
                 body.velocity = body.velocity.add(correction.mul(otherInvMass));
                 if (normal.equals(GameScene.gravity.normalize())) {
                     Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
