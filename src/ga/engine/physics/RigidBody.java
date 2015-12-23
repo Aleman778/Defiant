@@ -3,7 +3,6 @@ package ga.engine.physics;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
-import java.util.List;
 import java.util.Map;
 
 public class RigidBody extends Body {
@@ -138,7 +137,7 @@ public class RigidBody extends Body {
                     if (Math.abs(normal.y) == 1) {
                         velocity = velocity.mul(new Vector2D(1, 0));
                     }
-                    impulse = penetration / 1;
+                    impulse = penetration / 2;
                 }
                 Vector2D impulseVector = normal.mul(impulse);
                 double totalMass = mass + body.mass;
@@ -149,8 +148,10 @@ public class RigidBody extends Body {
                 velocity = velocity.sub(impulseVector.mul(mass / totalMass));
                 body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
 
-                if (bounce != 0) {
+                if (bounce != 0 || (Math.abs(normal.x) == 1)) {
                     percent = 0.4;
+                } else {
+                    percent = 0.1;
                 }
 
                 final double tolerance = 0.01;
