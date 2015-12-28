@@ -23,6 +23,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public final class GameScene {
@@ -33,6 +34,7 @@ public final class GameScene {
     private final Input input;
     private final Canvas canvas;
     private final GraphicsContext g;
+    private Image background;
     public static Vector2D gravity = new Vector2D(0, 0.2);
 
     /**
@@ -102,6 +104,9 @@ public final class GameScene {
     }
 
     public void update() {
+        if (background == null) {
+            background = new Image("textures/backgrounds/bg_placeholder.jpg", Application.getWidth(), 0, true, false);
+        }
         root.fixedUpdate();
         for (GameObject object : getAllGameObjects()) {
             if (!object.isBody()) {
@@ -123,6 +128,7 @@ public final class GameScene {
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+        g.drawImage(background, 0, 0);
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
 
