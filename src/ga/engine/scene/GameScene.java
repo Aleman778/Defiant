@@ -34,7 +34,7 @@ public final class GameScene {
     private final Canvas canvas;
     private final GraphicsContext g;
     public static Vector2D gravity = new Vector2D(0, 0.2);
-    
+
     /**
      * Constructs a Scene from filepath scene
      * @param filepath path to xml scene
@@ -47,7 +47,7 @@ public final class GameScene {
         canvas = new Canvas(Application.getWidth(), Application.getHeight());
         group.getChildren().add(canvas);
         g = canvas.getGraphicsContext2D();
-        
+
         //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
         GameObject player = new GameObject(320, 0)
                 .addComponent(new SpriteRenderer("textures/player/Player_Idle.png", 32, 64))
@@ -57,24 +57,22 @@ public final class GameScene {
         body.setID(2);
         body.setSoftness(0);
         player.addComponent(body);
-        ((PlayerController)player.getComponent(PlayerController.class)).initParticles();
+        ((PlayerController) player.getComponent(PlayerController.class)).initParticles();
         player.addComponent(new HUD());
         root.addChild(player);
         player.transform.depth = -1;
-        
-        for (int i = 0; i < 320 * 3; i += 32) {
-            GameObject box = new GameObject(320 + i, 320)
-                    .addComponent(new ImageRenderer("textures/Jordlabb.png"));
-            box.getTransform().pivot = new Vector2D(0, 0);
-            box.setAABB(0, 0, 32, 32);
-            RigidBody body2 = new RigidBody(0);
-            box.addComponent(body2);
-            root.addChild(box);
-        }
-//        
+
+        block(100, 500, 35, 1);
+        block(100 - 32, 500, 1, -20);
+        block(100 + 32 * 35, 500, 1, -20);
+        block(300, 420, 10, 1);
+        block(770, 400, 3, 1);
+
         GameObject ant = new GameObject(1120, 0)
                 .addComponent(new ImageRenderer("textures/AntBase.png"));
-        ant.addComponent(new RigidBody(1, 3));
+        RigidBody antBody = new RigidBody(10, 3);
+        antBody.setSoftness(0);
+        ant.addComponent(antBody);
         ant.addComponent(new AI(this, 0.2, 4));
         ant.addComponent(new HealthComponent(45));
         ant.setAABB(0, 0, 91, 45);
@@ -124,10 +122,10 @@ public final class GameScene {
 
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        
+
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
-        
+
         //Clear Inputs
         input.clear();
     }
@@ -143,8 +141,22 @@ public final class GameScene {
             g.fillRect(position.x + aabb.x, position.y + aabb.y, aabb.width, aabb.height);
         }
     }
-    
+
     public GameObject getRoot() {
         return root;
+    }
+
+    private void block(double x, double y, int width, int height) {
+        for (double i = x; i != x + 32 * width; i += 32 * Math.signum(width)) {
+            for (double j = y; j != y + 32 * height; j += 32 * Math.signum(height)) {
+                GameObject box = new GameObject(i, j)
+                        .addComponent(new ImageRenderer("textures/Jordlabb.png"));
+                box.getTransform().pivot = new Vector2D(0, 0);
+                box.setAABB(0, 0, 32, 32);
+                RigidBody body2 = new RigidBody(0);
+                box.addComponent(body2);
+                root.addChild(box);
+            }
+        }
     }
 }
