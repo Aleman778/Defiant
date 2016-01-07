@@ -10,4 +10,5 @@
     <cooldown>190</cooldown>
     <reload>1000</reload>
     <burst>false</burst>
+    <sights>true</sights>
 </Weapon>

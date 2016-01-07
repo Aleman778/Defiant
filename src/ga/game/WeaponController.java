@@ -1,8 +1,11 @@
 package ga.game;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
+import ga.engine.physics.Body;
+import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.rendering.SpriteRenderer;
@@ -12,11 +15,14 @@ import ga.engine.scene.Transform2D;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 
 public class WeaponController extends GameComponent {
 
@@ -25,6 +31,7 @@ public class WeaponController extends GameComponent {
     private ParticleEmitter spark;
     private AnimationController AC;
     private SpriteRenderer image;
+    private Vector2D aimVector, weaponEnd;
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -51,9 +58,8 @@ public class WeaponController extends GameComponent {
             double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
             dir += -(w.spread / 2) / 10 + Math.random() * (w.spread / 2) / 10;
             GameObject projectile = w.fire(dir);
-            Vector2D end = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(w.getImage().getWidth() / 2, w.getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             if (projectile != null) {
-                projectile.getTransform().position = end;
+                projectile.getTransform().position = weaponEnd;
                 Application.getScene().getRoot().queueObject(projectile);
             }
             spark.direction = (float) Math.toDegrees(dir);
@@ -75,6 +81,11 @@ public class WeaponController extends GameComponent {
     @Override
     public void render(GraphicsContext g) {
         getSelected().render(g);
+        g.setTransform(new Affine());
+        g.setStroke(Color.RED);
+        if (aimVector != null && getSelected().sights && !AC.getState().equals("reload")) {
+            g.strokeLine(weaponEnd.x, weaponEnd.y, aimVector.x, aimVector.y);
+        }
     }
 
     @Override
@@ -101,6 +112,19 @@ public class WeaponController extends GameComponent {
             AC.addAnimation("idle", selected.idleAnimation);
             AC.setState("idle");
         }
+
+        double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
+        weaponEnd = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2, getSelected().getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
+        if (getSelected().sights) {
+            if (weaponEnd != null) {
+                Vector2D line = new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir));
+                aimVector = weaponEnd.add(line.mul(getIntersections(weaponEnd, line, getBounds(Application.getScene().getAllGameObjects())).get(0)));
+            }
+            if (aimVector == null) {
+                aimVector = weaponEnd.add(new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir)));
+            }
+        }
+
         if (Input.getMouseButton(MouseButton.PRIMARY)) {
             fire();
             if (selected.single) {
@@ -128,6 +152,54 @@ public class WeaponController extends GameComponent {
         AC.addAnimation("idle", selected.idleAnimation);
     }
 
+    private static Vector2D[][] getBounds(List<GameObject> objects) {
+        Vector2D[][] list = new Vector2D[objects.size() * 4][2];
+        int index = 0;
+        for (GameObject o : objects) {
+            Body body = (Body) o.getComponent(Body.class);
+            if (body == null) {
+                continue;
+            }
+            if (body.getClass() == SimpleBody.class) {
+                continue;
+            }
+            Rectangle bounds = o.getAABB();
+            double x = o.transform.position.x,
+                    y = o.transform.position.y;
+            list[index][0] = new Vector2D(x, y);
+            list[index][1] = new Vector2D(bounds.width, 0);
+            index++;
+
+            list[index][0] = new Vector2D(x + bounds.width, y);
+            list[index][1] = new Vector2D(0, bounds.height);
+            index++;
+
+            list[index][0] = new Vector2D(x, y);
+            list[index][1] = new Vector2D(0, bounds.height);
+            index++;
+
+            list[index][0] = new Vector2D(x, y + bounds.height);
+            list[index][1] = new Vector2D(bounds.width, 0);
+            index++;
+        }
+        return list;
+    }
+
+    private static List<Double> getIntersections(Vector2D V1Base, Vector2D V1Size, Vector2D[][] bounds) {
+        List<Double> scales = new ArrayList<>();
+        for (int i = 0; i < bounds.length; i++) {
+            Vector2D base = bounds[i][0], size = bounds[i][1];
+            if (base == null || size == null) {
+                continue;
+            }
+            scales.add(Vector2D.intersectScale(V1Base, V1Size, base, size, true));
+        }
+        scales.add(1.0);
+        Collections.sort(scales);
+        scales.removeAll(Collections.singleton(0.0));
+        return scales;
+    }
+
     @Override
     public GameComponent instantiate() {
         return null;
@@ -142,5 +214,4 @@ public class WeaponController extends GameComponent {
     public void xmlVar(String name, String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }

@@ -25,13 +25,13 @@ public class Weapon {
     public int clipSize, maxAmmo, ammo, spareAmmo;
     public long lastFire = 0, cooldown, reload, lastReload = 0;
     public double spread, velocity = 20, recoil = 0, damage;
-    public boolean single = true;
+    public boolean single = true, sights = true;
     private static HashMap<String, String> config = new HashMap<>();
     public ParticleEmitter spark;
     public Image reloadImage = ResourceManager.get("<RELOAD>");
     public Image idleImage;
     public Animation reloadAnimation = new Animation(1) {
-        
+
         @Override
         public void animate(int frame) {
             image.setOffsetX(frame * 32);
@@ -41,19 +41,19 @@ public class Weapon {
             image.setHeight((int) reloadImage.getHeight());
         }
     },
-    idleAnimation = new Animation(1) {
-        
-        @Override
-        public void animate(int frame) {
-            image.setOffsetX(0);
-            image.setOffsetY(0);
-            image.setSprite(idleImage);
-            image.setWidth((int) idleImage.getWidth() / getFrames());
-            image.setHeight((int) idleImage.getHeight());
-        }
-    };
+            idleAnimation = new Animation(1) {
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst) {
+                @Override
+                public void animate(int frame) {
+                    image.setOffsetX(0);
+                    image.setOffsetY(0);
+                    image.setSprite(idleImage);
+                    image.setWidth((int) idleImage.getWidth() / getFrames());
+                    image.setHeight((int) idleImage.getHeight());
+                }
+            };
+
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights) {
         image = new SpriteRenderer(imagePath);
         spark = ParticleEmitter.loadXML("particles/systems/Spark.psystem");
         idleImage = image.getSprite();
@@ -67,10 +67,11 @@ public class Weapon {
         this.damage = damage;
         this.reload = reload;
         this.single = !burst;
+        this.sights = sights;
     }
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, String flashPath) {
-        this(imagePath, clipSize, maxAmmo, spread, cooldown, recoil, damage, reload, burst);
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String flashPath) {
+        this(imagePath, clipSize, maxAmmo, spread, cooldown, recoil, damage, reload, burst, sights);
         spark = ParticleEmitter.loadXML(flashPath);
     }
 
@@ -152,7 +153,8 @@ public class Weapon {
                         Double.valueOf(config.get("recoil")),
                         Double.valueOf(config.get("damage")),
                         Long.parseLong(config.get("reload")),
-                        Boolean.valueOf((config.get("burst")))) {
+                        Boolean.valueOf((config.get("burst"))),
+                        Boolean.valueOf((config.get("sights")))) {
 
                             @Override
                             public GameObject fire(double direction) {
@@ -184,7 +186,8 @@ public class Weapon {
                 Double.valueOf(config.get("recoil")),
                 Double.valueOf(config.get("damage")),
                 Long.parseLong(config.get("reload")),
-                Boolean.valueOf((config.get("burst"))));
+                Boolean.valueOf((config.get("burst"))),
+                Boolean.valueOf((config.get("sights"))));
     }
 
     private static final XMLReader reader = new XMLReader() {
