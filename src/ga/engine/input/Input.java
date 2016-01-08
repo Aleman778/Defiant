@@ -17,7 +17,7 @@ import javafx.scene.input.ScrollEvent;
 
 public class Input {
     
-    public static MouseButton mouseButton;
+    public static Set<MouseButton> mouseButtons;
     public static MouseButton mouseButtonDrag;
     public static double scrollPosition;
     public static Vector2D mousePosition;
@@ -47,10 +47,10 @@ public class Input {
             mouseButtonDrag = event.getButton();
         });
         scene.setOnMousePressed((MouseEvent event) -> {
-            mouseButton = event.getButton();
+            mouseButtons.add(event.getButton());
         });
         scene.setOnMouseReleased((MouseEvent event) -> {
-            mouseButton = MouseButton.NONE;
+            mouseButtons.remove(event.getButton());
         });
         scene.setOnScroll((ScrollEvent event) -> {
             scrollPosition = Math.signum(event.getDeltaY());
@@ -59,7 +59,7 @@ public class Input {
         keysPressed = new HashSet<>();
         keysReleased = new HashSet<>();
         mousePosition = new Vector2D();
-        mouseButton = MouseButton.NONE;
+        mouseButtons = new HashSet<>();
         try {
             robot = new Robot();
         } catch (AWTException ex) {
@@ -106,11 +106,11 @@ public class Input {
     }
     
     public static boolean getMouseButton(MouseButton mb) {
-        return mouseButton.equals(mb);
+        return mouseButtons.contains(mb);
     }
     
-    public static MouseButton getMouseButton() {
-        return mouseButton;
+    public static Set<MouseButton> getMouseButtons() {
+        return mouseButtons;
     }
     
     public static Vector2D getMousePosition() {
