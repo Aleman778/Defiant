@@ -174,7 +174,7 @@ public class WeaponController extends GameComponent {
             if (body == null) {
                 continue;
             }
-            if (body.getClass() == SimpleBody.class) {
+            if (body.getClass() == SimpleBody.class || body.getID() == 2) {
                 continue;
             }
             Rectangle bounds = o.getAABB();

@@ -61,7 +61,7 @@ public class SimpleBody extends RigidBody {
 
     @Override
     public void onCollision(Body body, Vector2D normal, double penetration) {
-        if ((!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) || id == 1 || body.getID() == 1) {
+        if ((!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID()))) {
             if (getID() == body.getID() || getCollide().contains(body.getID()) || body.getCollide().contains(id)) {
                 if (!eventOnly) {
                     velocity = new Vector2D();
