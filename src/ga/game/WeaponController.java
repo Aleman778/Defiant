@@ -32,6 +32,8 @@ public class WeaponController extends GameComponent {
     private AnimationController AC;
     private SpriteRenderer image;
     private Vector2D aimVector, weaponEnd;
+    public PlayerController player;
+    private double playerSpeed;
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -56,7 +58,7 @@ public class WeaponController extends GameComponent {
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown && !AC.getState().equals("reload") && selected.ammo != 0) {
             w.lastFire = Application.now;
             double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
-            dir += -(w.spread / 2) / 10 + Math.random() * (w.spread / 2) / 10;
+            dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
             GameObject projectile = w.fire(dir);
             if (projectile != null) {
                 projectile.getTransform().position = weaponEnd;
@@ -73,7 +75,7 @@ public class WeaponController extends GameComponent {
             if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0) {
                 AC.setState("reload");
                 selected.lastReload = Application.now;
-                Input.mouseButton = MouseButton.NONE;
+                Input.mouseButtons.clear();
             }
         }
     }
@@ -83,6 +85,9 @@ public class WeaponController extends GameComponent {
         getSelected().render(g);
         g.setTransform(new Affine());
         g.setStroke(Color.RED);
+        if (AC.getState().equals("aiming")) {
+            g.setStroke(Color.GREEN);
+        }
         if (aimVector != null && getSelected().sights && !AC.getState().equals("reload")) {
             g.strokeLine(weaponEnd.x, weaponEnd.y, aimVector.x, aimVector.y);
         }
@@ -110,6 +115,7 @@ public class WeaponController extends GameComponent {
             Input.scrollPosition = 0;
             AC.addAnimation("reload", selected.reloadAnimation);
             AC.addAnimation("idle", selected.idleAnimation);
+            AC.addAnimation("aiming", selected.idleAnimation);
             AC.setState("idle");
         }
 
@@ -128,13 +134,20 @@ public class WeaponController extends GameComponent {
         if (Input.getMouseButton(MouseButton.PRIMARY)) {
             fire();
             if (selected.single) {
-                Input.mouseButton = MouseButton.NONE;
+                Input.mouseButtons.remove(MouseButton.PRIMARY);
             }
+        }
+        if (Input.getMouseButton(MouseButton.SECONDARY) && !AC.getState().equals("reload")) {
+            AC.setState("aiming");
+            player.SPEED = playerSpeed / 2;
+        } else if (AC.getState().equals("aiming")) {
+            AC.setState("idle");
+            player.SPEED = playerSpeed;
         }
         if (Input.getKeyPressed(KeyCode.R) && selected.ammo != selected.clipSize && selected.spareAmmo > 0) {
             AC.setState("reload");
             selected.lastReload = Application.now;
-            Input.mouseButton = MouseButton.NONE;
+            Input.mouseButtons.clear();
         }
         if ((Application.now - selected.lastReload) / 1000000 > selected.reload - (selected.ammo > 0 ? selected.reload * 0.4 : 0) && AC.getState().equals("reload")) {
             AC.setState("idle");
@@ -150,6 +163,7 @@ public class WeaponController extends GameComponent {
         AC = (AnimationController) getComponent(AnimationController.class);
         AC.addAnimation("reload", selected.reloadAnimation);
         AC.addAnimation("idle", selected.idleAnimation);
+        playerSpeed = player.SPEED;
     }
 
     private static Vector2D[][] getBounds(List<GameObject> objects) {

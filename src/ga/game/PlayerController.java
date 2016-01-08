@@ -26,11 +26,11 @@ public class PlayerController extends GameComponent {
         }
     };
     
-    private final double SPEED = 0.1;
-    private final double JUMP_HEIGHT = 6;
+    public double SPEED = 0.1;
+    private double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
-    private float armRotation, headRotation;
+    public float armRotation, headRotation;
     private RigidBody body;
     private Vector2D armPivot;
     public GameObject head, arm;
@@ -52,6 +52,7 @@ public class PlayerController extends GameComponent {
 
         arm = new GameObject(12, 10);
         arm.addComponent(weaponcontroller);
+        weaponcontroller.player = this;
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         arm.getTransform().depth = -3;
