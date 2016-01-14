@@ -52,6 +52,8 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         writer.createElementValue(root, "mode", settings.getMode().isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         writer.createElementValue(root, "gravity", String.valueOf(settings.getGravity().getValue()));
         writer.createElementValue(root, "velocity", String.valueOf(settings.getVelocity().getValue()));
+        writer.createElementValue(root, "velocityMin", String.valueOf(settings.getVelocityMin().getValue()));
+        writer.createElementValue(root, "velocityMax", String.valueOf(settings.getVelocityMax().getValue()));
         writer.createElementValue(root, "velocityStep", String.valueOf(settings.getVelocityStep().getValue()));
         writer.createElementValue(root, "rate", String.valueOf(settings.getRate().getValue()));
         writer.createElementValue(root, "particleShape", settings.getSquare().isSelected() ? "square" : "circle");

@@ -24,7 +24,7 @@ public class ParticleEmitter extends GameComponent {
     public static ParticleConfiguration tempConfig = new ParticleConfiguration();
     protected Color color, colorMid, colorEnd;
     protected String mode, particleShape;
-    public float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityStep, rate, colorPoint, random;
+    public float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityMin, velocityMax, velocityStep, rate, colorPoint, random;
     public GameObject object;
     protected Image sprite;
     protected double gravityScale = 0.6;
@@ -71,6 +71,12 @@ public class ParticleEmitter extends GameComponent {
             Particle p = it.next();
             p.size += sizeStep;
             p.velocity += (velocityStep - 1);
+            if (velocityMax != 0) {
+                p.velocity = Math.min(p.velocity, velocityMax);
+            }
+            if (velocityMin != 0) {
+                p.velocity = Math.max(p.velocity, velocityMin);
+            }
             if (!p.update()) {
                 it.remove();
             }
@@ -209,6 +215,8 @@ public class ParticleEmitter extends GameComponent {
             color = Color.web(config.getValue("color"));
             gravityScale = Float.parseFloat(config.getValue("gravity"));
             velocity = Float.parseFloat(config.getValue("velocity"));
+            velocityMin = Float.parseFloat(config.getValue("velocityMin"));
+            velocityMax = Float.parseFloat(config.getValue("velocityMax"));
             velocityStep = Float.parseFloat(config.getValue("velocityStep"));
             rate = Float.parseFloat(config.getValue("rate"));
             particleShape = config.getValue("particleShape");

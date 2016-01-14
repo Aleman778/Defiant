@@ -16,6 +16,8 @@ public class ParticleConfiguration {
             put("color", "#0000FFFF");
             put("gravity", "0.6");
             put("velocity", "1");
+            put("velocityMin", "0");
+            put("velocityMax", "0");
             put("velocityStep", "1");
             put("rate", "1");
             put("particleShape", "circle");

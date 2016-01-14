@@ -19,7 +19,7 @@ public class ParticleSettings extends Interface implements Initializable {
     private Editor editor;
 
     @FXML
-    public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityStep, life, rate, colorPoint, random;
+    public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityMin, velocityMax, velocityStep, life, rate, colorPoint, random;
     public ColorPicker color, colorMid, colorEnd;
     public CheckBox mode, colorLock, interpolate;
     public RadioButton point, area, circle, square, sprite;
@@ -66,6 +66,14 @@ public class ParticleSettings extends Interface implements Initializable {
 
     public Slider getVelocity() {
         return velocity;
+    }
+
+    public Slider getVelocityMin() {
+        return velocityMin;
+    }
+
+    public Slider getVelocityMax() {
+        return velocityMax;
     }
 
     public Slider getVelocityStep() {
@@ -135,6 +143,8 @@ public class ParticleSettings extends Interface implements Initializable {
         mode.setSelected(c.getValue("mode").equals("MODE_SINGLE"));
         life.setValue(Double.valueOf(c.getValue("life")));
         velocity.setValue(Double.valueOf(c.getValue("velocity")));
+        velocityMin.setValue(Double.valueOf(c.getValue("velocityMin")));
+        velocityMax.setValue(Double.valueOf(c.getValue("velocityMax")));
         velocityStep.setValue(Double.valueOf(c.getValue("velocityStep")));
         rate.setValue(Double.valueOf(c.getValue("rate")));
         circle.setSelected(c.getValue("particleShape").equals("circle"));
@@ -172,6 +182,8 @@ public class ParticleSettings extends Interface implements Initializable {
         c.setValue("mode", mode.isSelected() ? "MODE_SINGLE" : "MODE_CONTINUOUS");
         c.setValue("gravity", String.valueOf(gravity.getValue()));
         c.setValue("velocity", String.valueOf(velocity.getValue()));
+        c.setValue("velocityMin", String.valueOf(velocityMin.getValue()));
+        c.setValue("velocityMax", String.valueOf(velocityMax.getValue()));
         c.setValue("velocityStep", String.valueOf(velocityStep.getValue()));
         c.setValue("life", String.valueOf(life.getValue()));
         c.setValue("rate", String.valueOf(rate.getValue()));
@@ -213,6 +225,12 @@ public class ParticleSettings extends Interface implements Initializable {
             updatePreview();
         });
         velocity.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        velocityMin.valueProperty().addListener((observable, newValue, oldValue) -> {
+            updatePreview();
+        });
+        velocityMax.valueProperty().addListener((observable, newValue, oldValue) -> {
             updatePreview();
         });
         velocityStep.valueProperty().addListener((observable, newValue, oldValue) -> {
