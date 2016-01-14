@@ -158,6 +158,8 @@ public class ParticleEmitter extends GameComponent {
                     id);
             if (random > 0) {
                 p.velocity = (float) (velocity * (0.95 + Math.random() * random));
+            } else {
+                p.velocity = velocity;
             }
             p.shape = particleShape;
             if (sprite != null) {
