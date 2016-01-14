@@ -248,6 +248,7 @@ public class ParticleEmitter extends GameComponent {
     }
 
     public static ParticleEmitter loadXML(String filepath) {
+        tempConfig = new ParticleConfiguration();
         reader.parse(filepath);
         ParticleEmitter e = new ParticleEmitter(0, 0, 0, "", 0, Color.BLUE);
         e.setConfig(tempConfig);
@@ -255,6 +256,7 @@ public class ParticleEmitter extends GameComponent {
     }
 
     public static ParticleConfiguration loadXMLConfig(String filepath) {
+        tempConfig = new ParticleConfiguration();
         reader.parse(filepath);
         return tempConfig;
     }
