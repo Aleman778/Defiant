@@ -31,7 +31,7 @@ public class ParticleEmitter extends GameComponent {
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
     public boolean interpolate = false, physics = true, physicsEvent = false;
-    public int interpolationScale = 8, id = 0;
+    public int interpolationScale = 8, id = 5;
     protected Vector2D lastPosition;
 
     public ParticleEmitter(float direction, float spread, float size, String mode, float life, Color color) {
