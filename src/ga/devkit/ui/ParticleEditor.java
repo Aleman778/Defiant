@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.SplitPane;
+import javafx.scene.effect.BlendMode;
 import org.w3c.dom.Element;
 
 public class ParticleEditor extends Interface implements Initializable, Editor {
@@ -94,9 +95,15 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
                     }
                 }
                 emitter.interpolate = settings.getInterpolate().isSelected();
+                g.setGlobalBlendMode(BlendMode.SRC_OVER);
                 g.clearRect(0, 0, preview.getWidth(), preview.getHeight());
                 emitter.update();
                 emitter.physicsUpdate(new HashSet<>());
+                if (settings.getBlendAdd().isSelected()) {
+                    g.setGlobalBlendMode(BlendMode.ADD);
+                } else {
+                    g.setGlobalBlendMode(BlendMode.SRC_OVER);
+                }
                 emitter.render(g);
             }
         }.start();

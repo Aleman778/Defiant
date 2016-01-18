@@ -21,7 +21,7 @@ public class ParticleSettings extends Interface implements Initializable {
     @FXML
     public Slider direction, spread, size, sizeEnd, sizeStep, gravity, velocity, velocityMin, velocityMax, velocityStep, life, rate, colorPoint, random;
     public ColorPicker color, colorMid, colorEnd;
-    public CheckBox mode, colorLock, interpolate;
+    public CheckBox mode, colorLock, interpolate, blendAdd;
     public RadioButton point, area, circle, square, sprite;
     public TextField areaBox;
 
@@ -130,6 +130,10 @@ public class ParticleSettings extends Interface implements Initializable {
 
     public Slider getRandom() {
         return random;
+    }
+
+    public CheckBox getBlendAdd() {
+        return blendAdd;
     }
 
     public void updateSliders(ParticleConfiguration c) {
