@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
     <sprite>textures/player/Arm_Med_vapen4.png</sprite>
+    <type>shotgun</type>
+    <pellets>5</pellets>
     <damage>2</damage>
     <clip>3</clip>
     <ammo>30</ammo>
-    <spread>2</spread>
+    <spread>1</spread>
     <recoil>5</recoil>
-    <cooldown>75</cooldown>
+    <cooldown>500</cooldown>
     <reload>2000</reload>
-    <burst>true</burst>
+    <burst>false</burst>
     <sights>true</sights>
 </Weapon>

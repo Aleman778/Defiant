@@ -58,18 +58,33 @@ public class WeaponController extends GameComponent {
         if ((Application.now - w.lastFire) / 1000000 > w.cooldown && !AC.getState().equals("reload") && selected.ammo != 0) {
             w.lastFire = Application.now;
             double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
-            dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
-            GameObject projectile = w.fire(dir);
-            if (projectile != null) {
-                projectile.getTransform().position = weaponEnd;
-                Application.getScene().getRoot().queueObject(projectile);
+            GameObject projectile;
+            switch (w.type) {
+                case "shotgun":
+                    for (int i = 0; i < Integer.parseInt(w.config.get("pellets")); i++) {
+                        dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
+                        projectile = w.fire(dir);
+                        if (projectile != null) {
+                            projectile.getTransform().position = weaponEnd;
+                            Application.getScene().getRoot().queueObject(projectile);
+                        }
+                    }
+                    break;
+                default:
+                    dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
+                    projectile = w.fire(dir);
+                    if (projectile != null) {
+                        projectile.getTransform().position = weaponEnd;
+                        Application.getScene().getRoot().queueObject(projectile);
+                    }
+                    break;
             }
             spark.direction = (float) Math.toDegrees(dir);
             spark.object.transform.position = transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2 + 5, getSelected().getImage().getWidth() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             spark.fire();
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
-//            Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
+//                    Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
             selected.ammo--;
 
             if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0) {
@@ -81,7 +96,8 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public void render(GraphicsContext g) {
+    public void render(GraphicsContext g
+    ) {
         getSelected().render(g);
         g.setTransform(new Affine());
         g.setStroke(Color.RED);

@@ -26,10 +26,12 @@ public class Weapon {
     public long lastFire = 0, cooldown, reload, lastReload = 0;
     public double spread, velocity = 20, recoil = 0, damage;
     public boolean single = true, sights = true;
-    private static HashMap<String, String> config = new HashMap<>();
+    private static HashMap<String, String> tempConfig = new HashMap<>();
     public ParticleEmitter spark;
     public Image reloadImage = ResourceManager.get("<RELOAD>");
     public Image idleImage;
+    public String type = "default";
+    public HashMap<String, String> config = new HashMap<>();
     public Animation reloadAnimation = new Animation(1) {
 
         @Override
@@ -43,17 +45,17 @@ public class Weapon {
     },
             idleAnimation = new Animation(1) {
 
-                @Override
-                public void animate(int frame) {
-                    image.setOffsetX(0);
-                    image.setOffsetY(0);
-                    image.setSprite(idleImage);
-                    image.setWidth((int) idleImage.getWidth() / getFrames());
-                    image.setHeight((int) idleImage.getHeight());
-                }
-            };
+        @Override
+        public void animate(int frame) {
+            image.setOffsetX(0);
+            image.setOffsetY(0);
+            image.setSprite(idleImage);
+            image.setWidth((int) idleImage.getWidth() / getFrames());
+            image.setHeight((int) idleImage.getHeight());
+        }
+    };
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights) {
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String type) {
         image = new SpriteRenderer(imagePath);
         spark = ParticleEmitter.loadXML("particles/systems/Spark.psystem");
         idleImage = image.getSprite();
@@ -68,10 +70,11 @@ public class Weapon {
         this.reload = reload;
         this.single = !burst;
         this.sights = sights;
+        this.type = type;
     }
 
-    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String flashPath) {
-        this(imagePath, clipSize, maxAmmo, spread, cooldown, recoil, damage, reload, burst, sights);
+    public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String type, String flashPath) {
+        this(imagePath, clipSize, maxAmmo, spread, cooldown, recoil, damage, reload, burst, sights, type);
         spark = ParticleEmitter.loadXML(flashPath);
     }
 
@@ -141,32 +144,34 @@ public class Weapon {
     }
 
     public static Weapon loadXML(String filepath) {
-        config.clear();
+        tempConfig.clear();
+        tempConfig.put("type", "default");
         reader.parse(filepath);
-        if (config.get("type") != null) {
-            if (config.get("type").equals("flamethrower")) {
-                Weapon w = new Weapon(config.get("sprite"),
-                        Integer.parseInt(config.get("clip")),
-                        Integer.parseInt(config.get("ammo")),
-                        Double.parseDouble(config.get("spread")),
-                        Long.parseLong(config.get("cooldown")),
-                        Double.valueOf(config.get("recoil")),
-                        Double.valueOf(config.get("damage")),
-                        Long.parseLong(config.get("reload")),
-                        Boolean.valueOf((config.get("burst"))),
-                        Boolean.valueOf((config.get("sights")))) {
+        if (tempConfig.get("type") != null) {
+            if (tempConfig.get("type").equals("flamethrower")) {
+                Weapon w = new Weapon(tempConfig.get("sprite"),
+                        Integer.parseInt(tempConfig.get("clip")),
+                        Integer.parseInt(tempConfig.get("ammo")),
+                        Double.parseDouble(tempConfig.get("spread")),
+                        Long.parseLong(tempConfig.get("cooldown")),
+                        Double.valueOf(tempConfig.get("recoil")),
+                        Double.valueOf(tempConfig.get("damage")),
+                        Long.parseLong(tempConfig.get("reload")),
+                        Boolean.valueOf((tempConfig.get("burst"))),
+                        Boolean.valueOf((tempConfig.get("sights"))),
+                        tempConfig.get("type")) {
 
-                            @Override
-                            public GameObject fire(double direction) {
-                                return null;
-                            }
-                        };
+                    @Override
+                    public GameObject fire(double direction) {
+                        return null;
+                    }
+                };
                 w.spark = new ParticleEmitter() {
 
                     @Override
                     public void onCollision(Body body, Vector2D normal, double penetration) {
                         HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
-                        if (otherHealth != null && Math.random() < 0.1) {
+                        if (otherHealth != null) {
                             otherHealth.damage(w.damage);
                         }
                     }
@@ -175,36 +180,58 @@ public class Weapon {
                 w.spark.physics(true);
                 w.spark.physicsEvent = true;
                 w.spark.id = 5;
+                w.config = new HashMap<>(tempConfig);
+                return w;
+            }
+            if (tempConfig.get("type").equals("shotgun")) {
+                Weapon w = new Weapon(tempConfig.get("sprite"),
+                        Integer.parseInt(tempConfig.get("clip")),
+                        Integer.parseInt(tempConfig.get("ammo")),
+                        Double.parseDouble(tempConfig.get("spread")),
+                        Long.parseLong(tempConfig.get("cooldown")),
+                        Double.valueOf(tempConfig.get("recoil")),
+                        Double.valueOf(tempConfig.get("damage")),
+                        Long.parseLong(tempConfig.get("reload")),
+                        Boolean.valueOf((tempConfig.get("burst"))),
+                        Boolean.valueOf((tempConfig.get("sights"))),
+                        tempConfig.get("type"));
+                w.config = new HashMap<>(tempConfig);
                 return w;
             }
         }
-        return new Weapon(config.get("sprite"),
-                Integer.parseInt(config.get("clip")),
-                Integer.parseInt(config.get("ammo")),
-                Double.parseDouble(config.get("spread")),
-                Long.parseLong(config.get("cooldown")),
-                Double.valueOf(config.get("recoil")),
-                Double.valueOf(config.get("damage")),
-                Long.parseLong(config.get("reload")),
-                Boolean.valueOf((config.get("burst"))),
-                Boolean.valueOf((config.get("sights"))));
+        Weapon w = new Weapon(tempConfig.get("sprite"),
+                Integer.parseInt(tempConfig.get("clip")),
+                Integer.parseInt(tempConfig.get("ammo")),
+                Double.parseDouble(tempConfig.get("spread")),
+                Long.parseLong(tempConfig.get("cooldown")),
+                Double.valueOf(tempConfig.get("recoil")),
+                Double.valueOf(tempConfig.get("damage")),
+                Long.parseLong(tempConfig.get("reload")),
+                Boolean.valueOf((tempConfig.get("burst"))),
+                Boolean.valueOf((tempConfig.get("sights"))),
+                tempConfig.get("type"));
+        w.config = new HashMap<>(tempConfig);
+        return w;
     }
 
     private static final XMLReader reader = new XMLReader() {
 
         @Override
-        public void documentStart() {}
+        public void documentStart() {
+        }
 
         @Override
-        public void documentEnd() {}
+        public void documentEnd() {
+        }
 
         @Override
-        public void nodeStart(String element, Attributes attri) {}
+        public void nodeStart(String element, Attributes attri) {
+        }
 
         @Override
         public void nodeEnd(String element, Attributes attri, String value) {
             if (!element.equals("Weapon")) {
-                config.put(element, value);
+                tempConfig.put(element, value);
             }
         }
     };
