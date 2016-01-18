@@ -2,8 +2,8 @@
 <Weapon>
     <sprite>textures/player/Arm_Med_vapen3.png</sprite>
     <type>flamethrower</type>
-    <damage>0.001</damage>
-    <clip>200</clip>
+    <damage>0.0001</damage>
+    <clip>1000</clip>
     <ammo>0</ammo>
     <spread>0</spread>
     <recoil>0</recoil>

@@ -9,9 +9,9 @@
     <color>#B31A1A00</color>
     <mode>MODE_SINGLE</mode>
     <gravity>-0.18952380952380943</gravity>
-    <velocity>1.0476190476190474</velocity>
+    <velocity>1.05</velocity>
     <velocityStep>0.9976190476190476</velocityStep>
-    <rate>20.0</rate>
+    <rate>5.0</rate>
     <particleShape>circle</particleShape>
     <shape>1, 1</shape>
     <colorMid>#CCCC33FF</colorMid>
