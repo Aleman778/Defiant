@@ -65,7 +65,7 @@ public class WeaponController extends GameComponent {
                 Application.getScene().getRoot().queueObject(projectile);
             }
             spark.direction = (float) Math.toDegrees(dir);
-            spark.object.transform.position = transform.position.add(new Vector2D(w.getImage().getWidth(), w.getImage().getHeight()).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
+            spark.object.transform.position = transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2 + 5, getSelected().getImage().getWidth() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             spark.fire();
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
@@ -120,7 +120,7 @@ public class WeaponController extends GameComponent {
         }
 
         double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
-        weaponEnd = gameobject.getParent().transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2, getSelected().getImage().getHeight() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
+        weaponEnd = gameobject.getParent().transform.position.add(transform.position.add(new Vector2D(0, 12))).add(new Vector2D(getSelected().getImage().getWidth() / 2, getSelected().getImage().getWidth() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
         if (getSelected().sights) {
             if (weaponEnd != null) {
                 Vector2D line = new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir));
