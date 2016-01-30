@@ -24,7 +24,7 @@ public class Particle {
     public Particle(GameObject emitter, Vector2D position, Vector2D velocity, float size, float life, Color color, boolean eventOnly, int id) {
         body = new SimpleBody(new Rectangle(0, 0, (int) size / 2, (int) size / 2), 1, id);
         body.addCollide(1);
-        body.addNoCollide(2);
+        body.addNoCollide(2, 3);
         body.eventOnly = eventOnly;
         this.emitter = emitter;
         body.gameobject = emitter;
