@@ -182,7 +182,7 @@ public class GameObject implements Comparator<GameObject> {
             HashMap<String, Object> collision = body.physicsUpdate(physicsBody);
             if (collision != null) {
             Vector2D normal = (Vector2D) collision.get("normal");
-                if (normal.equals(new Vector2D(0, 1))) {
+                if (normal.equals(new Vector2D(0, 1)) && ((int) collision.get("id")) == 1) {
                     colliding = true;
                 }
             }
