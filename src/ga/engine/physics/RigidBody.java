@@ -96,9 +96,6 @@ public class RigidBody extends Body {
             }
             penetration = overlapY;
         }
-        if (normal.x != -1 && otherBody.velocity.sub(velocity).dot(normal) > 0) {
-            return null;
-        }
         //Collision Event
         onCollision(otherBody, normal, penetration);
         return normal;

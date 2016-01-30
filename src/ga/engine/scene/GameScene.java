@@ -74,7 +74,6 @@ public final class GameScene {
                 .addComponent(new ImageRenderer("textures/AntBase.png"));
         RigidBody antBody = new RigidBody(10, 3);
         antBody.setSoftness(0);
-        antBody.setFriction(0.1);
         ant.addComponent(antBody);
         ant.addComponent(new AI(this, 0.2, 4));
         ant.addComponent(new HealthComponent(45));
