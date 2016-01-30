@@ -7,6 +7,7 @@ import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -178,8 +179,9 @@ public class GameObject implements Comparator<GameObject> {
                 physicsBody.transform.scale.x = Math.signum(physicsBody.getVelocity().normalize().x);
             }
 
-            Vector2D normal = body.physicsUpdate(physicsBody);
-            if (normal != null) {
+            HashMap<String, Object> collision = body.physicsUpdate(physicsBody);
+            if (collision != null) {
+            Vector2D normal = (Vector2D) collision.get("normal");
                 if (normal.equals(new Vector2D(0, 1))) {
                     colliding = true;
                 }

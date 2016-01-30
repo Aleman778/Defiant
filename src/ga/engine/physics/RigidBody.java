@@ -3,6 +3,7 @@ package ga.engine.physics;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RigidBody extends Body {
@@ -22,7 +23,7 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public Vector2D physicsUpdate(Body otherBody) {
+    public HashMap<String, Object> physicsUpdate(Body otherBody) {
         if (velocity.x + velocity.y == 0) {
             return null;
         }
@@ -97,8 +98,15 @@ public class RigidBody extends Body {
             penetration = overlapY;
         }
         //Collision Event
-        onCollision(otherBody, normal, penetration);
-        return normal;
+        onCollision(otherBody, normal, penetration, otherBody.getID());
+        return new HashMap<String, Object>() {
+                {
+                    put("body", otherBody);
+                    put("normal", normal);
+                    put("penetration", penetration);
+                    put("id", otherBody.getID());
+                }
+        };
     }
 
     @Override
@@ -107,7 +115,7 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public void onCollision(Body body, Vector2D normal, double penetration) {
+    public void onCollision(Body body, Vector2D normal, double penetration, int id) {
         Vector2D vel = body.velocity.sub(velocity);
         double bounce = Math.min(softness, body.softness);
         double velNorm = vel.dot(normal);
@@ -167,7 +175,7 @@ public class RigidBody extends Body {
         if (-(1 + bounce) * velNorm > 0.5) {
             for (GameComponent comp : gameobject.getAllComponents()) {
                 if (comp.getClass() != RigidBody.class) {
-                    comp.onCollision(body, normal, penetration);
+                    comp.onCollision(body, normal, penetration, id);
                 }
             }
         }

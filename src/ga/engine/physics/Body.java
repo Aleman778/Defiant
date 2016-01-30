@@ -3,6 +3,7 @@ package ga.engine.physics;
 import ga.engine.scene.GameScene;
 import ga.engine.scene.GameComponent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Body extends GameComponent {
     
@@ -111,5 +112,5 @@ public abstract class Body extends GameComponent {
         return id;
     }
     
-    public abstract Vector2D physicsUpdate(Body otherBody);
+    public abstract HashMap<String, Object> physicsUpdate(Body otherBody);
 }

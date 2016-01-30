@@ -91,7 +91,7 @@ public class Weapon {
             }
 
             @Override
-            public void onCollision(Body body, Vector2D normal, double penetration) {
+            public void onCollision(Body body, Vector2D normal, double penetration, int id) {
                 HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
                 if (otherHealth != null) {
                     otherHealth.damage(damage);
@@ -169,7 +169,7 @@ public class Weapon {
                 w.spark = new ParticleEmitter() {
 
                     @Override
-                    public void onCollision(Body body, Vector2D normal, double penetration) {
+                    public void onCollision(Body body, Vector2D normal, double penetration, int id) {
                         HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
                         if (otherHealth != null) {
                             otherHealth.damage(w.damage);
