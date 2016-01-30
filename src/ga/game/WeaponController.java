@@ -71,7 +71,7 @@ public class WeaponController extends GameComponent {
                     }
                     break;
                 default:
-                    dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
+                    dir += -(w.spread / (AC.getState().equals("aiming") ? 8 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 8 : 2)) / 10;
                     projectile = w.fire(dir);
                     if (projectile != null) {
                         projectile.getTransform().position = weaponEnd;
