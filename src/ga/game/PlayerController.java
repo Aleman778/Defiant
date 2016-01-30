@@ -26,7 +26,7 @@ public class PlayerController extends GameComponent {
         }
     };
     
-    public double SPEED = 0.1;
+    public double SPEED = 0.5;
     private double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
@@ -101,6 +101,11 @@ public class PlayerController extends GameComponent {
         movement.x += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
         movement.x += (Input.getKey(KeyCode.D) == true) ? 1 : 0;
         movement.x *= SPEED;
+        if (movement.x != 0) {
+            body.setFriction(0);
+        } else {
+            body.setFriction(0.25);
+        }
 
         //Jumping
         if (body.isGrounded()) {

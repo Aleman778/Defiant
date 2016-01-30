@@ -9,7 +9,7 @@ public abstract class Body extends GameComponent {
     protected double mass = 1;
     protected double softness = 0.2;
     public Vector2D velocity = new Vector2D();
-    protected double friction = 0.1;
+    protected double friction = 0;
     public double SPEED_LIMIT = 3;
     private boolean grounded = false;
     private ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<>();

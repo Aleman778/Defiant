@@ -159,7 +159,7 @@ public class RigidBody extends Body {
                 velocity = velocity.sub(correction);
                 body.velocity = body.velocity.add(correction.mul(otherInvMass));
                 if (normal.equals(GameScene.gravity.normalize())) {
-                    Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
+                    Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(friction);
                     velocity = velocity.add(frictionVector);
                 }
                 if (normal.equals(new Vector2D(0, 1))) {
