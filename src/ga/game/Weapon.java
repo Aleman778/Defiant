@@ -176,9 +176,9 @@ public class Weapon {
                         }
                     }
                 };
-                w.spark.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/Fire.psystem"));
+                w.spark.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/Fire4.psystem"));
                 w.spark.physics(true);
-                w.spark.physicsEvent = true;
+                w.spark.physicsEvent = false;
                 w.spark.id = 5;
                 w.config = new HashMap<>(tempConfig);
                 return w;

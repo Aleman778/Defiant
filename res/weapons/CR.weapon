@@ -3,7 +3,7 @@
     <sprite>textures/player/Arm_CR.png</sprite>
     <type>shotgun</type>
     <pellets>5</pellets>
-    <damage>2</damage>
+    <damage>4</damage>
     <clip>3</clip>
     <ammo>30</ammo>
     <spread>1</spread>
