@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
-    <sprite>textures/player/Arm_Med_vapen2.png</sprite>
+    <sprite>textures/player/Arm_SMG.png</sprite>
     <damage>2</damage>
     <clip>40</clip>
     <ammo>400</ammo>
