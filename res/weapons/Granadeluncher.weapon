@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Weapon>
+    <sprite>textures/player/Arm_granade_launcher.png</sprite>
+    <type>granade_launcher</type>
+    <damage>50</damage>
+    <clip>3</clip>
+    <ammo>12</ammo>
+    <spread>1</spread>
+    <recoil>1</recoil>
+    <cooldown>300</cooldown>
+    <reload>1000</reload>
+    <sights>true</sights>
+</Weapon>
