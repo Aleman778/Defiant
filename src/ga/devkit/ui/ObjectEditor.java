@@ -1,30 +1,33 @@
 package ga.devkit.ui;
 
 import ga.devkit.editor.EditorObject;
-import ga.engine.scene.GameComponent;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.util.Callback;
 
 public class ObjectEditor extends Interface implements Initializable {
 
     @FXML
     public Label title;
-    public Label componentTitle;
-    public AnchorPane componentPane;
-    public SplitPane content;
-    public Button makeBlueprint;
-    public TreeView<String> components;
-    public TreeItem<String> componentRoot;
+    public TableView<Attribute> tableAttri;
+    public TableColumn<Attribute, String> columnAttri;
+    public TableColumn<Attribute, String> columnValue;
     
-    private EditorObject object;
+    private ObservableList<Attribute> attributes;
+    private EditorObject selectedObject;
     
     public ObjectEditor() {
         
@@ -32,37 +35,68 @@ public class ObjectEditor extends Interface implements Initializable {
         
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        componentRoot = new TreeItem<>("Root");
-        components.setRoot(componentRoot);
-        components.showRootProperty().setValue(false);
-        SplitPane.setResizableWithParent(componentPane, false);
+        tableAttri.setPlaceholder(new Label("There are no attributes for this object"));
+        attributes = 
+            FXCollections.observableArrayList(
+                new Attribute("Test", "Value"),
+                new Attribute("Test2", "Value2"),
+                new Attribute("Test3", "Value3")
+            );
+        
+        columnAttri.setCellValueFactory((TableColumn.CellDataFeatures<Attribute, String> param) -> param.getValue().attriName);
+        columnValue.setCellValueFactory((TableColumn.CellDataFeatures<Attribute, String> param) -> param.getValue().attriValue);
+        columnValue.setOnEditCommit((TableColumn.CellEditEvent<Attribute, String> t) -> {
+            ((Attribute) t.getTableView().getItems().get(t.getTablePosition().getRow())).setValue(t.getNewValue());
+            if (selectedObject != null) {
+                selectedObject.setAttribute(t.getRowValue().getName(), t.getNewValue());
+            }
+        });
+        columnValue.setCellFactory(TextFieldTableCell.forTableColumn());
+        tableAttri.setItems(attributes);
         setObject(null);
     }
     
     public void setObject(EditorObject selection) {
-        object = selection;
-        clearComponents();
-        if (object == null) {
-            content.setDisable(true);
-            makeBlueprint.setDisable(true);
+        selectedObject = selection;
+        if (selectedObject == null) {
             title.setText("Object Editor - No object selected");
         } else {
-            content.setDisable(false);
-            makeBlueprint.setDisable(false);
             title.setText("Object Editor - " + selection.getName());
-            setComponents(object);
+            attributes.clear();
+            for (String attri: selectedObject.getAllAttributes()) {
+                String value = selectedObject.getAttribute(attri);
+                if (value == null) {
+                    value = "";
+                }
+                attributes.add(new Attribute(attri, value));
+            }
         }
     }
     
-    private void clearComponents() {
-        componentRoot.getChildren().clear();
-    }
-    
-    private void setComponents(EditorObject object) {
-        componentRoot.getChildren().add(new TreeItem<>("Transform2D"));
-        for (GameComponent component: object.getAllComponents()) {
-            String classname = component.getClass().getCanonicalName();
-            componentRoot.getChildren().add(new TreeItem<>(classname.substring(classname.lastIndexOf(".") + 1)));
+    public static class Attribute {
+        
+        private final SimpleStringProperty attriName;
+        private final SimpleStringProperty attriValue;
+
+        public Attribute(String attriName, String attriValue) {
+            this.attriName = new SimpleStringProperty(attriName);
+            this.attriValue = new SimpleStringProperty(attriValue);
+        }
+        
+        public void setName(String name) {
+            attriName.set(name);
+        }
+        
+        public String getName() {
+            return attriName.get();
+        }
+        
+        public void setValue(String value) {
+            attriValue.set(value);
+        }
+        
+        public String getValue() {
+            return attriValue.get();
         }
     }
 }
