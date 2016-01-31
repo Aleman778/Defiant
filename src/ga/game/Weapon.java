@@ -28,7 +28,7 @@ public class Weapon {
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
     public ParticleEmitter spark;
-    public Image reloadImage = ResourceManager.get("<RELOAD>");
+    public Image reloadImage = ResourceManager.getImage("<RELOAD>");
     public Image idleImage;
     public String type = "default";
     public HashMap<String, String> config = new HashMap<>();
@@ -86,7 +86,7 @@ public class Weapon {
             public void fixedUpdate() {
                 super.fixedUpdate();
                 if (gameobject.getBody().velocity.x == 0 && gameobject.getBody().velocity.y == 0) {
-                    image = ResourceManager.get("<HIT_MARKER>");
+                    image = ResourceManager.getImage("<HIT_MARKER>");
                 }
             }
 
