@@ -6,6 +6,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.game.PlayerController;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -68,6 +69,12 @@ public class GameObject implements Comparator<GameObject> {
         return object;
     }
 
+    public void addAllChildren(Collection<GameObject> objects) {
+        for (GameObject object: objects) {
+            addChild(object);
+        }
+    }
+    
     public GameObject removeChild(GameObject object) {
         children.remove(object);
         return object;
@@ -108,6 +115,12 @@ public class GameObject implements Comparator<GameObject> {
 
         components.add(component);
         return this;
+    }
+
+    public void addComponents(Collection<GameComponent> components) {
+        for (GameComponent component: components) {
+            addComponent(component);
+        }
     }
 
     public <T extends GameComponent> GameComponent getComponent(Class<T> component) {
