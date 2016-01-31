@@ -3,9 +3,11 @@ package ga.game.entity;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
+import static ga.engine.scene.GameComponent.ATTRIBUTES_NONE;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
 import ga.game.PlayerController;
+import java.util.List;
 import java.util.Map;
 
 public class AI extends GameComponent {
@@ -20,6 +22,9 @@ public class AI extends GameComponent {
     private final double AIR_SPEED = 0.05;
     public double takingDamage = 0;
 
+    public AI() {
+    }
+    
     public AI(GameScene scene) {
         for (GameObject object : scene.getAllGameObjects()) {
             if (object.getComponent(PlayerController.class) != null) {
@@ -74,16 +79,16 @@ public class AI extends GameComponent {
     }
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
     public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        return null;
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
+        return new AI();
     }
 }

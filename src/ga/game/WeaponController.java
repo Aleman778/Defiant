@@ -231,17 +231,16 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
     public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new WeaponController();
     }
 }

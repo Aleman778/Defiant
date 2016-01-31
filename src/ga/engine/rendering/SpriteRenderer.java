@@ -2,21 +2,22 @@ package ga.engine.rendering;
 
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class SpriteRenderer extends GameComponent {
     
-    private static final HashMap<String, Integer> variables = new HashMap<>();
+    private static final List<String> ATTRIBUTES = new ArrayList<>();
     
     static {
-        variables.put("image", GameComponent.TYPE_STRING);
-        variables.put("offsetX", GameComponent.TYPE_INTEGER);
-        variables.put("offsetY", GameComponent.TYPE_INTEGER);
-        variables.put("width", GameComponent.TYPE_INTEGER);
-        variables.put("height", GameComponent.TYPE_INTEGER);
+        ATTRIBUTES.add("Sprite Filepath");
+        ATTRIBUTES.add("Sprite OffsetX");
+        ATTRIBUTES.add("Sprite OffsetY");
+        ATTRIBUTES.add("Sprite Width");
+        ATTRIBUTES.add("Sprite Height");
     }
     
     private Image sprite;
@@ -32,7 +33,7 @@ public class SpriteRenderer extends GameComponent {
     } 
 
     public SpriteRenderer(String filepath, int offsetX, int offsetY, int width, int height) {
-        this(ResourceManager.get(filepath), offsetX, offsetY, width, height);
+        this(ResourceManager.getImage(filepath), offsetX, offsetY, width, height);
     }
     
     public SpriteRenderer(Image sprite, int width, int height) {
@@ -40,11 +41,11 @@ public class SpriteRenderer extends GameComponent {
     }
     
     public SpriteRenderer(String filepath, int width, int height) {
-        this(ResourceManager.get(filepath), 0, 0, width, height);
+        this(ResourceManager.getImage(filepath), 0, 0, width, height);
     }
     
     public SpriteRenderer(String filepath) {
-        this(ResourceManager.get(filepath), 0, 0, (int) ResourceManager.get(filepath).getWidth(), (int) ResourceManager.get(filepath).getHeight());
+        this(ResourceManager.getImage(filepath), 0, 0, (int) ResourceManager.getImage(filepath).getWidth(), (int) ResourceManager.getImage(filepath).getHeight());
     }
 
     @Override
@@ -93,33 +94,21 @@ public class SpriteRenderer extends GameComponent {
     }
 
     @Override
-    public GameComponent instantiate() {
-        return null;
+    public List<String> getAttributes() {
+        return ATTRIBUTES;
     }
 
     @Override
-    public Map<String, Integer> getVars() {
-        return variables;
+    public void setAttributes(Map<String, String> attributes) {
+        sprite = ResourceManager.getImage(attributes.get("Sprite Filepath"));
+        offsetX = (int) Float.parseFloat(attributes.get("Sprite OffsetX"));
+        offsetY = (int) Float.parseFloat(attributes.get("Sprite OffsetY"));
+        width = (int) Float.parseFloat(attributes.get("Sprite Width"));
+        height = (int) Float.parseFloat(attributes.get("Sprite Height"));
     }
     
     @Override
-    public void xmlVar(String name, String value) {
-        switch (name) {
-            case "image":
-                sprite = ResourceManager.get(value);
-                break;
-            case "offsetX":
-                offsetX = (int) Float.parseFloat(value);
-                break;
-            case "offsetY":
-                offsetY = (int) Float.parseFloat(value);
-                break;
-            case "width":
-                width = (int) Float.parseFloat(value);
-                break;
-            case "height":
-                height = (int) Float.parseFloat(value);
-                break;
-        }
+    public GameComponent instantiate() {
+        return new SpriteRenderer(ResourceManager.DEFAULT_IMAGE, 32, 32);
     }
 }
