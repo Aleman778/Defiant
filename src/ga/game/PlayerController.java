@@ -1,5 +1,6 @@
 package ga.game;
 
+import ga.game.weapon.WeaponController;
 import ga.engine.animation.Animation;
 import ga.engine.animation.AnimationController;
 import ga.engine.input.Input;

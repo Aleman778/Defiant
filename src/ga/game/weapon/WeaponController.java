@@ -1,4 +1,4 @@
-package ga.game;
+package ga.game.weapon;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
@@ -12,6 +12,7 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
+import ga.game.PlayerController;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class WeaponController extends GameComponent {
             add(Weapon.loadXML("weapons/Flamethrower.weapon"));
             add(Weapon.loadXML("weapons/CR.weapon"));
             add(Weapon.loadXML("weapons/GEP.weapon"));
+            add(Weapon.loadXML("weapons/Grenadelauncher.weapon"));
         }
     };
 

@@ -1,4 +1,4 @@
-package ga.game;
+package ga.game.weapon;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.Animation;
@@ -78,6 +78,21 @@ public class Weapon {
         spark = ParticleEmitter.loadXML(flashPath);
     }
 
+    public Weapon(HashMap<String, String> config) {
+        this(config.get("sprite"),
+                Integer.parseInt(config.get("clip")),
+                Integer.parseInt(config.get("ammo")),
+                Double.parseDouble(config.get("spread")),
+                Long.parseLong(config.get("cooldown")),
+                Double.valueOf(config.get("recoil")),
+                Double.valueOf(config.get("damage")),
+                Long.parseLong(config.get("reload")),
+                Boolean.valueOf((config.get("burst"))),
+                Boolean.valueOf((config.get("sights"))),
+                config.get("type"));
+        this.config = new HashMap<>(config);
+    }
+
     public GameObject fire(double direction) {
         GameObject o = new GameObject();
         ImageRenderer renderer = new ImageRenderer("textures/bullet_round.png") {
@@ -147,71 +162,23 @@ public class Weapon {
         tempConfig.clear();
         tempConfig.put("type", "default");
         reader.parse(filepath);
-        if (tempConfig.get("type") != null) {
-            if (tempConfig.get("type").equals("flamethrower")) {
-                Weapon w = new Weapon(tempConfig.get("sprite"),
-                        Integer.parseInt(tempConfig.get("clip")),
-                        Integer.parseInt(tempConfig.get("ammo")),
-                        Double.parseDouble(tempConfig.get("spread")),
-                        Long.parseLong(tempConfig.get("cooldown")),
-                        Double.valueOf(tempConfig.get("recoil")),
-                        Double.valueOf(tempConfig.get("damage")),
-                        Long.parseLong(tempConfig.get("reload")),
-                        Boolean.valueOf((tempConfig.get("burst"))),
-                        Boolean.valueOf((tempConfig.get("sights"))),
-                        tempConfig.get("type")) {
+        return Weapon.create(tempConfig.get("type"), tempConfig);
+    }
 
-                    @Override
-                    public GameObject fire(double direction) {
-                        return null;
-                    }
-                };
-                w.spark = new ParticleEmitter() {
-
-                    @Override
-                    public void onCollision(Body body, Vector2D normal, double penetration, int id) {
-                        HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
-                        if (otherHealth != null) {
-                            otherHealth.damage(w.damage);
-                        }
-                    }
-                };
-                w.spark.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/Fire4.psystem"));
-                w.spark.physics(true);
-                w.spark.physicsEvent = false;
-                w.spark.id = 5;
-                w.config = new HashMap<>(tempConfig);
-                return w;
-            }
-            if (tempConfig.get("type").equals("shotgun")) {
-                Weapon w = new Weapon(tempConfig.get("sprite"),
-                        Integer.parseInt(tempConfig.get("clip")),
-                        Integer.parseInt(tempConfig.get("ammo")),
-                        Double.parseDouble(tempConfig.get("spread")),
-                        Long.parseLong(tempConfig.get("cooldown")),
-                        Double.valueOf(tempConfig.get("recoil")),
-                        Double.valueOf(tempConfig.get("damage")),
-                        Long.parseLong(tempConfig.get("reload")),
-                        Boolean.valueOf((tempConfig.get("burst"))),
-                        Boolean.valueOf((tempConfig.get("sights"))),
-                        tempConfig.get("type"));
-                w.config = new HashMap<>(tempConfig);
-                return w;
-            }
+    public static Weapon create(String type, HashMap<String, String> config) {
+        Weapon w;
+        switch (type) {
+            case "flamethrower":
+                w = Flamethrower.instantiate(config);
+                break;
+            default:
+                w = Weapon.instantiate(config);
         }
-        Weapon w = new Weapon(tempConfig.get("sprite"),
-                Integer.parseInt(tempConfig.get("clip")),
-                Integer.parseInt(tempConfig.get("ammo")),
-                Double.parseDouble(tempConfig.get("spread")),
-                Long.parseLong(tempConfig.get("cooldown")),
-                Double.valueOf(tempConfig.get("recoil")),
-                Double.valueOf(tempConfig.get("damage")),
-                Long.parseLong(tempConfig.get("reload")),
-                Boolean.valueOf((tempConfig.get("burst"))),
-                Boolean.valueOf((tempConfig.get("sights"))),
-                tempConfig.get("type"));
-        w.config = new HashMap<>(tempConfig);
         return w;
+    }
+    
+    public static Weapon instantiate(HashMap<String, String> config) {
+        return new Weapon(config);
     }
 
     private static final XMLReader reader = new XMLReader() {

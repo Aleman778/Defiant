@@ -1,5 +1,6 @@
 package ga.game;
 
+import ga.game.weapon.WeaponController;
 import ga.engine.core.Application;
 import ga.engine.scene.GameComponent;
 import ga.game.entity.HealthComponent;
