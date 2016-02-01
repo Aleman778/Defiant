@@ -27,7 +27,7 @@ public class Weapon {
     public double spread, velocity = 20, recoil = 0, damage;
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
-    public ParticleEmitter spark, impact;
+    public ParticleEmitter spark;
     public Image reloadImage = ResourceManager.get("<RELOAD>");
     public Image idleImage;
     public String type = "default";
@@ -117,6 +117,7 @@ public class Weapon {
         SimpleBody body = new SimpleBody(new Rectangle(1, 1), 1, 1);
         body.gravity = new Vector2D(0, 0.01);
         body.setNoCollide(2);
+        body.addCollide(3);
         body.setVelocity(new Vector2D(velocity * Math.cos(direction), velocity * Math.sin(direction)));
         o.addComponent(body);
         ParticleEmitter e = new ParticleEmitter() {

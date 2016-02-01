@@ -28,7 +28,7 @@ public class ParticleEmitter extends GameComponent {
     public float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityMin, velocityMax, velocityStep, rate, colorPoint, random;
     public GameObject object;
     protected Image sprite;
-    protected double gravityScale = 0.6;
+    public double gravityScale = 0.6;
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
     public boolean interpolate = false, physics = true, physicsEvent = false;
