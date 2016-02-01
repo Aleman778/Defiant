@@ -27,7 +27,7 @@ public class Weapon {
     public double spread, velocity = 20, recoil = 0, damage;
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
-    public ParticleEmitter spark;
+    public ParticleEmitter spark, impact;
     public Image reloadImage = ResourceManager.get("<RELOAD>");
     public Image idleImage;
     public String type = "default";
@@ -102,12 +102,12 @@ public class Weapon {
                 super.fixedUpdate();
                 if (gameobject.getBody().velocity.x == 0 && gameobject.getBody().velocity.y == 0) {
                     image = ResourceManager.get("<HIT_MARKER>");
+                    }
                 }
-            }
 
             @Override
-            public void onCollision(Body body, Vector2D normal, double penetration, int id) {
-                HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
+            public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
+                HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
                 if (otherHealth != null) {
                     otherHealth.damage(damage);
                 }
@@ -170,6 +170,9 @@ public class Weapon {
         switch (type) {
             case "flamethrower":
                 w = Flamethrower.instantiate(config);
+                break;
+            case "grenade_launcher":
+                w = GrenadeLauncher.instantiate(config);
                 break;
             default:
                 w = Weapon.instantiate(config);

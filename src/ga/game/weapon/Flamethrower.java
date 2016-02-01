@@ -23,16 +23,23 @@ public class Flamethrower extends Weapon {
         w.spark = new ParticleEmitter() {
 
             @Override
-            public void onCollision(Body body, Vector2D normal, double penetration, int id) {
-                HealthComponent otherHealth = (HealthComponent) body.gameobject.getComponent(HealthComponent.class);
+            public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
+                if (id == 1) {
+                    body.setVelocity(new Vector2D());
+                } else if (body.getVelocity().length() > 3) {
+                    body.setVelocity(body.getVelocity().mul(0.5));
+                }
+                HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
                 if (otherHealth != null) {
                     otherHealth.damage(w.damage);
                 }
             }
         };
         w.spark.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/Fire4.psystem"));
+        w.spark.noCollide.remove((Object) 3);
+        w.spark.collide.add(3);
         w.spark.physics(true);
-        w.spark.physicsEvent = false;
+        w.spark.physicsEvent = true;
         w.spark.id = 5;
         return w;
     }

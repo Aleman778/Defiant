@@ -2,7 +2,7 @@
 <Weapon>
     <sprite>textures/player/Arm_flamethrower.png</sprite>
     <type>flamethrower</type>
-    <damage>0.01</damage>
+    <damage>0.001</damage>
     <clip>1000</clip>
     <ammo>0</ammo>
     <spread>0</spread>

@@ -57,7 +57,7 @@ public abstract class GameComponent {
     public void update() {}
     public void lateUpdate() {}
     public void render(GraphicsContext g) {}
-    public void onCollisionEnter(Body body, Vector2D normal, double penetration, int id) {}
-    public void onCollision(Body body, Vector2D normal, double penetration, int id) {}
+    public void onCollisionEnter(Body body, Body otherBody, Vector2D normal, double penetration, int id) {}
+    public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {}
     public void onCollisionExit() {}
 }

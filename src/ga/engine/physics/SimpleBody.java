@@ -56,21 +56,21 @@ public class SimpleBody extends RigidBody {
         if (yMax < otherY || y > otherYMax) {
             return null;
         }
-        onCollision(otherBody, new Vector2D(), 0, 1);
+        onCollision(this, otherBody, new Vector2D(), 0, otherBody.getID());
         return null;
     }
 
     @Override
-    public void onCollision(Body body, Vector2D normal, double penetration, int id) {
-        if ((!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID()))) {
-            if (getID() == body.getID() || getCollide().contains(body.getID()) || body.getCollide().contains(id)) {
+    public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
+        if ((!getNoCollide().contains(otherBody.getID()) && !otherBody.getNoCollide().contains(getID()))) {
+            if (getID() == otherBody.getID() || getCollide().contains(otherBody.getID()) || otherBody.getCollide().contains(id)) {
                 if (!eventOnly) {
                     velocity = new Vector2D();
                     mass = 0;
                 }
                 for (GameComponent comp : gameobject.getAllComponents()) {
                     if (comp.getClass() != SimpleBody.class) {
-                        comp.onCollision(body, normal, penetration, id);
+                        comp.onCollision(this, otherBody, normal, penetration, id);
                     }
                 }
             }

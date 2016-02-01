@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Body extends GameComponent {
-    
+
     protected double mass = 1;
     protected double softness = 0.2;
     public Vector2D velocity = new Vector2D();
@@ -20,7 +20,7 @@ public abstract class Body extends GameComponent {
     public Body(int id) {
         this.id = id;
     }
-    
+
     public Body() {}
 
     @Override
@@ -34,11 +34,11 @@ public abstract class Body extends GameComponent {
     public void update() {
         super.update();
     }
-    
+
     public void setVelocity(Vector2D vel) {
         velocity = vel;
     }
-    
+
     public Vector2D getVelocity() {
         return velocity;
     }
@@ -50,25 +50,31 @@ public abstract class Body extends GameComponent {
     public void setFriction(double friction) {
         this.friction = friction;
     }
-    
+
     public void setSoftness(double softness) {
         this.softness = softness;
     }
-        
+
     public void setGrounded(boolean grounded) {
         this.grounded = grounded;
     }
-    
+
     public boolean isGrounded() {
         return grounded;
     }
-    
+
     public void addCollide(int... id) {
         for (int i : id) {
             collide.add(i);
         }
     }
-    
+
+    public void removeCollide(int... id) {
+        for (int i : id) {
+            collide.remove((Object) i);
+        }
+    }
+
     public void setCollide(int... id) {
         collide.clear();
         collide.add(1);
@@ -76,15 +82,20 @@ public abstract class Body extends GameComponent {
             collide.add(i);
         }
     }
+    
+    public void setCollide(ArrayList<Integer> id) {
+        collide = new ArrayList<>(id);
+        collide.add(1);
+    }
 
     public double getMass() {
         return mass;
     }
-    
+
     public ArrayList<Integer> getCollide() {
         return collide;
     }
-    
+
     public void addNoCollide(int... id) {
         noCollide.add(0);
         for (int i : id) {
@@ -92,6 +103,12 @@ public abstract class Body extends GameComponent {
         }
     }
     
+    public void removeNoCollide(int... id) {
+        for (int i : id) {
+            noCollide.remove((Object) i);
+        }
+    }
+
     public void setNoCollide(int... id) {
         noCollide.clear();
         noCollide.add(0);
@@ -100,17 +117,22 @@ public abstract class Body extends GameComponent {
         }
     }
     
+    public void setNoCollide(ArrayList<Integer> id) {
+        noCollide = new ArrayList<>(id);
+        noCollide.add(0);
+    }
+
     public ArrayList<Integer> getNoCollide() {
         return noCollide;
     }
-    
+
     public void setID(int id) {
         this.id = id;
     }
-    
+
     public int getID() {
         return id;
     }
-    
+
     public abstract HashMap<String, Object> physicsUpdate(Body otherBody);
 }
