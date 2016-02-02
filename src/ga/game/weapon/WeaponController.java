@@ -88,12 +88,11 @@ public class WeaponController extends GameComponent {
             Point p = MouseInfo.getPointerInfo().getLocation();
 //                    Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
             selected.ammo--;
-
-            if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0) {
-                AC.setState("reload");
-                selected.lastReload = Application.now;
-                Input.mouseButtons.clear();
-            }
+        }
+        if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0) {
+            AC.setState("reload");
+            selected.lastReload = Application.now;
+            Input.mouseButtons.clear();
         }
     }
 
