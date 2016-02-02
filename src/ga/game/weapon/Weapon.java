@@ -28,15 +28,15 @@ public class Weapon {
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
     public ParticleEmitter spark;
-    public Image reloadImage = ResourceManager.get("<RELOAD>");
+    public Image reloadImage = ResourceManager.get("textures/player/Player_reloading8.png");
     public Image idleImage;
     public String type = "default";
     public HashMap<String, String> config = new HashMap<>();
-    public Animation reloadAnimation = new Animation(1) {
+    public Animation reloadAnimation = new Animation(8,0.24) {
 
         @Override
         public void animate(int frame) {
-            image.setOffsetX(frame * 32);
+            image.setOffsetX(frame * 40);
             image.setOffsetY(0);
             image.setSprite(reloadImage);
             image.setWidth((int) reloadImage.getWidth() / getFrames());
