@@ -8,6 +8,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.resource.ResourceManager;
+import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.game.entity.HealthComponent;
 import java.util.HashMap;
@@ -32,7 +33,12 @@ public class GrenadeLauncher extends Weapon {
                         if (getBody().velocity.x == 0 && getBody().velocity.y == 0 && isMoving) {
                             isMoving = false;
                             image.setSprite(ResourceManager.get("<EXPLOSION>"));
-                            ParticleEmitter impact = (ParticleEmitter) getComponents(ParticleEmitter.class).toArray()[1];
+                            ParticleEmitter impact = new ParticleEmitter();
+                            for (GameComponent e : getComponents(ParticleEmitter.class)) {
+                                if (((ParticleEmitter) e).getConfig().getValue("mode").equals("MODE_SINGLE")) {
+                                    impact = (ParticleEmitter) e;
+                                }
+                            }
                             if (impact != null) {
                                 impact.fire();
                                 impact.gravityScale = 0;
@@ -40,7 +46,7 @@ public class GrenadeLauncher extends Weapon {
                         }
                     }
                 };
-                ImageRenderer renderer = new ImageRenderer("textures/SpiderR.png") {
+                ImageRenderer renderer = new ImageRenderer("textures/grenade.png") {
                     @Override
                     public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
                         HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
