@@ -28,11 +28,11 @@ public class Weapon {
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
     public ParticleEmitter spark;
-    public Image reloadImage = ResourceManager.get("textures/player/Player_reloading8.png");
+    public Image reloadImage = ResourceManager.get("textures/player/Player_reloading_color.png");
     public Image idleImage;
     public String type = "default";
     public HashMap<String, String> config = new HashMap<>();
-    public Animation reloadAnimation = new Animation(8,0.24) {
+    public Animation reloadAnimation = new Animation(9,0.26) {
 
         @Override
         public void animate(int frame) {
