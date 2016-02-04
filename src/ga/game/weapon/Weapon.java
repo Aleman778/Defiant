@@ -177,6 +177,9 @@ public class Weapon {
             case "grenade_launcher":
                 w = GrenadeLauncher.instantiate(config);
                 break;
+            case "nitrogenthrower":
+                w = Nitrogenthrower.instantiate(config);
+                break;
             default:
                 w = Weapon.instantiate(config);
         }

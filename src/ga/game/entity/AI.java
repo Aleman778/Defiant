@@ -40,12 +40,21 @@ public class AI extends GameComponent {
         body = (Body) getComponent(Body.class);
         if (body != null) {
             body.addCollide(5);
+            body.SPEED = SPEED;
+            body.INIT_SPEED = SPEED;
         }
     }
 
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
+        SPEED = body.SPEED;
+        if (body.SPEED < body.INIT_SPEED) {
+            body.SPEED += 0.0005;
+        }
+        if (body.SPEED_LIMIT < body.SPEED_LIMIT_INIT) {
+            body.SPEED_LIMIT += 0.005;
+        }
         timeSinceLastJump++;
         Vector2D velocity = new Vector2D();
         Vector2D distToPlayer = player.getTransform().position.sub(gameobject.getTransform().position.add(new Vector2D(gameobject.getAABB().width / 2, 0)));

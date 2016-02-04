@@ -11,7 +11,8 @@ public abstract class Body extends GameComponent {
     protected double softness = 0.2;
     public Vector2D velocity = new Vector2D();
     protected double friction = 0;
-    public double SPEED_LIMIT = 3;
+    public double SPEED = 3, SPEED_LIMIT = 3,
+            INIT_SPEED = SPEED, SPEED_LIMIT_INIT = SPEED_LIMIT;
     private boolean grounded = false;
     private ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<>();
     protected int id = 1;

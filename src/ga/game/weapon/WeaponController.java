@@ -44,6 +44,7 @@ public class WeaponController extends GameComponent {
             add(Weapon.loadXML("weapons/CR.weapon"));
             add(Weapon.loadXML("weapons/GEP.weapon"));
             add(Weapon.loadXML("weapons/Grenadelauncher.weapon"));
+            add(Weapon.loadXML("weapons/Nitrogenthrower.weapon"));
         }
     };
 
@@ -89,7 +90,7 @@ public class WeaponController extends GameComponent {
             spark.fire();
             shell.object.transform.position = spark.object.transform.position;
             shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
-            if (!getSelected().type.equals("flamethrower")) {
+            if (!(getSelected().type.equals("flamethrower") || getSelected().type.equals("nitrogenthrower"))) {
                 shell.fire(shells);
             }
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
