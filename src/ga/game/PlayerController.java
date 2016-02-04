@@ -38,7 +38,7 @@ public class PlayerController extends GameComponent {
     public GameObject head, arm;
     private SpriteRenderer renderable;
     private AnimationController AC;
-    private ParticleEmitter jumpEmitter, landEmitter;
+    private ParticleEmitter landEmitter;
     private WeaponController weaponController = new WeaponController();
 
     @Override
@@ -136,7 +136,6 @@ public class PlayerController extends GameComponent {
         //Apply velocity
         if (movement.y != 0) {
             body.setVelocity(body.getVelocity().mul(new Vector2D(1, 0)));
-            jumpEmitter.fire(10);
         }
         if (Math.abs(body.getVelocity().add(movement).x) < body.SPEED_LIMIT) {
             body.setVelocity(body.getVelocity().add(movement));
@@ -182,12 +181,8 @@ public class PlayerController extends GameComponent {
     }
 
     public void initParticles() {
-        // jumpEmitter = new ParticleEmitter(90, 180, 10, ParticleEmitter.MODE_SINGLE_MIRRORED, 10, Color.BROWN);
-        jumpEmitter = ParticleEmitter.loadXML("particles/systems/PlayerJump.psystem");
         landEmitter = ParticleEmitter.loadXML("particles/systems/LandEmitter.psystem");
-        gameobject.addComponent(jumpEmitter);
         gameobject.addComponent(landEmitter);
-        jumpEmitter.object.transform.position = new Vector2D(16, 45);
         landEmitter.object.transform.position = new Vector2D(16, 50);
     }
 
