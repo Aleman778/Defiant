@@ -27,7 +27,7 @@ public class Weapon {
     public double spread, velocity = 20, recoil = 0, damage;
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
-    public ParticleEmitter spark;
+    public ParticleEmitter spark, shell;
     public Image reloadImage = ResourceManager.get("textures/player/Player_reloading_color.png");
     public Image idleImage;
     public String type = "default";
@@ -71,6 +71,8 @@ public class Weapon {
         this.single = !burst;
         this.sights = sights;
         this.type = type;
+        shell = ParticleEmitter.loadXML("particles/systems/Shell.psystem");
+        shell.setSprite(ResourceManager.get("textures/bullet.png"));
     }
 
     public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String type, String flashPath) {
