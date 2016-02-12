@@ -4,6 +4,7 @@
     <components>
         <component type="Rigidbody"/>
         <component type="SpriteRenderer"/>
+        <component type="HealthComponent"/>
         <component type="PlayerController"/>
         <component type="AnimationController"/>
     </components>
