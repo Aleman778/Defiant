@@ -15,7 +15,9 @@
         <tile image="textures/GA-tileset.png" tilex="64" tiley="0" width="32" height="96" tx="352" ty="200"/>
     </tilemap>
     <gameobjects>
-        <object blueprint="blueprints/Player.blueprint" tag="player" name="Player" depth="0" tx="96" ty="96" rot="0" sx="1" sy="1">
+        <object blueprint="blueprints/Player.blueprint" tag="player" name="Player" depth="0" tx="96" ty="120" rot="0" sx="1" sy="1" bx="0" by="0" bw="32" bh="64">
+        </object>
+        <object blueprint="blueprints/Collision.blueprint" tag="collision" name="Collision" depth="0" tx="32" ty="200" rot="0" sx="1" sy="1" bx="0" by="0" bw="352" bh="96">
         </object>
     </gameobjects>
 </scene>

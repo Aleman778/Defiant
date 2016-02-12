@@ -1,8 +1,8 @@
 package ga.engine.scene;
 
+import com.sun.javafx.geom.Rectangle;
 import ga.engine.blueprint.Blueprint;
 import ga.engine.physics.Vector2D;
-import ga.engine.physics.Vector3D;
 import ga.engine.rendering.Tile;
 import ga.engine.rendering.TilemapRenderer;
 import ga.engine.resource.ResourceManager;
@@ -86,6 +86,11 @@ public class SceneParser extends XMLReader {
                 scale.y = Float.parseFloat(attri.getValue("sy"));
                 float rotation = Float.parseFloat(attri.getValue("rot"));
                 int depth = Integer.parseInt(attri.getValue("depth"));
+                Rectangle bounds = new Rectangle();
+                bounds.x = Integer.parseInt(attri.getValue("bx"));
+                bounds.y = Integer.parseInt(attri.getValue("by"));
+                bounds.width = Integer.parseInt(attri.getValue("bw"));
+                bounds.height = Integer.parseInt(attri.getValue("bh"));
                 
                 Transform2D objectTransform = new Transform2D(
                         null, translation, new Vector2D(), rotation, scale, depth);
@@ -93,6 +98,7 @@ public class SceneParser extends XMLReader {
                 
                 if (blueprint != null) {
                     GameObject object = blueprint.instantiate(objectTransform);
+                    object.setAABB(bounds);
                     if (parent == null) {
                         root.addChild(object);
                     } else {
