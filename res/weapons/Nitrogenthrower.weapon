@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
-    <sprite>textures/player/Arm_flamethrower.png</sprite>
-    <type>flamethrower</type>
-    <damage>0.001</damage>
+    <sprite>textures/player/Arm_nitrogenthrower.png</sprite>
+    <type>nitrogenthrower</type>
+    <damage>0.0003</damage>
     <clip>1000</clip>
     <ammo>0</ammo>
     <spread>0</spread>
     <recoil>0</recoil>
-    <cooldown>0</cooldown>
+    <cooldown>10</cooldown>
     <reload>0</reload>
     <burst>true</burst>
     <sights>false</sights>

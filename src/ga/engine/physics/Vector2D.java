@@ -38,11 +38,7 @@ public class Vector2D {
     }
 
     public Vector2D normalize() {
-        double length = length();
-        if (length == 0) {
-            return new Vector2D();
-        }
-        return new Vector2D(x / length, y / length);
+        return new Vector2D(Math.signum(x), Math.signum(y));
     }
 
     public Vector2D project(Vector2D vector) {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<particleSystem>
+    <direction>258</direction>
+    <spread>3</spread>
+    <size>8</size>
+    <sizeEnd>8</sizeEnd>
+    <sizeStep>0</sizeStep>
+    <life>151</life>
+    <color>#666666FF</color>
+    <mode>MODE_SINGLE</mode>
+    <gravity>0.6476190476190475</gravity>
+    <velocity>1.238095238095238</velocity>
+    <velocityMin>0.9047619047619048</velocityMin>
+    <velocityMax>1.1428571428571428</velocityMax>
+    <velocityStep>0.9959523809523809</velocityStep>
+    <rate>2.0952380952380945</rate>
+    <particleShape>square</particleShape>
+    <shape>1, 1</shape>
+    <colorMid>#666666FF</colorMid>
+    <colorEnd>#666666FF</colorEnd>
+    <colorPoint>0.5</colorPoint>
+    <random>0.0</random>
+</particleSystem>

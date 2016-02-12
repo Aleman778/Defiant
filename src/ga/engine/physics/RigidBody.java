@@ -3,8 +3,7 @@ package ga.engine.physics;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RigidBody extends Body {
@@ -33,7 +32,7 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public Vector2D physicsUpdate(Body otherBody) {
+    public HashMap<String, Object> physicsUpdate(Body otherBody) {
         if (velocity.x + velocity.y == 0) {
             return null;
         }
@@ -107,12 +106,16 @@ public class RigidBody extends Body {
             }
             penetration = overlapY;
         }
-        if (normal.x != -1 && otherBody.velocity.sub(velocity).dot(normal) > 0) {
-            return null;
-        }
         //Collision Event
-        onCollision(otherBody, normal, penetration);
-        return normal;
+        onCollision(this, otherBody, normal, penetration, otherBody.getID());
+        return new HashMap<String, Object>() {
+                {
+                    put("body", otherBody);
+                    put("normal", normal);
+                    put("penetration", penetration);
+                    put("id", otherBody.getID());
+                }
+        };
     }
 
     @Override
@@ -121,9 +124,9 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public void onCollision(Body body, Vector2D normal, double penetration) {
-        Vector2D vel = body.velocity.sub(velocity);
-        double bounce = Math.min(softness, body.softness);
+    public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
+        Vector2D vel = otherBody.velocity.sub(velocity);
+        double bounce = Math.min(softness, otherBody.softness);
         double velNorm = vel.dot(normal);
         double impulse = -(1 + bounce) * velNorm;
         double invMass, otherInvMass;
@@ -132,14 +135,14 @@ public class RigidBody extends Body {
         } else {
             invMass = 1 / mass;
         }
-        if (body.mass == 0) {
+        if (otherBody.mass == 0) {
             otherInvMass = 0;
         } else {
-            otherInvMass = 1 / body.mass;
+            otherInvMass = 1 / otherBody.mass;
         }
         double percent = 0;
-        if (!getNoCollide().contains(body.getID()) && !body.getNoCollide().contains(getID())) {
-            if (getID() == body.getID() || getCollide().contains(body.getID()) || body.getCollide().contains(id)) {
+        if (!getNoCollide().contains(otherBody.getID()) && !otherBody.getNoCollide().contains(getID())) {
+            if (getID() == otherBody.getID() || getCollide().contains(otherBody.getID()) || otherBody.getCollide().contains(id)) {
                 impulse = impulse / (invMass + otherInvMass);
                 if (bounce == 0) {
                     if (Math.abs(normal.x) == 1) {
@@ -151,13 +154,13 @@ public class RigidBody extends Body {
                     impulse = penetration / 2;
                 }
                 Vector2D impulseVector = normal.mul(impulse);
-                double totalMass = mass + body.mass;
+                double totalMass = mass + otherBody.mass;
                 if (impulseVector.normalize().x == -1 || impulseVector.normalize().y == -1) {
                     velocity = velocity.add(impulseVector.mul(mass / totalMass));
-                    body.velocity = body.velocity.sub(impulseVector.mul(body.mass / totalMass));
+                    otherBody.velocity = otherBody.velocity.sub(impulseVector.mul(otherBody.mass / totalMass));
                 }
                 velocity = velocity.sub(impulseVector.mul(mass / totalMass));
-                body.velocity = body.velocity.add(impulseVector.mul(body.mass / totalMass));
+                otherBody.velocity = otherBody.velocity.add(impulseVector.mul(otherBody.mass / totalMass));
 
                 if (bounce != 0 || (Math.abs(normal.x) == 1)) {
                     percent = 0.4;
@@ -168,9 +171,9 @@ public class RigidBody extends Body {
                 final double tolerance = 0.01;
                 Vector2D correction = normal.mul(percent * penetration - tolerance / (invMass + otherInvMass));
                 velocity = velocity.sub(correction);
-                body.velocity = body.velocity.add(correction.mul(otherInvMass));
+                otherBody.velocity = otherBody.velocity.add(correction.mul(otherInvMass));
                 if (normal.equals(GameScene.gravity.normalize())) {
-                    Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(Math.max(friction, body.friction));
+                    Vector2D frictionVector = vel.sub(normal.mul(vel.dot(normal))).mul(friction);
                     velocity = velocity.add(frictionVector);
                 }
                 if (normal.equals(new Vector2D(0, 1))) {
@@ -181,7 +184,7 @@ public class RigidBody extends Body {
         if (-(1 + bounce) * velNorm > 0.5) {
             for (GameComponent comp : gameobject.getAllComponents()) {
                 if (comp.getClass() != RigidBody.class) {
-                    comp.onCollision(body, normal, penetration);
+                    comp.onCollision(this, otherBody, normal, penetration, id);
                 }
             }
         }

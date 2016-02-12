@@ -8,6 +8,7 @@ import static ga.engine.scene.GameComponent.ATTRIBUTES_NONE;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
 import ga.engine.xml.XMLReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -29,12 +30,18 @@ public class ParticleEmitter extends GameComponent {
     public float life, direction, spread, size, sizeEnd, sizeStep, velocity, velocityMin, velocityMax, velocityStep, rate, colorPoint, random;
     public GameObject object;
     protected Image sprite;
-    protected double gravityScale = 0.6;
+    public double gravityScale = 0.6;
     protected Rectangle shape = new Rectangle(0, 0, 1, 1);
     protected ParticleConfiguration config = new ParticleConfiguration();
     public boolean interpolate = false, physics = true, physicsEvent = false;
     public int interpolationScale = 8, id = 5;
     protected Vector2D lastPosition;
+    public ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<Integer>() {
+        {
+            add(2);
+            add(3);
+        }
+    };
 
     public ParticleEmitter(float direction, float spread, float size, String mode, float life, Color color) {
         config.setValue("mode", String.valueOf(mode));
@@ -158,6 +165,8 @@ public class ParticleEmitter extends GameComponent {
                     color.deriveColor(1, 1, 1 + (-0.1 + Math.random() * 0.2), 1),
                     physicsEvent,
                     id);
+            p.body.setCollide(collide);
+            p.body.setNoCollide(noCollide);
             if (random > 0) {
                 p.velocity = (float) (velocity * (0.95 + Math.random() * random));
             } else {

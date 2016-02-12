@@ -21,6 +21,7 @@ public class AI extends GameComponent {
     private final boolean canMoveInAir = true;
     private final double AIR_SPEED = 0.05;
     public double takingDamage = 0;
+    private Body body;
 
     public AI() {
     }
@@ -41,38 +42,54 @@ public class AI extends GameComponent {
 
     @Override
     public void awoke() {
-        Body b = (Body) getComponent(Body.class);
-        if (b != null) {
-            b.addCollide(5);
+        body = (Body) getComponent(Body.class);
+        if (body != null) {
+            body.addCollide(5);
+            body.SPEED = SPEED;
+            body.INIT_SPEED = SPEED;
         }
     }
 
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
+        SPEED = body.SPEED;
+        if (body.SPEED < body.INIT_SPEED) {
+            body.SPEED += 0.0005;
+        }
+        if (body.SPEED_LIMIT < body.SPEED_LIMIT_INIT) {
+            body.SPEED_LIMIT += 0.005;
+        }
         timeSinceLastJump++;
-        Vector2D velocity = gameobject.getBody().getVelocity();
+        Vector2D velocity = new Vector2D();
         Vector2D distToPlayer = player.getTransform().position.sub(gameobject.getTransform().position.add(new Vector2D(gameobject.getAABB().width / 2, 0)));
         if (Math.abs(distToPlayer.x) > FOLLOW_DISTANCE) {
+            body.setFriction(0);
             if (!canMoveInAir) {
-                if (gameobject.getBody().isGrounded()) {
-                    gameobject.getBody().setVelocity(velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+                if (body.isGrounded()) {
+                    velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED));
                 }
             } else {
-                if (!gameobject.getBody().isGrounded()) {
-                    gameobject.getBody().setVelocity(velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED)));
+                if (!body.isGrounded()) {
+                    velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED));
                 } else {
-                    gameobject.getBody().setVelocity(velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED)));
+                    velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(SPEED));
                 }
             }
+            body.setVelocity(body.getVelocity().add(velocity));
+        } else {
+            body.setFriction(0.2);
         }
-        if (distToPlayer.y < -64 && Math.abs(distToPlayer.x) < 96 && gameobject.getBody().isGrounded() && timeSinceLastJump > 65) {
-            gameobject.getBody().setVelocity(velocity.add(new Vector2D(0, -JUMP_HEIGHT)));
+        if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
+            body.setVelocity(new Vector2D(body.SPEED_LIMIT * Math.signum(body.getVelocity().x), body.getVelocity().y));
+        }
+        if (distToPlayer.y < -64 && Math.abs(distToPlayer.x) < 96 && body.isGrounded() && timeSinceLastJump > 65) {
+            body.setVelocity(body.getVelocity().add(new Vector2D(0, -JUMP_HEIGHT)));
             timeSinceLastJump = 0;
         }
         if (takingDamage > 0) {
-            if (Math.abs(gameobject.getBody().getVelocity().x) > 0.5) {
-                gameobject.getBody().setVelocity(velocity.add(new Vector2D(0, takingDamage * 0.25)));
+            if (Math.abs(body.getVelocity().x) > 0.5) {
+                body.setVelocity(body.getVelocity().add(new Vector2D(0, takingDamage * 0.25)));
             }
             takingDamage = 0;
         }

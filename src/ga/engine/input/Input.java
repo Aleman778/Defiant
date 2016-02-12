@@ -75,6 +75,9 @@ public class Input {
         if (getKeyPressed(KeyCode.F5)) {
             Application.setDevmode(!Application.isDevmodeEnabled());
         }
+        if (getKeyPressed(KeyCode.F1)) {
+            Application.restart();
+        }
     }
     
     private void releasedKey(KeyCode keyCode) {
