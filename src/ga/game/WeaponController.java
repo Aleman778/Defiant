@@ -12,6 +12,7 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
+import ga.game.weapon.Weapon;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;

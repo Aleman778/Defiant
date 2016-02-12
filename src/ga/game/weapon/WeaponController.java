@@ -250,12 +250,11 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public Map<String, Integer> getVars() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
     }
 
     @Override
-    public void xmlVar(String name, String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setAttributes(Map<String, String> attributes) {
     }
 }
