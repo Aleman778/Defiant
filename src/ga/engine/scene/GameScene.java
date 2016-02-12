@@ -1,7 +1,6 @@
 package ga.engine.scene;
 
 import com.sun.javafx.geom.Rectangle;
-import ga.engine.animation.AnimationController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
@@ -9,11 +8,6 @@ import ga.engine.physics.RigidBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.JavaFXCanvasRenderer;
-import ga.engine.rendering.SpriteRenderer;
-import ga.game.HUD;
-import ga.game.PlayerController;
-import ga.game.entity.AI;
-import ga.game.entity.HealthComponent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,53 +32,19 @@ public final class GameScene {
     public static Vector2D gravity = new Vector2D(0, 0.2);
 
     /**
-     * Constructs a Scene from filepath scene
-     * @param filepath path to xml scene
+     * Constructs a Scene from filepath scene.<br/>
+     * <b>WARNING</b><br/>
+     * Use SceneParser.execute(xmlfile) to load from XML
+     * @param root the root object
      */
-    public GameScene(String filepath) {
+    public GameScene(GameObject root) {
+        this.root = root;
         group = new Group();
         scene = new Scene(group);
-        root = new GameObject();
         input = new Input(scene);
         canvas = new Canvas(Application.getWidth(), Application.getHeight());
         group.getChildren().add(canvas);
         g = canvas.getGraphicsContext2D();
-
-        //!!!!TEST SCENE DEBUG!!!! - REPLACE THIS WITH XML PARSER
-        GameObject player = new GameObject(320, 0)
-                .addComponent(new SpriteRenderer("textures/player/Player_Idle.png", 32, 64))
-                .addComponent(new PlayerController())
-                .addComponent(new AnimationController());
-        RigidBody body = new RigidBody(1.25, 1);
-        body.setID(2);
-        body.setSoftness(0);
-        player.addComponent(body);
-        ((PlayerController) player.getComponent(PlayerController.class)).initParticles();
-        player.addComponent(new HUD());
-        root.addChild(player);
-        player.transform.depth = -1;
-
-        block(100, 500, 35, 1);
-        block(100 - 32, 500, 1, -20);
-        block(100 + 32 * 35, 500, 1, -20);
-        block(300, 420, 10, 1);
-        block(770, 400, 3, 1);
-
-        GameObject ant = new GameObject(1120, 0)
-                .addComponent(new ImageRenderer("textures/AntBase.png"));
-        RigidBody antBody = new RigidBody(10, 3);
-        antBody.setSoftness(0);
-        ant.addComponent(antBody);
-        ant.addComponent(new AI(this, 0.2, 4));
-        ant.addComponent(new HealthComponent(45));
-        ant.setAABB(0, 0, 91, 45);
-        root.addChild(ant);
-//        
-//        GameObject spider = new GameObject(800, 100)
-//                .addComponent(new ImageRenderer("textures/SpiderR.png"));
-//        spider.addComponent(new RigidBody(1, 4));
-//        spider.addComponent(new AI(this, 0.3, 5));
-//        root.addChild(spider);
     }
 
     public javafx.scene.Scene get() {
@@ -104,9 +64,6 @@ public final class GameScene {
     }
 
     public void update() {
-        if (background == null) {
-            background = new Image("textures/backgrounds/bg_placeholder.jpg", Application.getWidth(), 0, true, false);
-        }
         root.fixedUpdate();
         for (GameObject object : getAllGameObjects()) {
             if (!object.isBody()) {
@@ -127,8 +84,7 @@ public final class GameScene {
 
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        g.drawImage(background, 0, 0);
+        
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
 

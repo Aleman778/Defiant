@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Map;
 import javafx.scene.media.AudioClip;
 
-public class AudioPlayer extends GameComponent implements Runnable {
+public class AudioPlayer extends GameComponent {
     
     private boolean looping;
     private final AudioClip player;
+
+    public AudioPlayer() {
+        this.player = null;
+        this.looping = false;
+    }
     
     public AudioPlayer(String filepath) {
         player = new AudioClip(AudioPlayer.class.getResource("/" + filepath).toExternalForm());
@@ -46,20 +51,16 @@ public class AudioPlayer extends GameComponent implements Runnable {
     }
 
     @Override
-    public void run() {
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
     }
 
     @Override
-    public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        return null;
+    public void setAttributes(Map<String, String> attributes) {
     }
     
     @Override
-    public void xmlVar(String name, String value) {
+    public GameComponent instantiate() {
+        return new AudioPlayer();
     }
 }

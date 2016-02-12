@@ -25,7 +25,7 @@ public class EditorTile {
     }
     
     public EditorTile(String image, int depth, int tileX, int tileY, int width, int height, Vector2D position) {
-        this(ResourceManager.get(image), depth, tileX, tileY, width, height, position);
+        this(ResourceManager.getImage(image), depth, tileX, tileY, width, height, position);
     }
 
     public void render(GraphicsContext g) {

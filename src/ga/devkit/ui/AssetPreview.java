@@ -50,7 +50,7 @@ public class AssetPreview extends Interface implements Initializable {
         } else {
             switch (Core.getExtension(file.getName())) {
                 case "png": case "jpg": case "gif":
-                    Image image = ResourceManager.get(resfilepath);
+                    Image image = ResourceManager.getImage(resfilepath);
                     canvas.setWidth(image.getWidth());
                     canvas.setHeight(image.getHeight());
                     UIRenderUtils.renderCheckerboard(g);

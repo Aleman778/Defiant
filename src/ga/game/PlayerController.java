@@ -187,16 +187,16 @@ public class PlayerController extends GameComponent {
     }
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+
+    @Override
     public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        return null;
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
+        return new PlayerController();
     }
 }

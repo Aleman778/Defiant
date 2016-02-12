@@ -1,6 +1,8 @@
 package ga.game.entity;
 
 import ga.engine.scene.GameComponent;
+import static ga.engine.scene.GameComponent.ATTRIBUTES_NONE;
+import java.util.List;
 import java.util.Map;
 
 public class HealthComponent extends GameComponent {
@@ -43,17 +45,16 @@ public class HealthComponent extends GameComponent {
     }
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
     public GameComponent instantiate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new HealthComponent(100);
     }
 }
