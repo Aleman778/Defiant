@@ -6,6 +6,7 @@ import ga.engine.scene.GameComponent;
 import ga.game.entity.HealthComponent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,18 +54,16 @@ public class HUD extends GameComponent {
     }
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
     public GameComponent instantiate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new HUD();
     }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

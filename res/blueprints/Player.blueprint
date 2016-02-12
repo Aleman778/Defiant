@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint>
+    <components>
+        <component type="Rigidbody"/>
+        <component type="SpriteRenderer"/>
+        <component type="PlayerController"/>
+        <component type="AnimationController"/>
+    </components>
+    <attributes>
+        <attribute type="Sprite Filepath" value="textures/player/Player_Idle.png"/>
+        <attribute type="Sprite OffsetX" value="0"/>
+        <attribute type="Sprite OffsetY" value="0"/>
+        <attribute type="Sprite Width" value="32"/>
+        <attribute type="Sprite Height" value="64"/>
+        <attribute type="Mass" value="1.25"/>
+        <attribute type="Body ID" value="1"/>
+        <attribute type="Friction" value="0.1"/>
+        <attribute type="Softness" value="0"/>
+    </attributes>
+</blueprint>

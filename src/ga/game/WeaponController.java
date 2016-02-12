@@ -1,4 +1,4 @@
-package ga.game.weapon;
+package ga.game;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
@@ -12,7 +12,7 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
-import ga.game.PlayerController;
+import ga.game.weapon.Weapon;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class WeaponController extends GameComponent {
 
     private int index = 0;
     private Weapon selected;
-    private ParticleEmitter spark, shell;
+    private ParticleEmitter spark;
     private AnimationController AC;
     private SpriteRenderer image;
     private Vector2D aimVector, weaponEnd;
@@ -43,8 +43,6 @@ public class WeaponController extends GameComponent {
             add(Weapon.loadXML("weapons/Flamethrower.weapon"));
             add(Weapon.loadXML("weapons/CR.weapon"));
             add(Weapon.loadXML("weapons/GEP.weapon"));
-            add(Weapon.loadXML("weapons/Grenadelauncher.weapon"));
-            add(Weapon.loadXML("weapons/Nitrogenthrower.weapon"));
         }
     };
 
@@ -62,7 +60,6 @@ public class WeaponController extends GameComponent {
             w.lastFire = Application.now;
             double dir = Math.toRadians(gameobject.transform.scale.x == -1 ? 180 + gameobject.transform.rotation : gameobject.transform.rotation);
             GameObject projectile;
-            int shells = 1;
             switch (w.type) {
                 case "shotgun":
                     for (int i = 0; i < Integer.parseInt(w.config.get("pellets")); i++) {
@@ -72,11 +69,10 @@ public class WeaponController extends GameComponent {
                             projectile.getTransform().position = weaponEnd;
                             Application.getScene().getRoot().queueObject(projectile);
                         }
-                        shells = Integer.parseInt(w.config.get("pellets"));
                     }
                     break;
                 default:
-                    dir += -(w.spread / (AC.getState().equals("aiming") ? 8 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 8 : 2)) / 10;
+                    dir += -(w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10 + Math.random() * (w.spread / (AC.getState().equals("aiming") ? 4 : 2)) / 10;
                     projectile = w.fire(dir);
                     if (projectile != null) {
                         projectile.getTransform().position = weaponEnd;
@@ -86,22 +82,17 @@ public class WeaponController extends GameComponent {
             }
             spark.direction = (float) Math.toDegrees(dir);
             spark.object.transform.position = transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2 + 5, getSelected().getImage().getWidth() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
-            shell.direction = spark.direction - 90;
             spark.fire();
-            shell.object.transform.position = spark.object.transform.position;
-            shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
-            if (!(getSelected().type.equals("flamethrower") || getSelected().type.equals("nitrogenthrower"))) {
-                shell.fire(shells);
-            }
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
 //                    Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
             selected.ammo--;
-        }
-        if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0 && !AC.getState().equals("reload")) {
-            AC.setState("reload");
-            selected.lastReload = Application.now;
-            Input.mouseButtons.clear();
+
+            if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0) {
+                AC.setState("reload");
+                selected.lastReload = Application.now;
+                Input.mouseButtons.clear();
+            }
         }
     }
 
@@ -136,10 +127,8 @@ public class WeaponController extends GameComponent {
             selected = weapons.get(index);
             Transform2D t = spark.transform;
             spark = selected.spark;
-            shell = selected.shell;
             spark.transform = t;
             gameobject.parent.queueComponent(spark);
-            gameobject.parent.queueComponent(shell);
             Input.scrollPosition = 0;
             AC.addAnimation("reload", selected.reloadAnimation);
             AC.addAnimation("idle", selected.idleAnimation);
@@ -187,9 +176,7 @@ public class WeaponController extends GameComponent {
 
     private void init() {
         spark = ParticleEmitter.loadXML("particles/systems/Spark.psystem");
-        shell = selected.shell;
         gameobject.parent.queueComponent(spark);
-        gameobject.parent.queueComponent(shell);
         AC = (AnimationController) getComponent(AnimationController.class);
         AC.addAnimation("reload", selected.reloadAnimation);
         AC.addAnimation("idle", selected.idleAnimation);
@@ -245,16 +232,16 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
     public List<String> getAttributes() {
         return ATTRIBUTES_NONE;
     }
 
     @Override
     public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
+    public GameComponent instantiate() {
+        return new WeaponController();
     }
 }

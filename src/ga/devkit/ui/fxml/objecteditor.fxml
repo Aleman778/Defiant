@@ -9,31 +9,15 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="286.0" style="-fx-background-color: #2e2e2e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="title" layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="175.0" text="Object Editor - No object selected" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="106.0" AnchorPane.topAnchor="6.0" />
-      <SplitPane fx:id="content" dividerPositions="0.3" layoutX="5.0" layoutY="27.0" orientation="VERTICAL" prefHeight="373.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
-         <items>
-            <AnchorPane fx:id="componentPane" prefHeight="122.0" prefWidth="284.0">
-               <children>
-                  <TreeView fx:id="components" prefHeight="119.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="22.0" />
-                  <Label layoutX="5.0" layoutY="6.0" prefHeight="17.0" prefWidth="161.0" text="Game Components" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="114.0" AnchorPane.topAnchor="2.0">
-                     <font>
-                        <Font name="System Italic" size="12.0" />
-                     </font>
-                  </Label>
-                  <Button maxHeight="22.0" minHeight="22.0" mnemonicParsing="false" prefHeight="22.0" style="-fx-background-radius: 0;" text="Add Component" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="-2.0" />
-               </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="componentTitle" layoutY="6.0" prefHeight="17.0" prefWidth="274.0" text="Sprite Renderer" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="2.0">
-                     <font>
-                        <Font name="System Italic" size="12.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
-      <Button fx:id="makeBlueprint" layoutX="182.0" layoutY="4.0" maxHeight="26.0" minHeight="26.0" mnemonicParsing="false" prefHeight="26.0" style="-fx-background-radius: 0;" text="Make Blueprint" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+      <Label fx:id="title" layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="175.0" text="Object Proporties - No object selected" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="106.0" AnchorPane.topAnchor="6.0" />
+      <TableView fx:id="tableAttri" editable="true" layoutY="28.0" prefHeight="374.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+        <columns>
+          <TableColumn fx:id="columnAttri" editable="false" prefWidth="107.0" text="Attribute" />
+          <TableColumn fx:id="columnValue" prefWidth="177.0" text="Value" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
 </AnchorPane>

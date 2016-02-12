@@ -1,10 +1,21 @@
 package ga.engine.scene;
 
+import ga.engine.animation.AnimationController;
 import ga.engine.physics.Body;
+import ga.engine.physics.RigidBody;
+import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
+import ga.engine.rendering.ParticleEmitter;
 import ga.engine.rendering.SpriteRenderer;
 import ga.engine.resource.ResourceManager;
+import ga.game.HUD;
+import ga.game.PlayerController;
+import ga.game.WeaponController;
+import ga.game.entity.AI;
+import ga.game.entity.FriendlyAI;
+import ga.game.entity.HealthComponent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,26 +25,35 @@ import javafx.scene.canvas.GraphicsContext;
 public abstract class GameComponent {
     
     private static final HashMap<String, GameComponent> components = new HashMap<>();
-    public static final int TYPE_STRING = 0;
-    public static final int TYPE_FILE = 1;
-    public static final int TYPE_FLOAT = 2;
-    public static final int TYPE_INTEGER = 3;
-    public static final int TYPE_BOOLEAN = 4;
+    
+    public static final List<String> ATTRIBUTES_NONE = new ArrayList<>();
     
     static {
+        //Init all GameComponents
         components.put("ImageRenderer", new ImageRenderer(ResourceManager.DEFAULT_IMAGE));
         components.put("SpriteRenderer", new SpriteRenderer(ResourceManager.DEFAULT_IMAGE, 32, 32));
+        components.put("AnimationController", new AnimationController());
+        components.put("HealthComponent", new HealthComponent(100));
+        components.put("PlayerController", new PlayerController());
+        components.put("WeaponController", new WeaponController());
+        components.put("SimpleBody", new SimpleBody(null, 0, 0));
+        components.put("ParticleEmitter", new ParticleEmitter());
+        components.put("Rigidbody", new RigidBody(0));
+        components.put("HUD", new HUD());
+        components.put("AI", new AI());
     }
     
     public Transform2D transform;
     public GameObject gameobject;
     
     public GameComponent() {
+        
     }
     
     public final <T extends GameComponent> GameComponent getComponent(Class<T> component) {
         return gameobject.getComponent(component);
     }
+    
     public final <T extends GameComponent> Set<GameComponent> getComponents(Class<T> component) {
         return gameobject.getComponents(component);
     }
@@ -42,13 +62,13 @@ public abstract class GameComponent {
         return gameobject.getAllComponents();
     }
     
-    public abstract GameComponent instantiate();
-    public abstract Map<String, Integer> getVars();
-    public abstract void xmlVar(String name, String value);
-    
     public static GameComponent get(String component) {
         return components.get(component);
     }
+    
+    public abstract List<String> getAttributes();
+    public abstract void setAttributes(Map<String, String> attributes);
+    public abstract GameComponent instantiate();
     
     //EVENTS
     public void awoke() {}

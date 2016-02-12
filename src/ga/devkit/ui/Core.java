@@ -90,7 +90,6 @@ public class Core extends Interface implements Initializable {
                 addEditor(editor, file.getName());
                 break;
             default:
-                System.out.println("DEFAULT");
                 break;
         }
     }

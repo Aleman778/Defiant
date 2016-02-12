@@ -32,7 +32,7 @@ public class GrenadeLauncher extends Weapon {
                         super.fixedUpdate();
                         if (getBody().velocity.x == 0 && getBody().velocity.y == 0 && isMoving) {
                             isMoving = false;
-                            image.setSprite(ResourceManager.get("<EXPLOSION>"));
+                            image.setSprite(ResourceManager.getImage("<EXPLOSION>"));
                             ParticleEmitter impact = new ParticleEmitter();
                             for (GameComponent e : getComponents(ParticleEmitter.class)) {
                                 if (((ParticleEmitter) e).getConfig().getValue("mode").equals("MODE_SINGLE")) {

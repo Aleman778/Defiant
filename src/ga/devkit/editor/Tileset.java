@@ -32,7 +32,7 @@ public class Tileset {
             public void nodeEnd(String element, Attributes attri, String value) {
                 switch (element) {
                     case "image":
-                        tilesheet = ResourceManager.get(value);
+                        tilesheet = ResourceManager.getImage(value);
                         imagepath = value;
                         break;
                     case "offsetX":

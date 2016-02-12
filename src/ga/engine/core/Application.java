@@ -2,6 +2,7 @@ package ga.engine.core;
 
 import ga.devkit.core.Devkit;
 import ga.engine.scene.GameScene;
+import ga.engine.scene.SceneParser;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ObservableValue;
 import javafx.stage.Screen;
@@ -12,6 +13,7 @@ public class Application extends javafx.application.Application {
     private static boolean devmode = false;
     private static AnimationTimer gameloop;
     private static Stage window;
+    private static Preloader preloader;
     private static GameScene scene;
     private static Devkit devkit;
     public static long now;
@@ -23,10 +25,9 @@ public class Application extends javafx.application.Application {
     }
 
     public static void init(Stage window) {
+        Application.scene = null;
         Application.window = window;
-        Application.scene = new GameScene("WRITE XML PATH LATER");
         Application.devkit = new Devkit();
-        window.setScene(scene.get());
         gameloop = new AnimationTimer() {
 
             @Override
@@ -55,6 +56,11 @@ public class Application extends javafx.application.Application {
         });
         window.setMaximized(true);
         window.show();
+        
+        preloader = new Preloader();
+        Application.setScene(preloader.getScene());
+        preloader.load();
+        Application.setScene(SceneParser.execute("scenes/TestScene.scene"));
     }
 
     public static void main(String[] args) {
@@ -64,7 +70,12 @@ public class Application extends javafx.application.Application {
     public static GameScene getScene() {
         return scene;
     }
-
+    
+    public static void setScene(GameScene scene) {
+        Application.scene = scene;
+        Application.window.setScene(scene.get());
+    }
+    
     public static Stage getStage() {
         return window;
     }

@@ -3,11 +3,22 @@ package ga.engine.physics;
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameScene;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RigidBody extends Body {
-
+    
+    private static final List<String> ATTRIBUTES = new ArrayList<>();
+    
+    static {
+        ATTRIBUTES.add("Mass");
+        ATTRIBUTES.add("Body ID");
+        ATTRIBUTES.add("Friction");
+        ATTRIBUTES.add("Softness");
+    }
+    
     public RigidBody(double mass) {
         this.mass = mass;
     }
@@ -182,16 +193,20 @@ public class RigidBody extends Body {
     }
 
     @Override
-    public GameComponent instantiate() {
-        return null;
+    public List<String> getAttributes() {
+        return ATTRIBUTES;
     }
 
     @Override
-    public Map<String, Integer> getVars() {
-        return null;
+    public void setAttributes(Map<String, String> attributes) {
+        mass = Double.parseDouble(attributes.get("Mass"));
+        id = Integer.parseInt(attributes.get("Body ID"));
+        friction = Double.parseDouble(attributes.get("Friction"));
+        softness = Double.parseDouble(attributes.get("Softness"));
     }
     
     @Override
-    public void xmlVar(String name, String value) {
+    public GameComponent instantiate() {
+        return new RigidBody(0);
     }
 }

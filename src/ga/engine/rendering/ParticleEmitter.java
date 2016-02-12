@@ -4,12 +4,14 @@ import com.sun.javafx.geom.Rectangle;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
+import static ga.engine.scene.GameComponent.ATTRIBUTES_NONE;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.GameScene;
 import ga.engine.xml.XMLReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
@@ -295,16 +297,16 @@ public class ParticleEmitter extends GameComponent {
     };
 
     @Override
+    public List<String> getAttributes() {
+        return ATTRIBUTES_NONE;
+    }
+
+    @Override
+    public void setAttributes(Map<String, String> attributes) {
+    }
+    
+    @Override
     public GameComponent instantiate() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> getVars() {
-        return null;
-    }
-
-    @Override
-    public void xmlVar(String name, String value) {
+        return new ParticleEmitter();
     }
 }

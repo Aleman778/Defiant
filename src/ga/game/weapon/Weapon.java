@@ -28,7 +28,7 @@ public class Weapon {
     public boolean single = true, sights = true;
     private static HashMap<String, String> tempConfig = new HashMap<>();
     public ParticleEmitter spark, shell;
-    public Image reloadImage = ResourceManager.get("textures/player/Player_reloading_color.png");
+    public Image reloadImage = ResourceManager.getImage("textures/player/Player_reloading_color.png");
     public Image idleImage;
     public String type = "default";
     public HashMap<String, String> config = new HashMap<>();
@@ -72,7 +72,7 @@ public class Weapon {
         this.sights = sights;
         this.type = type;
         shell = ParticleEmitter.loadXML("particles/systems/Shell.psystem");
-        shell.setSprite(ResourceManager.get("textures/bullet.png"));
+        shell.setSprite(ResourceManager.getImage("textures/bullet.png"));
     }
 
     public Weapon(String imagePath, int clipSize, int maxAmmo, double spread, long cooldown, double recoil, double damage, long reload, boolean burst, boolean sights, String type, String flashPath) {
@@ -103,7 +103,7 @@ public class Weapon {
             public void fixedUpdate() {
                 super.fixedUpdate();
                 if (gameobject.getBody().velocity.x == 0 && gameobject.getBody().velocity.y == 0) {
-                    image = ResourceManager.get("<HIT_MARKER>");
+                    image = ResourceManager.getImage("<HIT_MARKER>");
                     }
                 }
 
