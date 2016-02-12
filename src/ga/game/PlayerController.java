@@ -39,7 +39,6 @@ public class PlayerController extends GameComponent {
     private SpriteRenderer renderable;
     private AnimationController AC;
     private ParticleEmitter landEmitter;
-    private WeaponController weaponController = new WeaponController();
 
     @Override
     public void start() {
@@ -47,14 +46,15 @@ public class PlayerController extends GameComponent {
         transform.pivot = new Vector2D(16, 62);
 
         body = (RigidBody) getComponent(RigidBody.class);
-        head = new GameObject(7, 2);
+        head = new GameObject("PlayerHead", 7, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.getTransform().pivot = new Vector2D(9, 16);
         head.getTransform().depth = -2;
 
-        arm = new GameObject(12, 10);
-        arm.addComponent(weaponController);
+        arm = new GameObject("PlayerArm", 12, 10);
+        WeaponController weaponController = new WeaponController();
         weaponController.player = this;
+        arm.addComponent(weaponController);
         armPivot = new Vector2D(4, 15);
         arm.getTransform().pivot = armPivot;
         arm.getTransform().depth = -3;
