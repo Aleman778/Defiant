@@ -74,6 +74,7 @@ public class Application extends javafx.application.Application {
     public static void setScene(GameScene scene) {
         Application.scene = scene;
         Application.window.setScene(scene.get());
+        Application.scene.start();
     }
     
     public static Stage getStage() {

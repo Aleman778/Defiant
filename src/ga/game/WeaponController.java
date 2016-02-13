@@ -97,11 +97,10 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public void render(GraphicsContext g
-    ) {
+    public void render(GraphicsContext g) {
         getSelected().render(g);
         g.setTransform(new Affine());
-        g.setStroke(Color.RED);
+        g.setStroke(Color.BLACK);
         if (AC.getState().equals("aiming")) {
             g.setStroke(Color.GREEN);
         }

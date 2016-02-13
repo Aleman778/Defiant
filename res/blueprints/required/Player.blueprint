@@ -18,5 +18,6 @@
         <attribute type="Body ID" value="1"/>
         <attribute type="Friction" value="0.1"/>
         <attribute type="Softness" value="0"/>
+        <attribute type="Health" value="100"/>
     </attributes>
 </blueprint>

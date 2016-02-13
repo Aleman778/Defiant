@@ -10,9 +10,9 @@ import org.xml.sax.Attributes;
 
 public class BlueprintParser extends XMLReader {
 
-    private List<GameComponent> components;
-    private Map<String, String> attributes;
-    private Blueprint blueprint;
+    private final List<GameComponent> components;
+    private final Map<String, String> attributes;
+    private final Blueprint blueprint;
     
     private BlueprintParser(String filepath) {
         components = new ArrayList<>();
@@ -23,7 +23,6 @@ public class BlueprintParser extends XMLReader {
     
     public static Blueprint execute(String filepath) {
         BlueprintParser parser = new BlueprintParser(filepath);
-        parser.parse(filepath);
         return parser.blueprint;
     }
     
@@ -57,5 +56,4 @@ public class BlueprintParser extends XMLReader {
     @Override
     public void nodeEnd(String element, Attributes attri, String value) {
     }
-    
 }

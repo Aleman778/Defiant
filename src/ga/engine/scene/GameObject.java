@@ -1,6 +1,7 @@
 package ga.engine.scene;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
@@ -21,6 +22,7 @@ public class GameObject implements Comparator<GameObject> {
     public Transform2D transform;
     public GameObject parent = null;
     private Rectangle AABB = new Rectangle();
+    private final String tag;
     private final List<GameObject> children;
     private final List<GameComponent> components;
     private final List<GameObject> objectsToAdd;
@@ -30,6 +32,17 @@ public class GameObject implements Comparator<GameObject> {
     private boolean prevCollide = false;
 
     public GameObject() {
+        this.tag = "untagged";
+        this.transform = new Transform2D(this);
+        this.children = new ArrayList<>();
+        this.components = new ArrayList<>();
+        this.objectsToAdd = new ArrayList<>();
+        this.objectsToRemove = new ArrayList<>();
+        this.componentsToAdd = new ArrayList<>();
+    }
+    
+    public GameObject(String tag) {
+        this.tag = tag;
         this.transform = new Transform2D(this);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
@@ -38,7 +51,8 @@ public class GameObject implements Comparator<GameObject> {
         this.componentsToAdd = new ArrayList<>();
     }
 
-    public GameObject(Transform2D transform) {
+    public GameObject(String tag, Transform2D transform) {
+        this.tag = tag;
         this.transform = new Transform2D(this, transform);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
@@ -47,7 +61,8 @@ public class GameObject implements Comparator<GameObject> {
         this.componentsToAdd = new ArrayList<>();
     }
 
-    public GameObject(double x, double y) {
+    public GameObject(String tag, double x, double y) {
+        this.tag = tag;
         this.transform = new Transform2D(this, x, y);
         this.children = new ArrayList<>();
         this.components = new ArrayList<>();
@@ -79,6 +94,10 @@ public class GameObject implements Comparator<GameObject> {
     public GameObject removeChild(GameObject object) {
         children.remove(object);
         return object;
+    }
+    
+    public void clearChildren() {
+        children.clear();
     }
 
     public List<GameObject> getChildren() {
@@ -256,6 +275,10 @@ public class GameObject implements Comparator<GameObject> {
     public Transform2D getTransform() {
         return transform;
     }
+    
+    public String getTag() {
+        return tag;
+    }
 
     public void setAABB(int x, int y, int w, int h) {
         AABB = new Rectangle(x, y, w, h);
@@ -293,5 +316,33 @@ public class GameObject implements Comparator<GameObject> {
     
     public void queueComponent(GameComponent c) {
         componentsToAdd.add(c);
+    }
+    
+    public static GameObject findObjectWithTag(String tag) {
+        GameScene scene = Application.getScene();
+        if (scene != null) {
+            List<GameObject> objects = scene.getAllGameObjects();
+            for (GameObject object: objects) {
+                System.out.println(object.getTag());
+                if (object.getTag().equals(tag)) {
+                    return object;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public static List<GameObject> findObjectsWithTag(String tag) {
+        GameScene scene = Application.getScene();
+        List<GameObject> result = new ArrayList<>();
+        if (scene != null) {
+            List<GameObject> objects = scene.getAllGameObjects();
+            for (GameObject object: objects) {
+                if (object.getTag().equals(tag)) {
+                    result.add(object);
+                }
+            }
+        }
+        return result;
     }
 }

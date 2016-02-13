@@ -71,7 +71,7 @@ public class ParticleEditor extends Interface implements Initializable, Editor {
         super.load();
         System.out.println("Loading " + "particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1) + " in particle editor");
         emitter = ParticleEmitter.loadXML("particles/systems/" + file.getPath().substring(file.getPath().lastIndexOf("\\") + 1));
-        emitter.gameobject = new GameObject(editorSize.width / 2, editorSize.height / 2);
+        emitter.gameobject = new GameObject("Emitter", editorSize.width / 2, editorSize.height / 2);
         emitter.gameobject.addComponent(emitter);
         emitter.transform = emitter.gameobject.transform;
         preview.setWidth(editorSize.width);

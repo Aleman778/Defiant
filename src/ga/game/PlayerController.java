@@ -10,6 +10,7 @@ import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ImageRenderer;
 import ga.engine.rendering.SpriteRenderer;
 import ga.engine.rendering.ParticleEmitter;
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
@@ -19,16 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class PlayerController extends GameComponent {
-
-    private static final List<Image> playerAnimations = new ArrayList<Image>() {
-        {
-            add(new Image("textures/player/Player_Idle.png"));
-            add(new Image("textures/player/Player_Walking.png"));
-            add(new Image("textures/player/Player_Jumping.png"));
-        }
-    };
-
-    public double SPEED = 0.5;
+    
+    public double SPEED = 0.1;
     private double JUMP_HEIGHT = 6;
     private final float HEAD_ROTATION_LIMIT_UPPER = -20;
     private final float HEAD_ROTATION_LIMIT_LOWER = 45;
@@ -46,12 +39,12 @@ public class PlayerController extends GameComponent {
         transform.pivot = new Vector2D(16, 62);
 
         body = (RigidBody) getComponent(RigidBody.class);
-        head = new GameObject("PlayerHead", 7, 2);
+        head = new GameObject("player_head", 7, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.getTransform().pivot = new Vector2D(9, 16);
         head.getTransform().depth = -2;
 
-        arm = new GameObject("PlayerArm", 12, 10);
+        arm = new GameObject("player_arm", 12, 10);
         WeaponController weaponController = new WeaponController();
         weaponController.player = this;
         arm.addComponent(weaponController);
@@ -71,7 +64,7 @@ public class PlayerController extends GameComponent {
             public void animate(int frame) {
                 renderable.setOffsetX(0);
                 renderable.setOffsetY(0);
-                renderable.setSprite(playerAnimations.get(0));
+                renderable.setSprite(ResourceManager.getImage("textures/player/Player_Idle.png"));
                 head.getTransform().position.y = 2;
             }
         };
@@ -83,7 +76,7 @@ public class PlayerController extends GameComponent {
                 setSpeed(getSpeed() * body.velocity.normalize().x * transform.scale.x);
                 renderable.setOffsetX(32 * frame);
                 renderable.setOffsetY(0);
-                renderable.setSprite(playerAnimations.get(1));
+                renderable.setSprite(ResourceManager.getImage("textures/player/Player_Walking.png"));
 
                 if (frame == 1) {
                     head.getTransform().position.y = 3;
@@ -97,7 +90,7 @@ public class PlayerController extends GameComponent {
             public void animate(int frame) {
                 renderable.setOffsetX(0);
                 renderable.setOffsetY(0);
-                renderable.setSprite(playerAnimations.get(2));
+                renderable.setSprite(ResourceManager.getImage("textures/player/Player_Jumping.png"));
             }
         };
         AC.addAnimation("idle", idleAnim);
@@ -115,7 +108,7 @@ public class PlayerController extends GameComponent {
         if (movement.x != 0) {
             body.setFriction(0);
         } else {
-            body.setFriction(0.25);
+            body.setFriction(0.2);
         }
 
         //Set animation state

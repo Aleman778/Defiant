@@ -62,6 +62,23 @@ public final class GameScene {
     public void setHeight(double height) {
         canvas.setHeight(height);
     }
+    
+    public void start() {
+        for (GameObject object: getAllGameObjects()) {
+            for (GameComponent component: object.getAllComponents()) {
+                component.sceneStart();
+            }
+        }
+    }
+    
+    public void end() {
+        root.clearChildren();
+        for (GameObject object: getAllGameObjects()) {
+            for (GameComponent component: object.getAllComponents()) {
+                component.sceneEnd();
+            }
+        }
+    }
 
     public void update() {
         root.fixedUpdate();
@@ -106,19 +123,5 @@ public final class GameScene {
 
     public GameObject getRoot() {
         return root;
-    }
-
-    private void block(double x, double y, int width, int height) {
-        for (double i = x; i != x + 32 * width; i += 32 * Math.signum(width)) {
-            for (double j = y; j != y + 32 * height; j += 32 * Math.signum(height)) {
-                GameObject box = new GameObject(i, j)
-                        .addComponent(new ImageRenderer("textures/Jordlabb.png"));
-                box.getTransform().pivot = new Vector2D(0, 0);
-                box.setAABB(0, 0, 32, 32);
-                RigidBody body2 = new RigidBody(0);
-                box.addComponent(body2);
-                root.addChild(box);
-            }
-        }
     }
 }

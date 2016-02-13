@@ -33,7 +33,7 @@ public abstract class GameComponent {
         components.put("ImageRenderer", new ImageRenderer(ResourceManager.DEFAULT_IMAGE));
         components.put("SpriteRenderer", new SpriteRenderer(ResourceManager.DEFAULT_IMAGE, 32, 32));
         components.put("AnimationController", new AnimationController());
-        components.put("HealthComponent", new HealthComponent(100));
+        components.put("HealthComponent", new HealthComponent());
         components.put("PlayerController", new PlayerController());
         components.put("WeaponController", new WeaponController());
         components.put("SimpleBody", new SimpleBody(null, 0, 0));
@@ -73,6 +73,8 @@ public abstract class GameComponent {
     //EVENTS
     public void awoke() {}
     public void start() {}
+    public void sceneStart() {}
+    public void sceneEnd() {}
     public void fixedUpdate() {}
     public void update() {}
     public void lateUpdate() {}

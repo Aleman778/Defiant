@@ -2,17 +2,19 @@ package ga.engine.resource;
 
 import ga.engine.blueprint.Blueprint;
 import ga.engine.blueprint.BlueprintParser;
-import ga.engine.scene.GameComponent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 
 public final class ResourceManager {
     
     public static final Image DEFAULT_IMAGE = new Image("textures/nonrenderable.png");
     public static final Blueprint DEFAULT_BLUEPRINT = new Blueprint(new ArrayList<>(), new HashMap<>());
+    public static final Font DEFAULT_FONT = Font.loadFont("res/fonts/GeosansLight.tff", 16);
     
+    private static final Map<String, Font> fonts = new HashMap<>();
     private static final Map<String, Image> images = new HashMap<>();
     private static final Map<String, Blueprint> blueprints = new HashMap<>();
     
@@ -24,12 +26,19 @@ public final class ResourceManager {
         try {
             image = new Image(filepath);
         } catch (Exception e) {
-            image = DEFAULT_IMAGE;
+            return DEFAULT_IMAGE;
         }
         images.put(filepath, image);
         return image;
     }
 
+    public static void unloadImage(String filepath) {
+        if (!images.containsKey(filepath))
+            return;
+        
+        images.remove(filepath);
+    }
+    
     public static Blueprint getBlueprint(String filepath) {
         if (blueprints.containsKey(filepath)) {
             return blueprints.get(filepath);
@@ -38,16 +47,40 @@ public final class ResourceManager {
         try {
             blueprint = BlueprintParser.execute(filepath);
         } catch (Exception e) {
-            blueprint = DEFAULT_BLUEPRINT;
+            return DEFAULT_BLUEPRINT;
         }
         blueprints.put(filepath, blueprint);
         return blueprint;
     }
     
-    public static void unloadImage(String filepath) {
-        if (!images.containsKey(filepath))
+    public static void unloadBlueprint(String filepath) {
+        if (!blueprints.containsKey(filepath))
             return;
         
-        images.remove(filepath);
+        blueprints.remove(filepath);
+    }
+    
+    public static Font getFont(String filepath, int size) {
+        String relpath = filepath + ":" + size;
+        
+        if (fonts.containsKey(relpath)) {
+            return fonts.get(relpath);
+        }
+        Font font;
+        try {
+            font = Font.loadFont(ResourceManager.class.getResource("/" + filepath).toExternalForm(), size);
+        } catch (Exception e) {
+            return DEFAULT_FONT;
+        }
+        fonts.put(relpath, font);
+        return font;
+    }
+    
+    public static void unloadFont(String filepath, int size) {
+        String relpath = filepath + ":" + size;
+        if (!fonts.containsKey(relpath))
+            return;
+        
+        fonts.remove(relpath);
     }
 }

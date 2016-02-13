@@ -59,7 +59,7 @@ public class SceneParser extends XMLReader {
             case "tilemap":
                 Transform2D tileTransform = new Transform2D(null);
                 tileTransform.setDepth(Integer.parseInt(attri.getValue("depth")));
-                tilemap = new GameObject(tileTransform);
+                tilemap = new GameObject("tilemap", tileTransform);
                 tilemapRenderer = new TilemapRenderer();
                 tilemap.addComponent(tilemapRenderer);
                 tilemaps.add(tilemap);
@@ -78,6 +78,7 @@ public class SceneParser extends XMLReader {
                 }
                 break;
             case "object":
+                String tag = attri.getValue("tag");
                 Vector2D translation = new Vector2D();
                 translation.x = Float.parseFloat(attri.getValue("tx"));
                 translation.y = Float.parseFloat(attri.getValue("ty"));
@@ -97,7 +98,7 @@ public class SceneParser extends XMLReader {
                 Blueprint blueprint = ResourceManager.getBlueprint(attri.getValue("blueprint"));
                 
                 if (blueprint != null) {
-                    GameObject object = blueprint.instantiate(objectTransform);
+                    GameObject object = blueprint.instantiate(tag,objectTransform);
                     object.setAABB(bounds);
                     if (parent == null) {
                         root.addChild(object);

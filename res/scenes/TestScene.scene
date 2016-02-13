@@ -2,22 +2,30 @@
 
 <scene width="1980" height="1080" tilesize="32">
     <tilemap name="Background" depth="10">
-        <tile image="textures/GA-tileset.png" tilex="0" tiley="0" width="32" height="96" tx="32" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="64" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="96" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="128" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="160" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="192" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="224" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="256" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="288" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="320" ty="200"/>
-        <tile image="textures/GA-tileset.png" tilex="64" tiley="0" width="32" height="96" tx="352" ty="200"/>
+        <tile image="textures/GA-tileset.png" tilex="0" tiley="0" width="32" height="96" tx="32" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="64" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="96" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="128" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="160" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="192" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="224" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="256" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="288" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="320" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="352" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="384" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="416" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="32" tiley="0" width="32" height="96" tx="448" ty="480"/>
+        <tile image="textures/GA-tileset.png" tilex="64" tiley="0" width="32" height="96" tx="480" ty="480"/>
     </tilemap>
     <gameobjects>
-        <object blueprint="blueprints/Player.blueprint" tag="player" name="Player" depth="0" tx="96" ty="120" rot="0" sx="1" sy="1" bx="0" by="0" bw="32" bh="64">
+        <object blueprint="blueprints/required/Player.blueprint" tag="player" name="Player" depth="0" tx="96" ty="416" rot="0" sx="1" sy="1" bx="0" by="0" bw="32" bh="64">
         </object>
-        <object blueprint="blueprints/Collision.blueprint" tag="collision" name="Collision" depth="0" tx="32" ty="200" rot="0" sx="1" sy="1" bx="0" by="0" bw="352" bh="96">
+        <object blueprint="blueprints/physics/Collision.blueprint" tag="collision" name="Collision" depth="0" tx="32" ty="480" rot="0" sx="1" sy="1" bx="0" by="0" bw="480" bh="96">
+        </object>
+        <object blueprint="blueprints/required/GameHud.blueprint" tag="untagged" name="Hud" depth="0" tx="0" ty="0" rot="0" sx="1" sy="1" bx="0" by="0" bw="0" bh="0">
+        </object>
+        <object blueprint="blueprints/entities/Ant.blueprint" tag="untagged" name="Enemy" depth="0" tx="420" ty="416" rot="0" sx="1" sy="1" bx="8" by="8" bw="82" bh="43">
         </object>
     </gameobjects>
 </scene>

@@ -23,13 +23,13 @@ public class EditorObject extends GameObject {
     private String name;
     
     public EditorObject(String name, Transform2D transform) {
-        super(transform);
+        super("untagged", transform);
         this.attributes = new HashMap<>();
         this.name = name;
     }
 
     public EditorObject(String name, double x, double y) {
-        super(x, y);
+        super("untagged", x, y);
         this.attributes = new HashMap<>();
         this.name = name;
     } 

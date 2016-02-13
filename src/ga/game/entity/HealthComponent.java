@@ -1,16 +1,22 @@
 package ga.game.entity;
 
 import ga.engine.scene.GameComponent;
-import static ga.engine.scene.GameComponent.ATTRIBUTES_NONE;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class HealthComponent extends GameComponent {
     
+    private static final List<String> ATTRIBUTES = new ArrayList<>();
+    
+    static {
+        ATTRIBUTES.add("Health");
+    }
+    
     private double health;
     
-    public HealthComponent(double health) {
-        this.health = health;
+    public HealthComponent() {
+        this.health = 1;
     }
     
     public void setHealth(double health) {
@@ -46,15 +52,16 @@ public class HealthComponent extends GameComponent {
 
     @Override
     public List<String> getAttributes() {
-        return ATTRIBUTES_NONE;
+        return ATTRIBUTES;
     }
 
     @Override
     public void setAttributes(Map<String, String> attributes) {
+        health = Double.parseDouble(attributes.get("Health"));
     }
     
     @Override
     public GameComponent instantiate() {
-        return new HealthComponent(100);
+        return new HealthComponent();
     }
 }

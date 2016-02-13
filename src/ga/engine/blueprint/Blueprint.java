@@ -30,14 +30,13 @@ public final class Blueprint {
         return attributes.get(attri);
     }
     
-    public final GameObject instantiate(Transform2D transform) {
-        GameObject result = new GameObject(transform);
+    public final GameObject instantiate(String tag, Transform2D transform) {
+        GameObject result = new GameObject(tag, transform);
         for (GameComponent component: components) {
             GameComponent instantiated = component.instantiate();
             instantiated.setAttributes(attributes);
             result.addComponent(instantiated);
         }
-        
         return result;
     }
     

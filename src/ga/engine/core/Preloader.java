@@ -13,7 +13,12 @@ public final class Preloader {
     }
     
     public void load() {
-        ResourceManager.getBlueprint("blueprints/Player.blueprint");
+        ResourceManager.getBlueprint("blueprints/required/Player.blueprint");
+        ResourceManager.getBlueprint("blueprints/physics/Collision.blueprint");
+        ResourceManager.getBlueprint("blueprints/required/GameHud.blueprint");
+        ResourceManager.getBlueprint("blueprints/entities/Ant.blueprint");
+        ResourceManager.getFont("fonts/GeosansLight.ttf", 20);
+        ResourceManager.getFont("fonts/GeosansLight.ttf", 37);
     }
     
     public GameScene getScene() {
