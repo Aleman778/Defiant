@@ -152,7 +152,9 @@ public class WeaponController extends GameComponent {
         if (getSelected().sights) {
             if (weaponEnd != null) {
                 Vector2D line = new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir));
-                aimVector = weaponEnd.add(line.mul(getIntersections(weaponEnd, line, getBounds(Application.getScene().getAllGameObjects())).get(0)));
+                List objects = Application.getScene().getAllGameObjects();
+                objects.remove(gameobject.parent);
+                aimVector = weaponEnd.add(line.mul(getIntersections(weaponEnd, line, getBounds(objects)).get(0)));
             }
             if (aimVector == null) {
                 aimVector = weaponEnd.add(new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir)));
