@@ -11,7 +11,7 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.resource.ResourceManager;
 import ga.game.HUD;
 import ga.game.PlayerController;
-import ga.game.WeaponController;
+import ga.game.weapon.WeaponController;
 import ga.game.entity.AI;
 import ga.game.entity.FriendlyAI;
 import ga.game.entity.HealthComponent;

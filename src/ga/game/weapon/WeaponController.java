@@ -246,7 +246,7 @@ public class WeaponController extends GameComponent {
 
     @Override
     public GameComponent instantiate() {
-        return null;
+        return new WeaponController();
     }
 
     @Override
