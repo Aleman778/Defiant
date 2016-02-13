@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<blueprint>
+<blueprint px="0" py="0">
     <components>
         <component type="HUD"/>
     </components>

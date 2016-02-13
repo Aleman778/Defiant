@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<blueprint>
+<blueprint px="16" py="64">
     <components>
         <component type="Rigidbody"/>
         <component type="SpriteRenderer"/>

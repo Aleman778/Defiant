@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<blueprint>
+<blueprint px="50" py="53">
     <components>
         <component type="AI"/>
         <component type="Rigidbody"/>

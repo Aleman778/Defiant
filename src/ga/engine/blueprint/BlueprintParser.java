@@ -1,5 +1,6 @@
 package ga.engine.blueprint;
 
+import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
 import ga.engine.xml.XMLReader;
 import java.util.ArrayList;
@@ -12,13 +13,15 @@ public class BlueprintParser extends XMLReader {
 
     private final List<GameComponent> components;
     private final Map<String, String> attributes;
+    private final Vector2D pivot;
     private final Blueprint blueprint;
     
     private BlueprintParser(String filepath) {
         components = new ArrayList<>();
         attributes = new HashMap<>();
+        pivot = new Vector2D();
         parse(filepath);
-        blueprint = new Blueprint(components, attributes);
+        blueprint = new Blueprint(pivot, components, attributes);
     }
     
     public static Blueprint execute(String filepath) {
@@ -49,6 +52,10 @@ public class BlueprintParser extends XMLReader {
                 if (attribute != null) {
                     attributes.put(attribute, value);
                 }
+                break;
+            case "blueprint":
+                pivot.x = Double.parseDouble(attri.getValue("px"));
+                pivot.y = Double.parseDouble(attri.getValue("py"));
                 break;
         }
     }

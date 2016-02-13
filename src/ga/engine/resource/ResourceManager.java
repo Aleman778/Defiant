@@ -2,6 +2,7 @@ package ga.engine.resource;
 
 import ga.engine.blueprint.Blueprint;
 import ga.engine.blueprint.BlueprintParser;
+import ga.engine.physics.Vector2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import javafx.scene.text.Font;
 public final class ResourceManager {
     
     public static final Image DEFAULT_IMAGE = new Image("textures/nonrenderable.png");
-    public static final Blueprint DEFAULT_BLUEPRINT = new Blueprint(new ArrayList<>(), new HashMap<>());
+    public static final Blueprint DEFAULT_BLUEPRINT = new Blueprint(new Vector2D(0, 0), new ArrayList<>(), new HashMap<>());
     public static final Font DEFAULT_FONT = Font.loadFont("res/fonts/GeosansLight.tff", 16);
     
     private static final Map<String, Font> fonts = new HashMap<>();

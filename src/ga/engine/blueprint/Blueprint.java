@@ -1,6 +1,7 @@
 package ga.engine.blueprint;
 
 import ga.devkit.editor.EditorObject;
+import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import ga.engine.scene.Transform2D;
@@ -10,10 +11,12 @@ import java.util.Map;
 
 public final class Blueprint {
     
-    private List<GameComponent> components;
-    private Map<String, String> attributes;
+    private final Vector2D pivot;
+    private final List<GameComponent> components;
+    private final Map<String, String> attributes;
 
-    public Blueprint(List<GameComponent> components, Map<String, String> attributes) {
+    public Blueprint(Vector2D pivot, List<GameComponent> components, Map<String, String> attributes) {
+        this.pivot = pivot;
         this.components = components;
         this.attributes = attributes;
     }
@@ -23,7 +26,7 @@ public final class Blueprint {
         for (GameComponent comp: components) {
             result.addAll(comp.getAttributes());
         }
-        return null;
+        return result;
     }
     
     public String getAttribute(String attri) {
@@ -31,6 +34,7 @@ public final class Blueprint {
     }
     
     public final GameObject instantiate(String tag, Transform2D transform) {
+        transform.pivot = pivot;
         GameObject result = new GameObject(tag, transform);
         for (GameComponent component: components) {
             GameComponent instantiated = component.instantiate();
