@@ -3,6 +3,7 @@ package ga.engine.core;
 import ga.devkit.core.Devkit;
 import ga.engine.scene.GameScene;
 import ga.engine.scene.SceneParser;
+import ga.engine.scene.TMXParser;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ObservableValue;
 import javafx.stage.Screen;
@@ -61,6 +62,7 @@ public class Application extends javafx.application.Application {
         Application.setScene(preloader.getScene());
         preloader.load();
         Application.setScene(SceneParser.execute("scenes/TestScene.scene"));
+        //Application.setScene(TMXParser.execute("scenes/TestScene.tmx"));
     }
 
     public static void main(String[] args) {

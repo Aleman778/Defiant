@@ -13,7 +13,6 @@ import ga.engine.rendering.ParticleEmitter;
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.image.Image;
