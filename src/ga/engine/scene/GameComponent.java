@@ -11,9 +11,9 @@ import ga.engine.rendering.SpriteRenderer;
 import ga.engine.resource.ResourceManager;
 import ga.game.HUD;
 import ga.game.PlayerController;
+import ga.game.PreloaderComponent;
 import ga.game.weapon.WeaponController;
 import ga.game.entity.AI;
-import ga.game.entity.FriendlyAI;
 import ga.game.entity.HealthComponent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +33,7 @@ public abstract class GameComponent {
         components.put("ImageRenderer", new ImageRenderer(ResourceManager.DEFAULT_IMAGE));
         components.put("SpriteRenderer", new SpriteRenderer(ResourceManager.DEFAULT_IMAGE, 32, 32));
         components.put("AnimationController", new AnimationController());
+        components.put("PreloaderComponent", new PreloaderComponent());
         components.put("HealthComponent", new HealthComponent());
         components.put("PlayerController", new PlayerController());
         components.put("WeaponController", new WeaponController());

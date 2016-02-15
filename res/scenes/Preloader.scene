@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <scene width="0" height="0" tilesize="32">
-    
+    <gameobjects>
+        <object blueprint="blueprints/required/Preloader.blueprint" tag="player" name="Player" depth="0" tx="0" ty="0" rot="0" sx="1" sy="1" bx="0" by="0" bw="0" bh="0">
+        </object>
+    </gameobjects>
 </scene>

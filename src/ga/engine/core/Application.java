@@ -14,7 +14,6 @@ public class Application extends javafx.application.Application {
     private static boolean devmode = false;
     private static AnimationTimer gameloop;
     private static Stage window;
-    private static Preloader preloader;
     private static GameScene scene;
     private static Devkit devkit;
     public static long now;
@@ -58,11 +57,10 @@ public class Application extends javafx.application.Application {
         window.setMaximized(true);
         window.show();
         
-        preloader = new Preloader();
-        Application.setScene(preloader.getScene());
-        preloader.load();
-        Application.setScene(SceneParser.execute("scenes/TestScene.scene"));
-        //Application.setScene(TMXParser.execute("scenes/TestScene.tmx"));
+        Application.setScene(Preloader.SCENE);
+        Preloader.loadResources();
+        //Application.setScene("scenes/TestScene.scene");
+        Application.setScene("scenes/TestScene.tmx");
     }
 
     public static void main(String[] args) {
@@ -73,10 +71,19 @@ public class Application extends javafx.application.Application {
         return scene;
     }
     
-    public static void setScene(GameScene scene) {
+    private static void setScene(GameScene scene) {
         Application.scene = scene;
         Application.window.setScene(scene.get());
         Application.scene.start();
+    }
+    
+    public static void setScene(String filepath) {
+        Application.setScene(Preloader.SCENE);
+        for (int i = 0; i < 1000; i++) {
+            System.out.println("1");
+        }
+        GameScene loadedScene = Preloader.loadScene(filepath);
+        setScene(loadedScene);
     }
     
     public static Stage getStage() {

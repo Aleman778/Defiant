@@ -6,7 +6,7 @@
     <sizeEnd>20</sizeEnd>
     <sizeStep>0</sizeStep>
     <life>60</life>
-    <color>#B31A1A00</color>
+    <color>#1A1A1AFF</color>
     <mode>MODE_SINGLE</mode>
     <gravity>-0.07012082444918255</gravity>
     <velocity>1.103731343283582</velocity>
@@ -16,8 +16,8 @@
     <rate>5.0</rate>
     <particleShape>circle</particleShape>
     <shape>1, 1</shape>
-    <colorMid>#CCCC33FF</colorMid>
-    <colorEnd>#E6E64DFF</colorEnd>
-    <colorPoint>1.0</colorPoint>
+    <colorMid>#B31A1AFF</colorMid>
+    <colorEnd>#FFFF99FF</colorEnd>
+    <colorPoint>0.48955223880597015</colorPoint>
     <random>0.0</random>
 </particleSystem>

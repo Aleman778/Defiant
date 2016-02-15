@@ -3,16 +3,17 @@ package ga.engine.core;
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameScene;
 import ga.engine.scene.SceneParser;
+import ga.engine.scene.TMXParser;
 
 public final class Preloader {
     
-    private GameScene scene;
+    public static final GameScene SCENE = SceneParser.execute("scenes/Preloader.scene");
     
-    public Preloader() {
-        scene = SceneParser.execute("scenes/Preloader.scene");
+    private Preloader() {
+        
     }
     
-    public void load() {
+    public static void loadResources() {
         ResourceManager.getBlueprint("blueprints/required/Player.blueprint");
         ResourceManager.getBlueprint("blueprints/physics/Collision.blueprint");
         ResourceManager.getBlueprint("blueprints/required/GameHud.blueprint");
@@ -21,7 +22,12 @@ public final class Preloader {
         ResourceManager.getFont("fonts/GeosansLight.ttf", 37);
     }
     
-    public GameScene getScene() {
-        return scene;
+    public static GameScene loadScene(String filepath) {
+        if (filepath.endsWith(".scene")) {
+            return SceneParser.execute(filepath);
+        } else if (filepath.endsWith(".tmx")) {
+            return TMXParser.execute(filepath);            
+        }
+        return null;
     }
 }
