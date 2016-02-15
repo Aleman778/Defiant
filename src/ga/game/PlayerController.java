@@ -38,6 +38,7 @@ public class PlayerController extends GameComponent {
         transform.pivot = new Vector2D(16, 62);
 
         body = (RigidBody) getComponent(RigidBody.class);
+        body.addNoCollide(3);
         head = new GameObject("player_head", 7, 2);
         head.addComponent(new ImageRenderer("textures/player/Red_Player_Head.png"));
         head.getTransform().pivot = new Vector2D(9, 16);

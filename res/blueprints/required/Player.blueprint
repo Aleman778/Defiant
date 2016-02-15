@@ -15,7 +15,7 @@
         <attribute type="Sprite Width" value="32"/>
         <attribute type="Sprite Height" value="64"/>
         <attribute type="Mass" value="1.25"/>
-        <attribute type="Body ID" value="1"/>
+        <attribute type="Body ID" value="2"/>
         <attribute type="Friction" value="0.1"/>
         <attribute type="Softness" value="0"/>
         <attribute type="Health" value="100"/>
