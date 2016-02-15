@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<tileset>
-    <image>textures/GA-tileset.png</image>
-    <offsetX>0</offsetX>
-    <offsetY>0</offsetY>
-    <width>32</width>
-    <height>32</height>
-</tileset>
