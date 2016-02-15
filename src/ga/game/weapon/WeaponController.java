@@ -87,6 +87,7 @@ public class WeaponController extends GameComponent {
             spark.direction = (float) Math.toDegrees(dir);
             spark.object.transform.position = transform.position.add(transform.position).add(new Vector2D(getSelected().getImage().getWidth() / 2 + 5, getSelected().getImage().getWidth() / 2).mul(new Vector2D(Math.cos(dir), Math.sin(dir))));
             shell.direction = spark.direction - 90;
+            spark.transform.depth = -1;
             spark.fire();
             shell.object.transform.position = spark.object.transform.position;
             shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
