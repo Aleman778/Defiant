@@ -1,7 +1,11 @@
 package ga.game.entity;
 
+import ga.engine.animation.Animation;
+import ga.engine.animation.AnimationController;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
+import ga.engine.rendering.SpriteRenderer;
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ public class AI extends GameComponent {
     private final boolean canMoveInAir = true;
     public double takingDamage = 0;
     private Body body;
+    private SpriteRenderer renderable;
+    private AnimationController AC;
 
     @Override
     public void start() {
@@ -36,6 +42,31 @@ public class AI extends GameComponent {
             body.SPEED = speed;
             body.INIT_SPEED = speed;
         }
+        
+        renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
+        AC = (AnimationController) getComponent(AnimationController.class);
+        Animation idleAnim = new Animation(0) {
+
+            @Override
+            public void animate(int frame) {
+                renderable.setOffsetX(0);
+                renderable.setOffsetY(0);
+                renderable.setSprite(ResourceManager.getImage("textures/Ant.png"));
+            }
+        };
+        Animation walkAnim = new Animation(12, 0.1) {
+
+            @Override
+            public void animate(int frame) {
+                setSpeed(Math.abs(body.getVelocity().x) / 3);
+                setSpeed(getSpeed() * body.velocity.normalize().x * transform.scale.x);
+                renderable.setOffsetX(100 * frame);
+                renderable.setOffsetY(0);
+                renderable.setSprite(ResourceManager.getImage("textures/AntWalkAnimation.png"));
+            }
+        };
+        AC.addAnimation("idle", idleAnim);
+        AC.addAnimation("walking", walkAnim);
     }
 
     @Override
@@ -88,6 +119,11 @@ public class AI extends GameComponent {
                 body.setVelocity(body.getVelocity().add(new Vector2D(0, takingDamage * 0.25)));
             }
             takingDamage = 0;
+        }
+        if (Math.abs(body.getVelocity().x) < 0.001) {
+         //   AC.setState("idle");
+        } else {
+            AC.setState("walking");
         }
     }
 

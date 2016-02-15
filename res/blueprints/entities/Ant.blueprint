@@ -4,11 +4,16 @@
     <components>
         <component type="AI"/>
         <component type="Rigidbody"/>
-        <component type="ImageRenderer"/>
+        <component type="SpriteRenderer"/>
         <component type="HealthComponent"/>
+        <component type="AnimationController"/>
     </components>
     <attributes>
-        <attribute type="Image Filepath" value="textures/AntBase.png"/>
+        <attribute type="Sprite Filepath" value="textures/AntBase.png"/>
+        <attribute type="Sprite OffsetX" value="0"/>
+        <attribute type="Sprite OffsetY" value="0"/>
+        <attribute type="Sprite Width" value="100"/>
+        <attribute type="Sprite Height" value="53"/>
         <attribute type="Mass" value="1.25"/>
         <attribute type="Body ID" value="3"/>
         <attribute type="Friction" value="0.1"/>
