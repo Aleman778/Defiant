@@ -34,7 +34,7 @@ public class WeaponController extends GameComponent {
     private SpriteRenderer image;
     private Vector2D aimVector, weaponEnd;
     public PlayerController player;
-    private double playerSpeed;
+    private double playerSpeed, playerSpeedLimit;
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -168,12 +168,14 @@ public class WeaponController extends GameComponent {
                 Input.mouseButtons.remove(MouseButton.PRIMARY);
             }
         }
-        if (Input.getMouseButton(MouseButton.SECONDARY) && !AC.getState().equals("reload")) {
+        if (Input.getMouseButton(MouseButton.SECONDARY) && !AC.getState().equals("reload") && selected.sights == true) {
             AC.setState("aiming");
             player.SPEED = playerSpeed / 2;
+            player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit / 2;
         } else if (AC.getState().equals("aiming")) {
             AC.setState("idle");
             player.SPEED = playerSpeed;
+            player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit;
         }
         if (Input.getKeyPressed(KeyCode.R) && selected.ammo != selected.clipSize && selected.spareAmmo > 0) {
             AC.setState("reload");
@@ -197,6 +199,7 @@ public class WeaponController extends GameComponent {
         AC.addAnimation("reload", selected.reloadAnimation);
         AC.addAnimation("idle", selected.idleAnimation);
         playerSpeed = player.SPEED;
+        playerSpeedLimit = player.gameobject.getBody().SPEED_LIMIT;
     }
 
     private static Vector2D[][] getBounds(List<GameObject> objects) {
