@@ -104,7 +104,7 @@ public class Application extends javafx.application.Application {
     }
 
     public static void restart() {
-        init(window);
+        start();
     }
 
 }
