@@ -99,7 +99,7 @@ public class WeaponController extends GameComponent {
 //                    Input.setMousePosition(new Vector2D(p.x, p.y).add(new Vector2D(0, -w.recoil)));
             selected.ammo--;
         }
-        if (selected.reload != 0 && selected.ammo == 0 && selected.spareAmmo > 0 && !AC.getState().equals("reload")) {
+        if (selected.reload != 0 && selected.ammo == 0 && (selected.spareAmmo > 0 || selected.spareAmmo == -1) && !AC.getState().equals("reload")) {
             AC.setState("reload");
             selected.lastReload = Application.now;
             Input.mouseButtons.clear();
@@ -177,15 +177,20 @@ public class WeaponController extends GameComponent {
             player.SPEED = playerSpeed;
             player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit;
         }
-        if (Input.getKeyPressed(KeyCode.R) && selected.ammo != selected.clipSize && selected.spareAmmo > 0) {
+        if (Input.getKeyPressed(KeyCode.R) && selected.ammo != selected.clipSize && (selected.spareAmmo > 0 || selected.spareAmmo == -1)) {
             AC.setState("reload");
             selected.lastReload = Application.now;
             Input.mouseButtons.clear();
         }
         if ((Application.now - selected.lastReload) / 1000000 > selected.reload - (selected.ammo > 0 ? selected.reload * 0.4 : 0) && AC.getState().equals("reload")) {
             AC.setState("idle");
-            int ammoToLoad = Math.min(selected.clipSize - selected.ammo, selected.spareAmmo);
-            selected.spareAmmo -= ammoToLoad;
+            int ammoToLoad;
+            if (selected.spareAmmo == -1) {
+                ammoToLoad = selected.clipSize - selected.ammo;
+            } else {
+                ammoToLoad = Math.min(selected.clipSize - selected.ammo, selected.spareAmmo);
+                selected.spareAmmo -= ammoToLoad;
+            }
             selected.ammo += ammoToLoad;
         }
     }
