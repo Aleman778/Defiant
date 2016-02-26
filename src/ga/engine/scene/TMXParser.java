@@ -1,5 +1,8 @@
 package ga.engine.scene;
 
+import com.sun.javafx.geom.Rectangle;
+import ga.engine.blueprint.Blueprint;
+import ga.engine.physics.Vector2D;
 import ga.engine.rendering.Tile;
 import ga.engine.rendering.TilemapRenderer;
 import ga.engine.resource.ResourceManager;
@@ -17,7 +20,10 @@ public class TMXParser extends XMLReader {
     private List<GameObject> tilemaps;
     private List<TilesetData> tilesets;
     private TilesetData tileset;
+    private Blueprint blueprint;
     private GameObject tileobj;
+    private GameObject gameobj;
+    private String gameobjTag;
     private GameObject root;
     private GameScene scene;
     
@@ -28,7 +34,10 @@ public class TMXParser extends XMLReader {
         width = 0;
         height = 0;
         tilesize = 32;
+        gameobjTag = "untagged";
         tileobj = null;
+        gameobj = null;
+        blueprint = ResourceManager.getBlueprint("blueprints/physics/Collision.blueprint");
         root = new GameObject();
         scene = new GameScene(root);
         parse(xmlfile);
@@ -90,13 +99,75 @@ public class TMXParser extends XMLReader {
                 tilemaps.add(tileobj);
                 break;
             case "property":
+                String value = attri.getValue("value");
                 if (tileobj != null) {
                     switch (attri.getValue("name")) {
-                        case "depth":
-                        tileobj.getTransform().depth = Integer.parseInt(attri.getValue("value"));
+                        case "Depth":
+                        tileobj.getTransform().depth = Integer.parseInt(value);
+                            break;
+                    }
+                } else if (gameobj != null) {
+                    switch (attri.getValue("name")) {
+                        case "Depth":
+                            gameobj.getTransform().setDepth(Integer.parseInt(value));
+                            break;
+                        case "Blueprint":
+                            blueprint = ResourceManager.getBlueprint(value);
+                            break;
+                        case "Tag":
+                            gameobjTag = value;
+                            break;
+                        case "Scale X":
+                            gameobj.getTransform().scale.x = Float.parseFloat(value);
+                            break;
+                        case "Scale Y":
+                            gameobj.getTransform().scale.y = Float.parseFloat(value);
+                            break;
+                        case "Bounds X":
+                            gameobj.getAABB().x = Integer.parseInt(value);
+                            break;
+                        case "Bounds Y":
+                            gameobj.getAABB().y = Integer.parseInt(value);
+                            break;
+                        case "Bounds W":
+                            gameobj.getAABB().width = Integer.parseInt(value);
+                            break;
+                        case "Bounds H":
+                            gameobj.getAABB().height = Integer.parseInt(value);
                             break;
                     }
                 }
+                break;
+            case "object":
+                String tag = attri.getValue("tag");
+                Vector2D translation = new Vector2D();
+                translation.x = Float.parseFloat(attri.getValue("x"));
+                translation.y = Float.parseFloat(attri.getValue("y"));
+                String strRot = attri.getValue("rotation");
+                float rotation = 0;
+                if (strRot != null) {
+                    rotation = Float.parseFloat(strRot);
+                }
+                Vector2D scale = new Vector2D();
+                String strSclX = attri.getValue("Scale X");
+                String strSclY = attri.getValue("Scale Y");
+                if (strSclX != null) {
+                    scale.x = Float.parseFloat(strSclX);
+                }
+                if (strSclY != null) {
+                    scale.y = Float.parseFloat(strSclY);
+                }
+                Rectangle bounds = new Rectangle();
+                bounds.x = 0;
+                bounds.y = 0;
+                bounds.width = Integer.parseInt(attri.getValue("width"));
+                bounds.height = Integer.parseInt(attri.getValue("height"));
+                
+                Transform2D transform = new Transform2D(
+                        null, translation, new Vector2D(), rotation, scale, 0);
+                
+                gameobj = new GameObject("untagged", transform);
+                gameobj.setAABB(bounds);
                 break;
         }
     }
@@ -109,24 +180,26 @@ public class TMXParser extends XMLReader {
                 break;
             case "data":
                 if (tilemapRenderer != null) {
-                    String[] map = value.split(",");
-                    
-                    for (int x = 0; x < tileW; x++) {
-                        for (int y = 0; y < tileH; y++) {
-                            int index = Integer.parseInt(map[x + y * tileW].trim());
-                            if (index > 0) {
-                                TilesetData data = getTileset(index);
-                                if (data != null) {
-                                    index = index - data.firstgid;
-                                    Tile tile = new Tile();
-                                    tile.x = x * tilesize;
-                                    tile.y = y * tilesize;
-                                    tile.offsetX = (index % data.columns) * data.tilewidth;
-                                    tile.offsetY = (index / data.columns) * data.tileheight;
-                                    tile.width = data.tileheight;
-                                    tile.height = data.tilewidth;
-                                    tile.image = data.tilemap;
-                                    tilemapRenderer.addTile(tile);
+                    if (attri.getValue("encoding").equals("csv")) {
+                        String[] map = value.split(",");
+
+                        for (int x = 0; x < tileW; x++) {
+                            for (int y = 0; y < tileH; y++) {
+                                int index = Integer.parseInt(map[x + y * tileW].trim());
+                                if (index > 0) {
+                                    TilesetData data = getTileset(index);
+                                    if (data != null) {
+                                        index = index - data.firstgid;
+                                        Tile tile = new Tile();
+                                        tile.x = x * tilesize;
+                                        tile.y = y * tilesize;
+                                        tile.offsetX = (index % data.columns) * data.tilewidth;
+                                        tile.offsetY = (index / data.columns) * data.tileheight;
+                                        tile.width = data.tileheight;
+                                        tile.height = data.tilewidth;
+                                        tile.image = data.tilemap;
+                                        tilemapRenderer.addTile(tile);
+                                    }
                                 }
                             }
                         }
@@ -137,6 +210,15 @@ public class TMXParser extends XMLReader {
                 tileobj = null;
                 tilemapRenderer = null;
                 break;
+            case "object":
+                GameObject object = blueprint.instantiate(gameobjTag, gameobj.getTransform());
+                System.out.println(gameobj.getAABB());
+                object.setAABB(new Rectangle(gameobj.getAABB()));
+                blueprint = ResourceManager.getBlueprint("blueprints/physics/Collision.blueprint");
+                gameobjTag = "untagged";
+                root.addChild(object);
+                gameobj = null;
+                break;
         }
     }
     
@@ -145,7 +227,6 @@ public class TMXParser extends XMLReader {
             if (index >= data.firstgid && index < data.firstgid + data.tilecount) {
                 return data;
             }
-            System.out.println(data.firstgid);
         }
         return null;
     }
@@ -171,7 +252,6 @@ public class TMXParser extends XMLReader {
         
         private ExternalTileset(String xmlfile) {
             data = new TilesetData();
-            System.out.println(xmlfile);
             parse(xmlfile);
         }
         
