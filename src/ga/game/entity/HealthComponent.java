@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
 public class HealthComponent extends GameComponent {
@@ -62,10 +61,6 @@ public class HealthComponent extends GameComponent {
             Affine a = g.getTransform();
             Affine b = new Affine(1, a.getMxy(), transform.position.x, a.getMyx(), a.getMyy(), transform.position.y - 15);
             g.setTransform(b);
-            g.fillRect(-1, -1, transform.gameobject.getAABB().width + 2, 12);
-            g.setFill(Color.RED);
-            g.fillRect(0, 0, transform.gameobject.getAABB().width, 10);
-            g.setFill(Color.GREEN);
             g.fillRect(0, 0, transform.gameobject.getAABB().width * (health / startHealth), 10);
         }
     }

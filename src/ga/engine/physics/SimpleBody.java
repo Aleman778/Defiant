@@ -17,9 +17,6 @@ public class SimpleBody extends RigidBody {
 
     @Override
     public HashMap<String, Object> physicsUpdate(Body otherBody) {
-        if (gameobject == null) {
-            return null;
-        }
         if (velocity.x + velocity.y == 0) {
             return null;
         }

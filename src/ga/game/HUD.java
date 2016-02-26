@@ -49,14 +49,10 @@ public class HUD extends GameComponent {
             g.fillText(String.valueOf(weaponController.getSelected().ammo), 20, Application.getHeight() - 50 - 25);
             g.setFont(fontSmall);
             g.setFill(new Color(0, 0, 0, 0.75));
-            if (weaponController.getSelected().spareAmmo == -1) {
-                g.fillText("Unlimited", 20, Application.getHeight() - 50 - 25 + 22);
-            } else {
-                g.fillText(String.valueOf(weaponController.getSelected().spareAmmo), 20, Application.getHeight() - 50 - 25 + 22);
-            }
+            g.fillText(String.valueOf(weaponController.getSelected().spareAmmo), 20, Application.getHeight() - 50 - 25 + 22);
         }
     }
-
+    
     @Override
     public List<String> getAttributes() {
         return ATTRIBUTES_NONE;
@@ -65,7 +61,7 @@ public class HUD extends GameComponent {
     @Override
     public void setAttributes(Map<String, String> attributes) {
     }
-
+    
     @Override
     public GameComponent instantiate() {
         return new HUD();

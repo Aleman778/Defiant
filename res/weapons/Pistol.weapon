@@ -3,7 +3,7 @@
     <sprite>textures/player/Arm_pistol.png</sprite>
     <damage>10</damage>
     <clip>8</clip>
-    <ammo>-1</ammo>
+    <ammo>90</ammo>
     <spread>0.5</spread>
     <recoil>2</recoil>
     <cooldown>200</cooldown>
