@@ -79,9 +79,6 @@ public class Application extends javafx.application.Application {
     
     public static void setScene(String filepath) {
         Application.setScene(Preloader.SCENE);
-        for (int i = 0; i < 1000; i++) {
-            System.out.println("1");
-        }
         GameScene loadedScene = Preloader.loadScene(filepath);
         setScene(loadedScene);
     }
