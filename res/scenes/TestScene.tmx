@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" backgroundcolor="#00808080" nextobjectid="12">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" backgroundcolor="#00808080" nextobjectid="21">
  <tileset firstgid="1" source="../tilesets/GA-tileset.tsx"/>
- <tileset firstgid="25" name="jord_stenlabb_texture" tilewidth="32" tileheight="32" tilecount="24" columns="6">
-  <image source="../textures/jord_stenlabb_texture.png" trans="ff00ff" width="192" height="128"/>
- </tileset>
+ <tileset firstgid="25" source="../tilesets/Background.tsx"/>
+ <tileset firstgid="49" source="../tilesets/Player.tsx"/>
+ <tileset firstgid="50" source="../tilesets/Ant.tsx"/>
  <layer name="Background" width="20" height="20">
   <properties>
-   <property name="depth" value="200"/>
+   <property name="Depth" value="200"/>
   </properties>
   <data encoding="csv">
 31,31,31,31,31,25,25,25,25,25,25,25,25,25,31,25,26,27,28,29,
@@ -33,24 +33,24 @@
  </layer>
  <layer name="Tile Layer 1" width="20" height="20">
   <properties>
-   <property name="depth" value="-200"/>
+   <property name="Depth" value="-200"/>
   </properties>
   <data encoding="csv">
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
-10,10,10,10,10,10,10,10,10,10,10,7,18,18,18,18,18,8,10,10,
-10,10,10,10,10,10,10,10,7,18,18,19,0,0,0,0,0,9,10,10,
-10,10,10,10,10,7,18,18,19,0,0,0,0,0,0,0,0,9,10,10,
-10,10,7,18,18,19,0,0,0,0,0,0,0,0,0,0,0,9,10,10,
+10,10,10,10,10,10,10,10,10,10,10,4,18,18,18,18,18,6,10,10,
+10,10,10,10,10,10,10,10,4,18,18,19,0,0,0,0,0,9,10,10,
+10,10,10,10,10,4,18,18,19,0,0,0,0,0,0,0,0,9,10,10,
+10,10,4,18,18,19,0,0,0,0,0,0,0,0,0,0,0,9,10,10,
 10,10,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,10,10,
 10,10,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,10,10,
 10,10,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,10,10,
-10,10,11,0,0,0,0,0,0,0,0,0,1,2,2,2,2,24,10,10,
-10,10,11,0,0,0,0,0,0,1,2,2,24,10,10,10,10,10,10,10,
-10,10,11,0,0,0,1,2,2,24,10,10,10,10,10,10,10,10,10,10,
-10,10,23,2,2,2,24,10,10,10,10,10,10,10,10,10,10,10,10,10,
+10,10,11,0,0,0,0,0,0,0,0,0,1,2,2,2,2,22,10,10,
+10,10,11,0,0,0,0,0,0,1,2,2,22,10,10,10,10,10,10,10,
+10,10,11,0,0,0,1,2,2,22,10,10,10,10,10,10,10,10,10,10,
+10,10,20,2,2,2,22,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
@@ -69,5 +69,18 @@
   <object id="9" x="160" y="192" width="128" height="32"/>
   <object id="10" x="64" y="224" width="128" height="32"/>
   <object id="11" x="64" y="256" width="32" height="192"/>
+ </objectgroup>
+ <objectgroup name="Objects">
+  <object id="14" name="Player" type="player" gid="49" x="128" y="384" width="32" height="64" rotation="4">
+   <properties>
+    <property name="Blueprint" value="blueprints/required/Player.blueprint"/>
+    <property name="Tag" value="player"/>
+   </properties>
+  </object>
+  <object id="15" name="Ant" type="enemy" gid="50" x="416" y="288" width="100" height="53">
+   <properties>
+    <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
