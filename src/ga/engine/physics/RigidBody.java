@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 public class RigidBody extends Body {
-    
+
     private static final List<String> ATTRIBUTES = new ArrayList<>();
-    
+
     static {
         ATTRIBUTES.add("Mass");
         ATTRIBUTES.add("Body ID");
         ATTRIBUTES.add("Friction");
         ATTRIBUTES.add("Softness");
     }
-    
+
     public RigidBody(double mass) {
         this.mass = mass;
     }
@@ -63,7 +63,7 @@ public class RigidBody extends Body {
             return null;
         }
 
-        Vector2D diff = (otherBody.transform.localPosition().add(new Vector2D(bounds.width / 2, bounds.y / 2))).sub(transform.localPosition().add(new Vector2D(otherBounds.width / 2, otherBounds.y / 2)));
+        Vector2D diff = otherBody.transform.position.add(new Vector2D(otherBounds.width / 2, otherBounds.height / 2)).sub(transform.position.add(new Vector2D(bounds.width / 2, bounds.height / 2)));
         double overlapX = 0, overlapX2 = 0, overlapY = 0, overlapY2 = 0;
 
         overlapX = xMax - otherX;
@@ -114,12 +114,12 @@ public class RigidBody extends Body {
         //Collision Event
         onCollision(this, otherBody, normal, penetration, otherBody.getID());
         return new HashMap<String, Object>() {
-                {
-                    put("body", otherBody);
-                    put("normal", normal);
-                    put("penetration", penetration);
-                    put("id", otherBody.getID());
-                }
+            {
+                put("body", otherBody);
+                put("normal", normal);
+                put("penetration", penetration);
+                put("id", otherBody.getID());
+            }
         };
     }
 
@@ -207,7 +207,7 @@ public class RigidBody extends Body {
         friction = Double.parseDouble(attributes.get("Friction"));
         softness = Double.parseDouble(attributes.get("Softness"));
     }
-    
+
     @Override
     public GameComponent instantiate() {
         return new RigidBody(0);
