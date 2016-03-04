@@ -148,23 +148,21 @@ public class TMXParser extends XMLReader {
                 if (strRot != null) {
                     rotation = Float.parseFloat(strRot);
                 }
-                Vector2D scale = new Vector2D();
-                String strSclX = attri.getValue("Scale X");
-                String strSclY = attri.getValue("Scale Y");
-                if (strSclX != null) {
-                    scale.x = Float.parseFloat(strSclX);
-                }
-                if (strSclY != null) {
-                    scale.y = Float.parseFloat(strSclY);
-                }
+                
                 Rectangle bounds = new Rectangle();
                 bounds.x = 0;
                 bounds.y = 0;
-                bounds.width = Integer.parseInt(attri.getValue("width"));
-                bounds.height = Integer.parseInt(attri.getValue("height"));
+                String strWidth = attri.getValue("width");
+                String strHeight = attri.getValue("height");
+                if (strWidth != null) {
+                    bounds.width = Integer.parseInt(strWidth);
+                }
+                if (strHeight != null) {
+                    bounds.height = Integer.parseInt(strHeight);
+                }
                 
                 Transform2D transform = new Transform2D(
-                        null, translation, new Vector2D(), rotation, scale, 0);
+                        null, translation, new Vector2D(), rotation, new Vector2D(1, 1), 0);
                 
                 gameobj = new GameObject("untagged", transform);
                 gameobj.setAABB(bounds);

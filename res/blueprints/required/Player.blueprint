@@ -9,7 +9,7 @@
         <component type="AnimationController"/>
     </components>
     <attributes>
-        <attribute type="Sprite Filepath" value="textures/player/Player_Idle.png"/>
+        <attribute type="Sprite Filepath" value=""/>
         <attribute type="Sprite OffsetX" value="0"/>
         <attribute type="Sprite OffsetY" value="0"/>
         <attribute type="Sprite Width" value="32"/>

@@ -169,7 +169,7 @@ public class PlayerController extends GameComponent {
                 int size = 5;
                 landEmitter.setSprite(ParticleEmitter.cropImage(i, Math.max((int) (Math.random() * i.getWidth() - size), 0), 0, size, size));
             }
-            landEmitter.fire(10);
+            //landEmitter.fire(10);
         }
     }
 

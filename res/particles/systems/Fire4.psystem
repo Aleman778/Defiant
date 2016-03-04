@@ -17,7 +17,7 @@
     <particleShape>circle</particleShape>
     <shape>1, 1</shape>
     <colorMid>#B31A1AFF</colorMid>
-    <colorEnd>#FFFF99FF</colorEnd>
-    <colorPoint>0.48955223880597015</colorPoint>
+    <colorEnd>#CC8033FF</colorEnd>
+    <colorPoint>0.32835820895522394</colorPoint>
     <random>0.0</random>
 </particleSystem>
