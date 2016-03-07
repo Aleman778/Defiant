@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="70" height="30" tilewidth="32" tileheight="32" nextobjectid="45">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="70" height="30" tilewidth="32" tileheight="32" nextobjectid="53">
  <tileset firstgid="1" source="../tilesets/GA-tileset.tsx"/>
  <tileset firstgid="25" source="../tilesets/Ant.tsx"/>
  <tileset firstgid="26" source="../tilesets/Player.tsx"/>
@@ -81,11 +81,11 @@
   <object id="4" x="288" y="448" width="32" height="32"/>
   <object id="5" x="480" y="416" width="96" height="64"/>
   <object id="8" x="512" y="384" width="32" height="32"/>
-  <object id="15" x="608" y="480" width="1312" height="32"/>
+  <object id="15" x="640" y="480" width="1312" height="32"/>
   <object id="17" x="1696" y="448" width="256" height="32"/>
   <object id="18" x="1760" y="416" width="160" height="32"/>
   <object id="19" x="1376" y="448" width="64" height="32"/>
-  <object id="20" x="2144" y="0" width="96" height="512"/>
+  <object id="20" x="2144" y="0" width="96" height="640"/>
   <object id="21" x="1984" y="352" width="128" height="64"/>
   <object id="22" x="2112" y="288" width="32" height="64"/>
   <object id="23" x="1984" y="224" width="96" height="64"/>
@@ -94,8 +94,12 @@
   <object id="39" x="1856" y="384" width="64" height="32"/>
   <object id="41" x="0" y="608" width="512" height="32"/>
   <object id="42" x="672" y="608" width="1248" height="32"/>
-  <object id="43" x="704" y="512" width="96" height="32" rotation="90"/>
   <object id="44" x="480" y="512" width="32" height="96"/>
+  <object id="45" x="672" y="512" width="32" height="96"/>
+  <object id="47" x="64" y="32" width="2080" height="32"/>
+  <object id="49" x="1920" y="512" width="32" height="32"/>
+  <object id="51" x="1888" y="512" width="32" height="96"/>
+  <object id="52" x="1728" y="640" width="96" height="32"/>
  </objectgroup>
  <objectgroup name="Entities">
   <object id="24" name="Player" gid="26" x="96" y="416" width="32" height="64">
