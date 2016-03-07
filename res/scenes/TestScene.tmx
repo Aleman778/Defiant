@@ -6,7 +6,7 @@
  <tileset firstgid="27" source="../tilesets/Ant.tsx"/>
  <layer name="Tile Layer 1" width="20" height="20">
   <properties>
-   <property name="Depth" value="-200"/>
+   <property name="Depth" value="200"/>
   </properties>
   <data encoding="csv">
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,
