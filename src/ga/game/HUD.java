@@ -5,7 +5,6 @@ import ga.engine.core.Application;
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
-import ga.engine.scene.GameScene;
 import ga.game.entity.HealthComponent;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +42,11 @@ public class HUD extends GameComponent {
         if (player != null) {
             g.setFill(new Color(0, 0.6, 0.9, 0.4));
             g.setGlobalAlpha(1);
-            g.fillRect(10, Application.getHeight() - 110, 200, 65);
+            g.fillRect(10, Application.getHeight() - 110, 275, 65);
             g.setFill(Color.BLACK);
             g.setFont(fontLarge);
             g.fillText(String.valueOf(weaponController.getSelected().ammo), 20, Application.getHeight() - 50 - 25);
+            g.fillText((int) health.getHealth() + " / " + (int) health.getMaxHealth(), 120, Application.getHeight() - 50 - 25 + 12);
             g.setFont(fontSmall);
             g.setFill(new Color(0, 0, 0, 0.75));
             if (weaponController.getSelected().spareAmmo == -1) {
