@@ -1,6 +1,7 @@
 package ga.game.weapon;
 
 import ga.engine.physics.Body;
+import ga.engine.physics.SimpleBody;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.scene.GameObject;
@@ -24,20 +25,22 @@ public class Nitrogenthrower extends Weapon {
 
             @Override
             public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
-                if (id == 1) {
-                    body.setVelocity(new Vector2D());
-                } else if (body.getVelocity().length() > 3) {
-                    body.setVelocity(body.getVelocity().mul(0.5));
-                }
-                if (id != 1 && otherBody.SPEED > 0.02) {
-                    otherBody.SPEED -= 0.001;
-                }
-                if (otherBody.SPEED_LIMIT > 1) {
-                    otherBody.SPEED_LIMIT -= 0.0001;
-                }
-                HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
-                if (otherHealth != null) {
-                    otherHealth.damage(w.damage);
+                if (body instanceof SimpleBody) {
+                    if (id == 1) {
+                        body.setVelocity(new Vector2D());
+                    } else if (body.getVelocity().length() > 3) {
+                        body.setVelocity(body.getVelocity().mul(0.5));
+                    }
+                    if (id != 1 && otherBody.SPEED > 0.02) {
+                        otherBody.SPEED -= 0.001;
+                    }
+                    if (otherBody.SPEED_LIMIT > 1) {
+                        otherBody.SPEED_LIMIT -= 0.0001;
+                    }
+                    HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
+                    if (otherHealth != null) {
+                        otherHealth.damage(w.damage);
+                    }
                 }
             }
         };
