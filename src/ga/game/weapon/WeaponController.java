@@ -107,16 +107,17 @@ public class WeaponController extends GameComponent {
     }
 
     @Override
-    public void render(GraphicsContext g
-    ) {
+    public void render(GraphicsContext g) {
         getSelected().render(g);
-        g.setTransform(new Affine());
-        g.setStroke(Color.RED);
         if (AC.getState().equals("aiming")) {
-            g.setStroke(Color.GREEN);
-        }
-        if (aimVector != null && getSelected().sights && !AC.getState().equals("reload")) {
-            g.strokeLine(weaponEnd.x, weaponEnd.y, aimVector.x, aimVector.y);
+            g.setTransform(new Affine());
+            g.setStroke(Color.RED);
+//            if (AC.getState().equals("aiming")) {
+//                g.setStroke(Color.GREEN);
+//            }
+            if (aimVector != null && getSelected().sights && !AC.getState().equals("reload")) {
+                g.strokeLine(weaponEnd.x, weaponEnd.y, aimVector.x, aimVector.y);
+            }
         }
     }
 
@@ -153,7 +154,7 @@ public class WeaponController extends GameComponent {
         if (getSelected().sights) {
             if (weaponEnd != null) {
                 Vector2D line = new Vector2D(5000 * Math.cos(dir), 5000 * Math.sin(dir));
-                List objects = Application.getScene().getAllGameObjects();
+                List<GameObject> objects = Application.getScene().getAllGameObjects();
                 objects.remove(gameobject.parent);
                 aimVector = weaponEnd.add(line.mul(getIntersections(weaponEnd, line, getBounds(objects)).get(0)));
             }
