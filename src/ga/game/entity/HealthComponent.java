@@ -11,28 +11,33 @@ import javafx.scene.transform.Affine;
 public class HealthComponent extends GameComponent {
 
     private static final List<String> ATTRIBUTES = new ArrayList<>();
+    private static final double HP_SCALE = 1, HP_HEIGHT = 7;
 
     static {
         ATTRIBUTES.add("Health");
     }
 
-    private double health, startHealth;
+    private double health, maxHealth;
 
     public HealthComponent() {
         this.health = 1;
     }
 
-    public void setHealth(double health) {
+    public void setHealth(int health) {
         this.health = health;
-        startHealth = health;
+        maxHealth = health;
     }
 
     public double getHealth() {
         return health;
     }
+    
+    public double getMaxHealth() {
+        return maxHealth;
+    }
 
     public void heal(double amount) {
-        amount = Math.min(amount, startHealth - amount);
+        amount = Math.min(amount, maxHealth - amount);
         this.health += amount;
     }
 
@@ -62,11 +67,12 @@ public class HealthComponent extends GameComponent {
             Affine a = g.getTransform();
             Affine b = new Affine(1, a.getMxy(), transform.position.x, a.getMyx(), a.getMyy(), transform.position.y - 15);
             g.setTransform(b);
-            g.fillRect(-1, -1, transform.gameobject.getAABB().width + 2, 12);
+            int x = (int) (transform.gameobject.getAABB().width / 2 - (HP_SCALE * maxHealth) / 2);
+            g.fillRect(x - 1, -1, HP_SCALE * maxHealth + 2, HP_HEIGHT + 2);
             g.setFill(Color.RED);
-            g.fillRect(0, 0, transform.gameobject.getAABB().width, 10);
+            g.fillRect(x, 0, HP_SCALE * maxHealth, HP_HEIGHT);
             g.setFill(Color.GREEN);
-            g.fillRect(0, 0, transform.gameobject.getAABB().width * (health / startHealth), 10);
+            g.fillRect(x, 0, HP_SCALE * maxHealth * (health / maxHealth), HP_HEIGHT);
         }
     }
 
@@ -77,8 +83,8 @@ public class HealthComponent extends GameComponent {
 
     @Override
     public void setAttributes(Map<String, String> attributes) {
-        health = Double.parseDouble(attributes.get("Health"));
-        startHealth = health;
+        health = Integer.parseInt(attributes.get("Health"));
+        maxHealth = health;
     }
 
     @Override
