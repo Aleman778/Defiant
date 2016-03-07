@@ -59,6 +59,7 @@
   <object id="23" x="0" y="0">
    <properties>
     <property name="Blueprint" value="blueprints/required/GameHud.blueprint"/>
+    <property name="Depth" value="-999"/>
    </properties>
   </object>
  </objectgroup>
