@@ -103,7 +103,7 @@ public class Weapon {
             public void fixedUpdate() {
                 super.fixedUpdate();
                 if (gameobject.getBody().velocity.x == 0 && gameobject.getBody().velocity.y == 0) {
-                    image = ResourceManager.getImage("<HIT_MARKER>");
+                    image = ResourceManager.getImage("textures/bullet_impact.png");
                     }
                 }
 
