@@ -15,7 +15,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public final class GameScene {
@@ -26,7 +25,7 @@ public final class GameScene {
     private final Input input;
     private final Canvas canvas;
     private final GraphicsContext g;
-    private Image background;
+    private Color background = Color.web("#1e120c");
     public static Vector2D gravity = new Vector2D(0, 0.2);
 
     /**
@@ -99,6 +98,8 @@ public final class GameScene {
 
     public void render() {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.setFill(background);
+        g.fillRect(-10, -10, canvas.getWidth() + 10, canvas.getHeight() + 10);
         
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
