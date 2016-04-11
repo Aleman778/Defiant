@@ -3,6 +3,7 @@ package ga.game;
 import ga.game.weapon.WeaponController;
 import ga.engine.animation.Animation;
 import ga.engine.animation.AnimationController;
+import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
@@ -13,6 +14,7 @@ import ga.engine.rendering.ParticleEmitter;
 import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
+import ga.engine.scene.GameScene;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.image.Image;
@@ -31,6 +33,8 @@ public class PlayerController extends GameComponent {
     private SpriteRenderer renderable;
     private AnimationController AC;
     private ParticleEmitter landEmitter;
+    private GameScene scene;
+    private final double walkArea = 0.8;
 
     @Override
     public void start() {
@@ -100,6 +104,9 @@ public class PlayerController extends GameComponent {
 
     @Override
     public void fixedUpdate() {
+        if (scene == null) {
+            scene = Application.getScene();
+        }
         //Walking
         Vector2D movement = new Vector2D();
         movement.x += (Input.getKey(KeyCode.A) == true) ? -1 : 0;
@@ -159,6 +166,20 @@ public class PlayerController extends GameComponent {
         }
         arm.getTransform().rotation = armRotation;
         head.getTransform().rotation = headRotation;
+        
+        int w = (int) scene.get().getWidth(), h = (int) scene.get().getHeight();
+        if (transform.position.x > w * walkArea - scene.getRoot().transform.position.x) {
+            scene.getRoot().transform.position.x += Math.min(w * walkArea - transform.position.x - scene.getRoot().transform.position.x, 0);
+        }
+        if (transform.position.x < w * (1 - walkArea) - scene.getRoot().transform.position.x) {
+            scene.getRoot().transform.position.x += Math.max(w * (1 - walkArea) - transform.position.x - scene.getRoot().transform.position.x, 0);
+        }
+        if (transform.position.y > h * walkArea - scene.getRoot().transform.position.y) {
+            scene.getRoot().transform.position.y += Math.min(h * walkArea - transform.position.y - scene.getRoot().transform.position.y, 0);
+        }
+        if (transform.position.y < h * (1 - walkArea) - scene.getRoot().transform.position.y) {
+            scene.getRoot().transform.position.y += Math.max(h * (1 - walkArea) - transform.position.y - scene.getRoot().transform.position.y, 0);
+        }
     }
 
     @Override
