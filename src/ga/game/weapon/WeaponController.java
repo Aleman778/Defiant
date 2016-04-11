@@ -116,7 +116,7 @@ public class WeaponController extends GameComponent {
 //                g.setStroke(Color.GREEN);
 //            }
             if (aimVector != null && getSelected().sights && !AC.getState().equals("reload")) {
-                g.strokeLine(weaponEnd.x, weaponEnd.y, aimVector.x, aimVector.y);
+                g.strokeLine(weaponEnd.x + Application.getScene().getRoot().transform.position.x, weaponEnd.y + Application.getScene().getRoot().transform.position.y, aimVector.x + Application.getScene().getRoot().transform.position.x, aimVector.y + Application.getScene().getRoot().transform.position.y);
             }
         }
     }

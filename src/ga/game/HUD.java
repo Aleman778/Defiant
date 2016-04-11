@@ -11,6 +11,7 @@ import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Affine;
 
 public class HUD extends GameComponent {
 
@@ -40,6 +41,7 @@ public class HUD extends GameComponent {
     @Override
     public void render(GraphicsContext g) {
         if (player != null) {
+            g.setTransform(new Affine());
             g.setFill(new Color(0, 0.6, 0.9, 0.4));
             g.setGlobalAlpha(1);
             g.fillRect(10, Application.getHeight() - 110, 275, 65);

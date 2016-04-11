@@ -1,6 +1,7 @@
 package ga.engine.rendering;
 
 import com.sun.javafx.geom.Rectangle;
+import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.scene.GameComponent;
@@ -184,7 +185,9 @@ public class ParticleEmitter extends GameComponent {
     @Override
     public void render(GraphicsContext g) {
         g.translate(-transform.position.x, -transform.position.y);
-        g.setTransform(new Affine());
+        Affine a = new Affine();
+        a.appendTranslation(Application.getScene().getRoot().transform.position.x, Application.getScene().getRoot().transform.position.y);
+        g.setTransform(a);
         Iterator<Particle> it = particles.iterator();
         while (it.hasNext()) {
             Particle p = it.next();

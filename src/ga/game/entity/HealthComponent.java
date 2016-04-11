@@ -1,5 +1,6 @@
 package ga.game.entity;
 
+import ga.engine.core.Application;
 import ga.engine.scene.GameComponent;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class HealthComponent extends GameComponent {
     public double getHealth() {
         return health;
     }
-    
+
     public double getMaxHealth() {
         return maxHealth;
     }
@@ -66,6 +67,7 @@ public class HealthComponent extends GameComponent {
         if (!gameobject.getTag().equals("player")) {
             Affine a = g.getTransform();
             Affine b = new Affine(1, a.getMxy(), transform.position.x, a.getMyx(), a.getMyy(), transform.position.y - 15);
+            b.appendTranslation(Application.getScene().getRoot().transform.position.x, Application.getScene().getRoot().transform.position.y);
             g.setTransform(b);
             int x = (int) (transform.gameobject.getAABB().width / 2 - (HP_SCALE * maxHealth) / 2);
             g.fillRect(x - 1, -1, HP_SCALE * maxHealth + 2, HP_HEIGHT + 2);
