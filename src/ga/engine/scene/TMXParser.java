@@ -180,7 +180,6 @@ public class TMXParser extends XMLReader {
                 if (tilemapRenderer != null) {
                     if (attri.getValue("encoding").equals("csv")) {
                         String[] map = value.split(",");
-
                         for (int x = 0; x < tileW; x++) {
                             for (int y = 0; y < tileH; y++) {
                                 int index = Integer.parseInt(map[x + y * tileW].trim());

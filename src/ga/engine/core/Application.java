@@ -60,9 +60,10 @@ public class Application extends javafx.application.Application {
         Application.setScene(Preloader.SCENE);
         Preloader.loadResources();
         //Application.setScene("scenes/TestScene.scene");
-        Application.setScene("scenes/TL.tmx");
+        //Application.setScene("scenes/TL.tmx");
+        Application.setScene("scenes/MainMenu.scene");
     }
-
+    
     public static void main(String[] args) {
         launch(args);
     }
