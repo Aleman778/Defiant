@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Weapon>
-    <sprite>textures/player/Arm_CR.png</sprite>
+    <sprite>textures/player/Arm_Shotgun.png</sprite>
     <type>shotgun</type>
     <pellets>5</pellets>
     <damage>4</damage>
