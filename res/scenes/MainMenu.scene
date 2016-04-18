@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scene width="1980" height="1080" tilesize="32">
+    <gameobjects>
+        <object blueprint="blueprints/required/MainMenu.blueprint" tag="ui" name="MainMenu" depth="0" tx="0" ty="0" rot="0" sx="1" sy="1" bx="0" by="0" bw="0" bh="0">
+        </object>
+    </gameobjects>
+</scene>
