@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 
 public final class GameScene {
 
@@ -97,6 +98,7 @@ public final class GameScene {
     }
 
     public void render() {
+        g.setTransform(new Affine());
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setFill(background);
         g.fillRect(-10, -10, canvas.getWidth() + 10, canvas.getHeight() + 10);
