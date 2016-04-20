@@ -2,6 +2,7 @@ package ga.game.entity;
 
 import ga.engine.animation.Animation;
 import ga.engine.animation.AnimationController;
+import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.SpriteRenderer;
@@ -27,9 +28,12 @@ public class AI extends GameComponent {
     protected double speed = 0.1;
     protected double jumpHeight = 7;
     protected double followDistance = 5;
+    protected double damageRate = 2;
+    protected double damage = 10;
     private double timeSinceLastJump;
     private final boolean canMoveInAir = true;
     public double takingDamage = 0;
+    private long lastDamage = 0;
     private Body body;
     private SpriteRenderer renderable;
     private AnimationController AC;
@@ -41,6 +45,7 @@ public class AI extends GameComponent {
             body.addCollide(5);
             body.SPEED = speed;
             body.INIT_SPEED = speed;
+            body.singleEvent = false;
         }
         
         renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
@@ -124,6 +129,17 @@ public class AI extends GameComponent {
          //   AC.setState("idle");
         } else {
             AC.setState("walking");
+        }
+    }
+
+    @Override
+    public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
+        if (otherBody == player.getBody() && Application.now - lastDamage > 1000000000 / damageRate) {
+            System.out.println(otherBody.velocity.x);
+            body.setVelocity(body.velocity.add(body.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : body.velocity.normalize().mul(new Vector2D(-3, 0))));
+            otherBody.setVelocity(otherBody.velocity.add(otherBody.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : otherBody.velocity.normalize().mul(new Vector2D(-3, 0))));
+            ((HealthComponent) otherBody.getComponent(HealthComponent.class)).damage(damage);
+            lastDamage = Application.now;
         }
     }
 
