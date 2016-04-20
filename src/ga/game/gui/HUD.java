@@ -12,6 +12,7 @@ import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Affine;
 
 public class HUD extends GameComponent {
 
@@ -41,12 +42,14 @@ public class HUD extends GameComponent {
     @Override
     public void render(GraphicsContext g) {
         if (player != null) {
+            g.setTransform(new Affine());
             g.setFill(new Color(0, 0.6, 0.9, 0.4));
             g.setGlobalAlpha(1);
-            g.fillRect(10, Application.getHeight() - 110, 200, 65);
+            g.fillRect(10, Application.getHeight() - 110, 275, 65);
             g.setFill(Color.BLACK);
             g.setFont(fontLarge);
             g.fillText(String.valueOf(weaponController.getSelected().ammo), 20, Application.getHeight() - 50 - 25);
+            g.fillText((int) health.getHealth() + " / " + (int) health.getMaxHealth(), 120, Application.getHeight() - 50 - 25 + 12);
             g.setFont(fontSmall);
             g.setFill(new Color(0, 0, 0, 0.75));
             if (weaponController.getSelected().spareAmmo == -1) {
