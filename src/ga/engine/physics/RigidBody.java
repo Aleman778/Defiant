@@ -186,7 +186,7 @@ public class RigidBody extends Body {
                 }
             }
         }
-        if (-(1 + bounce) * velNorm > 0.5) {
+        if (-(1 + bounce) * velNorm > 0.5 || !singleEvent) {
             for (GameComponent comp : gameobject.getAllComponents()) {
                 if (comp.getClass() != RigidBody.class) {
                     comp.onCollision(this, otherBody, normal, penetration, id);

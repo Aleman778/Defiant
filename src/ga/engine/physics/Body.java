@@ -17,6 +17,7 @@ public abstract class Body extends GameComponent {
     private ArrayList<Integer> collide = new ArrayList<>(), noCollide = new ArrayList<>();
     protected int id = 1;
     public Vector2D gravity;
+    public boolean singleEvent = true;
 
     public Body(int id) {
         this.id = id;
