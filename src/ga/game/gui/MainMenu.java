@@ -2,6 +2,7 @@ package ga.game.gui;
 
 import ga.engine.core.Application;
 import ga.engine.input.Input;
+import ga.engine.physics.Vector2D;
 import ga.engine.rendering.ParticleConfiguration;
 import ga.engine.rendering.ParticleEmitter;
 import ga.engine.resource.ResourceManager;
@@ -9,6 +10,7 @@ import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
@@ -100,7 +102,9 @@ public class MainMenu extends GameComponent {
 
     @Override
     public void update() {
+        Application.getScene().get().setCursor(Cursor.NONE);
         if (Input.getKeyPressed(KeyCode.ENTER)) {
+            Input.setMousePosition(new Vector2D(Application.getWidth() / 2, Application.getHeight() / 2));
             mediaPlayer.stop();
             Application.proceed();
         }
