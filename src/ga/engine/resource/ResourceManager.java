@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 
 public final class ResourceManager {
     
     public static final Blueprint DEFAULT_BLUEPRINT = new Blueprint(new Vector2D(0, 0), new ArrayList<>(), new HashMap<>());
     public static final AudioClip DEFAULT_AUDIO = new AudioClip(ResourceManager.class.getResource("/audio/music/FL3-140.mp3").toString());
+    public static final Media DEFAULT_MEDIA = new Media(ResourceManager.class.getResource("/audio/music/FL3-140.mp3").toString());
     public static final Image DEFAULT_IMAGE = new Image("textures/nonrenderable.png");
     public static final Font DEFAULT_FONT = Font.loadFont("res/fonts/GeosansLight.tff", 16);
     
@@ -21,6 +23,7 @@ public final class ResourceManager {
     private static final Map<String, Image> images = new HashMap<>();
     private static final Map<String, Blueprint> blueprints = new HashMap<>();
     private static final Map<String, AudioClip> audioclips = new HashMap<>();
+    private static final Map<String, Media> media = new HashMap<>();
     
     public static Image getImage(String filepath) {
         if (images.containsKey(filepath)) {
@@ -77,6 +80,21 @@ public final class ResourceManager {
         }
         audioclips.put(filepath, audio);
         return audio;
+    }
+    
+    public static Media getMedia(String filepath) {
+        if (media.containsKey(filepath)) {
+            return media.get(filepath);
+        }
+        Media sound;
+        try {
+            sound = new Media(ResourceManager.class.getResource(filepath).toString());
+        } catch (Exception e) {
+        //    return DEFAULT_MEDIA;
+            return null;
+        }
+        media.put(filepath, sound);
+        return sound;
     }
     
     public static Font getFont(String filepath, int size) {
