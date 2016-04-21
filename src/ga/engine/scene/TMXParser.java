@@ -105,6 +105,9 @@ public class TMXParser extends XMLReader {
                         case "Depth":
                         tileobj.getTransform().depth = Integer.parseInt(value);
                             break;
+                        case "Music":
+                        scene.backgroundMusic = ResourceManager.getMedia(value);
+                            break;
                     }
                 } else if (gameobj != null) {
                     switch (attri.getValue("name")) {

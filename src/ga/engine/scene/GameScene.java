@@ -15,6 +15,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
@@ -28,6 +30,8 @@ public final class GameScene {
     private final GraphicsContext g;
     private Color background = Color.web("#1e120c");
     public static Vector2D gravity = new Vector2D(0, 0.2);
+    public Media backgroundMusic;
+    private MediaPlayer player;
 
     /**
      * Constructs a Scene from filepath scene.<br/>
@@ -67,6 +71,12 @@ public final class GameScene {
                 component.sceneStart();
             }
         }
+        if (backgroundMusic != null) {
+            player = new MediaPlayer(backgroundMusic);
+            player.setCycleCount(MediaPlayer.INDEFINITE);
+            player.setVolume(0.4);
+            player.play();
+        }
     }
     
     public void end() {
@@ -75,6 +85,9 @@ public final class GameScene {
             for (GameComponent component: object.getAllComponents()) {
                 component.sceneEnd();
             }
+        }
+        if (player != null) {
+            player.stop();
         }
     }
 
