@@ -30,6 +30,7 @@ public class GameObject implements Comparator<GameObject> {
     private final List<GameComponent> componentsToAdd;
     private Body body = null;
     private boolean prevCollide = false;
+    private boolean isBeingDestroyed = false;
 
     public GameObject() {
         this.tag = "untagged";
@@ -311,7 +312,12 @@ public class GameObject implements Comparator<GameObject> {
     }
     
     public void destroy() {
+        isBeingDestroyed = true;
         parent.removeObject(this);
+    }
+    
+    public boolean isBeingDestroyed() {
+        return isBeingDestroyed;
     }
     
     public void queueComponent(GameComponent c) {
