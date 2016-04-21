@@ -135,7 +135,6 @@ public class AI extends GameComponent {
     @Override
     public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {
         if (otherBody == player.getBody() && Application.now - lastDamage > 1000000000 / damageRate) {
-            System.out.println(otherBody.velocity.x);
             body.setVelocity(body.velocity.add(body.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : body.velocity.normalize().mul(new Vector2D(-3, 0))));
             otherBody.setVelocity(otherBody.velocity.add(otherBody.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : otherBody.velocity.normalize().mul(new Vector2D(-3, 0))));
             ((HealthComponent) otherBody.getComponent(HealthComponent.class)).damage(damage);
