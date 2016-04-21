@@ -128,10 +128,10 @@ public class Weapon {
                 super.physicsUpdate(retrievedBodies);
                 Body b = gameobject.getBody();
                 if (b.velocity.x == 0 && b.velocity.y == 0
-                        || gameobject.transform.position.x > Application.getWidth() * 1.2
-                        || gameobject.transform.position.y > Application.getHeight() * 1.2
-                        || gameobject.transform.position.x < -Application.getWidth() * 0.2
-                        || gameobject.transform.position.y < -Application.getHeight() * 0.2) {
+                        || gameobject.transform.position.x > (Application.getWidth() - Application.getScene().getRoot().transform.position.x) * 1.2
+                        || gameobject.transform.position.y > (Application.getHeight() - Application.getScene().getRoot().transform.position.y) * 1.2
+                        || gameobject.transform.position.x < (-Application.getWidth() - Application.getScene().getRoot().transform.position.x) * 0.2
+                        || gameobject.transform.position.y < (-Application.getHeight() - Application.getScene().getRoot().transform.position.y) * 0.2) {
                     rate = 0;
                 }
             }
