@@ -125,4 +125,11 @@ public final class GameScene {
     public GameObject getRoot() {
         return root;
     }
+    
+    public void checkState() {
+        List enemies = GameObject.findObjectsWithTag("enemy");
+        if (enemies.size() == 1) {
+            Application.proceed();
+        }
+    }
 }

@@ -35,6 +35,7 @@ public class MainMenu extends GameComponent {
     private MediaPlayer mediaPlayer;
 
     public MainMenu() {
+        Application.levelIndex = -1;
         musicClip = ResourceManager.getAudio("audio/music/FL4-120.mp3");
         // musicClip.setCycleCount(AudioClip.INDEFINITE);
         music = new Media(String.valueOf(MainMenu.class.getResource("/audio/music/FL4-120.mp3")));
@@ -101,7 +102,7 @@ public class MainMenu extends GameComponent {
     public void update() {
         if (Input.getKeyPressed(KeyCode.ENTER)) {
             mediaPlayer.stop();
-            Application.setScene("scenes/TL.tmx");
+            Application.proceed();
         }
     }
 

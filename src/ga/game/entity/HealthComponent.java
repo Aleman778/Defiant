@@ -59,6 +59,7 @@ public class HealthComponent extends GameComponent {
     public void fixedUpdate() {
         if (!isAlive()) {
             gameobject.destroy();
+            Application.getScene().checkState();
         }
     }
 

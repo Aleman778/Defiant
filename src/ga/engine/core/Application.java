@@ -2,8 +2,8 @@ package ga.engine.core;
 
 import ga.devkit.core.Devkit;
 import ga.engine.scene.GameScene;
-import ga.engine.scene.SceneParser;
-import ga.engine.scene.TMXParser;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ObservableValue;
 import javafx.stage.Screen;
@@ -17,6 +17,13 @@ public class Application extends javafx.application.Application {
     private static GameScene scene;
     private static Devkit devkit;
     public static long now;
+    private static List<String> levels = new ArrayList<String>() {
+        {
+            add("scenes/TestScene.tmx");
+            add("scenes/TL.tmx");
+        }
+    };
+    public static int levelIndex = -1;
 
     @Override
     public void start(Stage primaryStage) {
@@ -62,6 +69,16 @@ public class Application extends javafx.application.Application {
         //Application.setScene("scenes/TestScene.scene");
         //Application.setScene("scenes/TL.tmx");
         Application.setScene("scenes/MainMenu.scene");
+    }
+    
+    public static void proceed() {
+        levelIndex++;
+        if (levelIndex > levels.size() - 1) {
+            levelIndex = -1;
+            Application.setScene("scenes/MainMenu.scene");
+        } else {
+            Application.setScene(levels.get(levelIndex));
+        }
     }
     
     public static void main(String[] args) {
