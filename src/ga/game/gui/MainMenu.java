@@ -19,7 +19,6 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 
 public class MainMenu extends GameComponent {
 
@@ -41,15 +40,13 @@ public class MainMenu extends GameComponent {
         music = new Media(String.valueOf(MainMenu.class.getResource("/audio/music/FL4-120.mp3")));
         mediaPlayer = new MediaPlayer(music);
         mediaPlayer.setVolume(0.4);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
             if ((magnitudes[0] + 60) / 10 > 1) {
                 starEmitter.sizeStep = (magnitudes[0] + 60) / 250;
             } else {
-                starEmitter.size = 0;
+                starEmitter.sizeStep = (float) 0.015;
             }
-        });
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
         });
     }
 
