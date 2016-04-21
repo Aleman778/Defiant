@@ -90,6 +90,9 @@ public class Application extends javafx.application.Application {
     }
     
     private static void setScene(GameScene scene) {
+        if (Application.scene != null) {
+            Application.scene.end();
+        }
         Application.scene = scene;
         Application.window.setScene(scene.get());
         Application.scene.start();
