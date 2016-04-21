@@ -1,11 +1,13 @@
 package ga.engine.core;
 
 import ga.devkit.core.Devkit;
+import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameScene;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.ImageCursor;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -50,7 +52,7 @@ public class Application extends javafx.application.Application {
 
     public static void start() {
         gameloop.start();
-        window.setTitle("Ga Engine");
+        window.setTitle("GA Engine");
         window.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
         window.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
@@ -93,6 +95,7 @@ public class Application extends javafx.application.Application {
         if (Application.scene != null) {
             Application.scene.end();
         }
+        scene.get().setCursor(new ImageCursor(ResourceManager.getImage("textures/cursor.png"), 2, 2));
         Application.scene = scene;
         Application.window.setScene(scene.get());
         Application.scene.start();
