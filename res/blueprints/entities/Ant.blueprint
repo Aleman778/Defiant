@@ -7,6 +7,7 @@
         <component type="SpriteRenderer"/>
         <component type="HealthComponent"/>
         <component type="AnimationController"/>
+        <component type="AudioController"/>
     </components>
     <attributes>
         <attribute type="Sprite Filepath" value="textures/AntBase.png"/>
@@ -22,5 +23,6 @@
         <attribute type="AI Jump Height" value="5"/>
         <attribute type="AI Follow Distance" value="5"/>
         <attribute type="Health" value="80"/>
+        <attribute type="Audio Effects" value="damaged:audio/effects/anthit.wav;death:audio/effects/antsquish1.mp3,audio/effects/antsquish2.mp3,audio/effects/antsquish3.mp3"/>
     </attributes>
 </blueprint>

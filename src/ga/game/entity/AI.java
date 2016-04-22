@@ -2,6 +2,7 @@ package ga.game.entity;
 
 import ga.engine.animation.Animation;
 import ga.engine.animation.AnimationController;
+import ga.engine.audio.AudioController;
 import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
@@ -37,6 +38,8 @@ public class AI extends GameComponent {
     private Body body;
     private SpriteRenderer renderable;
     private AnimationController AC;
+    private AudioController audioController;
+    private HealthComponent health;
 
     @Override
     public void start() {
@@ -50,6 +53,8 @@ public class AI extends GameComponent {
         
         renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
         AC = (AnimationController) getComponent(AnimationController.class);
+        audioController = (AudioController) getComponent(AudioController.class);
+        health = (HealthComponent) getComponent(HealthComponent.class);
         Animation idleAnim = new Animation(0) {
 
             @Override
@@ -120,6 +125,9 @@ public class AI extends GameComponent {
             timeSinceLastJump = 0;
         }
         if (takingDamage > 0) {
+            if (health.isAlive()) {
+                audioController.play("damaged");
+            }
             if (Math.abs(body.getVelocity().x) > 0.5) {
                 body.setVelocity(body.getVelocity().add(new Vector2D(0, takingDamage * 0.25)));
             }
@@ -130,6 +138,11 @@ public class AI extends GameComponent {
         } else {
             AC.setState("walking");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        audioController.play("death");
     }
 
     @Override
