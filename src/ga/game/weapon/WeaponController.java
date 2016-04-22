@@ -2,6 +2,7 @@ package ga.game.weapon;
 
 import com.sun.javafx.geom.Rectangle;
 import ga.engine.animation.AnimationController;
+import ga.engine.audio.AudioController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
@@ -35,6 +36,7 @@ public class WeaponController extends GameComponent {
     private Vector2D aimVector, weaponEnd;
     public PlayerController player;
     private double playerSpeed, playerSpeedLimit;
+    private AudioController audioController;
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -93,6 +95,7 @@ public class WeaponController extends GameComponent {
             shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
             if (!(getSelected().type.equals("flamethrower") || getSelected().type.equals("nitrogenthrower"))) {
                 shell.fire(shells);
+                audioController.play("weapon");
             }
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
@@ -206,6 +209,7 @@ public class WeaponController extends GameComponent {
         AC.addAnimation("idle", selected.idleAnimation);
         playerSpeed = player.SPEED;
         playerSpeedLimit = player.gameobject.getBody().SPEED_LIMIT;
+        audioController = (AudioController) player.getComponent(AudioController.class);
     }
 
     private static Vector2D[][] getBounds(List<GameObject> objects) {
