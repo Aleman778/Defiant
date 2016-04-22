@@ -1,6 +1,7 @@
 package ga.engine.scene;
 
 import ga.engine.animation.AnimationController;
+import ga.engine.audio.AudioController;
 import ga.engine.physics.Body;
 import ga.engine.physics.RigidBody;
 import ga.engine.physics.SimpleBody;
@@ -44,6 +45,7 @@ public abstract class GameComponent {
         components.put("Rigidbody", new RigidBody(0));
         components.put("HUD", new HUD());
         components.put("AI", new AI());
+        components.put("AudioController", new AudioController());
     }
     
     public Transform2D transform;
