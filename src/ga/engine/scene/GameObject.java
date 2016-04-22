@@ -313,6 +313,9 @@ public class GameObject implements Comparator<GameObject> {
     
     public void destroy() {
         isBeingDestroyed = true;
+        for (GameComponent component : components) {
+            component.onDestroy();
+        }
         parent.removeObject(this);
     }
     

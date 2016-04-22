@@ -85,4 +85,5 @@ public abstract class GameComponent {
     public void onCollisionEnter(Body body, Body otherBody, Vector2D normal, double penetration, int id) {}
     public void onCollision(Body body, Body otherBody, Vector2D normal, double penetration, int id) {}
     public void onCollisionExit() {}
+    public void onDestroy() {}
 }
