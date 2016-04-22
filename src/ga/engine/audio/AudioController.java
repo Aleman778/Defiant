@@ -16,10 +16,12 @@ public class AudioController extends GameComponent {
     static {
         ATTRIBUTES.add("Audio Effects");
     }
-    
+
     public void play(String effect) {
         AudioClip[] clips = effects.get(effect);
-        clips[(int) (Math.random() * clips.length)].play();
+        if (clips != null) {
+            clips[(int) (Math.random() * clips.length)].play();
+        }
     }
 
     @Override
