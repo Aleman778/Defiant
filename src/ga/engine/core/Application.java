@@ -52,7 +52,7 @@ public class Application extends javafx.application.Application {
 
     public static void start() {
         gameloop.start();
-        window.setTitle("GA Engine");
+        window.setTitle("Defiant");
         window.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
         window.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         window.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
