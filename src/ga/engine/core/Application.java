@@ -22,8 +22,8 @@ public class Application extends javafx.application.Application {
     private static List<String> levels = new ArrayList<String>() {
         {
             add("scenes/Tutorial.tmx");
-            add("scenes/TestScene3.tmx");
             add("scenes/TL.tmx");
+            add("scenes/TestScene3.tmx");
         }
     };
     public static int levelIndex = -1;
