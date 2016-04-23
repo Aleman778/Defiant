@@ -35,28 +35,37 @@ public class MainMenu extends GameComponent {
     private AudioClip musicClip;
     private Media music;
     private MediaPlayer mediaPlayer;
+    private boolean hasAudio = true;
 
     public MainMenu() {
         Application.levelIndex = -1;
-        musicClip = ResourceManager.getAudio("audio/music/FL4-120.mp3");
-        // musicClip.setCycleCount(AudioClip.INDEFINITE);
-        music = new Media(String.valueOf(MainMenu.class.getResource("/audio/music/FL4-120.mp3")));
-        mediaPlayer = new MediaPlayer(music);
-        mediaPlayer.setVolume(0.4);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
-            if ((magnitudes[0] + 60) / 10 > 1) {
-                starEmitter.sizeStep = (magnitudes[0] + 60) / 250;
-            } else {
-                starEmitter.sizeStep = (float) 0.015;
-            }
-        });
+        try {
+            musicClip = ResourceManager.getAudio("audio/music/FL4-120.mp3");
+            // musicClip.setCycleCount(AudioClip.INDEFINITE);
+            music = new Media(String.valueOf(MainMenu.class.getResource("/audio/music/FL4-120.mp3")));
+            mediaPlayer = new MediaPlayer(music);
+            mediaPlayer.setVolume(0.4);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
+                if ((magnitudes[0] + 60) / 10 > 1) {
+                    starEmitter.sizeStep = (magnitudes[0] + 60) / 250;
+                } else {
+                    starEmitter.sizeStep = (float) 0.015;
+                }
+            });
+        } catch (Exception ex) {
+            hasAudio = false;
+        }
     }
 
     @Override
     public void start() {
         //musicClip.play(0.4);
-        mediaPlayer.play();
+        try {
+            mediaPlayer.play();
+        } catch (Exception ex) {
+
+        }
     }
 
     @Override
@@ -98,6 +107,12 @@ public class MainMenu extends GameComponent {
         //Draw Menu
         g.setFont(ResourceManager.getFont("fonts/GeosansLight.ttf", 37));
         g.fillText("Press enter to play", w / 2, h - 64);
+
+        if (!hasAudio) {
+            g.setFill(Color.RED);
+            g.setFont(ResourceManager.getFont("fonts/GeosansLight.ttf", 20));
+            g.fillText("Could not initialize audio!", w / 2, h - 35);
+        }
     }
 
     @Override
@@ -105,7 +120,11 @@ public class MainMenu extends GameComponent {
         Application.getScene().get().setCursor(Cursor.NONE);
         if (Input.getKeyPressed(KeyCode.ENTER)) {
             Input.setMousePosition(new Vector2D(Application.getWidth() / 2, Application.getHeight() / 2));
-            mediaPlayer.stop();
+            try {
+                mediaPlayer.stop();
+            } catch (Exception ex) {
+
+            }
             Application.proceed();
         }
     }
