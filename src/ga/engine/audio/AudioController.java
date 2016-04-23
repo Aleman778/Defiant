@@ -42,7 +42,6 @@ public class AudioController extends GameComponent {
             }
             this.effects.put(key, clips);
         }
-        System.out.println("");
     }
 
     @Override

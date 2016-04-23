@@ -21,7 +21,8 @@ public class Application extends javafx.application.Application {
     public static long now;
     private static List<String> levels = new ArrayList<String>() {
         {
-            add("scenes/TestScene.tmx");
+            add("scenes/Tutorial.tmx");
+            add("scenes/TestScene3.tmx");
             add("scenes/TL.tmx");
         }
     };

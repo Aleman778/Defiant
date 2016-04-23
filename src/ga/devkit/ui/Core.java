@@ -110,12 +110,10 @@ public class Core extends Interface implements Initializable {
     
     @FXML
     public void menuitemNew() {
-        System.out.println("New!");
     }
     
     @FXML
     public void menuitemOpen() {
-        System.out.println("Open!");
     }
     
     @FXML

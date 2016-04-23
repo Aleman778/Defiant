@@ -62,7 +62,6 @@ public class AssetPreview extends Interface implements Initializable {
                     object.setAABB(0, 0, (int) image.getWidth(), (int) image.getHeight());
                     SceneEditor.PLACEMENT.setSelectionType(SelectionType.PLACEMENT);
                     SceneEditor.PLACEMENT.addObject(object);
-                    System.out.println(SceneEditor.PLACEMENT.getObjects().size());
                     type = "Image";
                     break;
                 case "tileset":

@@ -77,7 +77,6 @@ public class EditorObject extends GameObject {
         } else {
             attributes.put(attri, value);
         }
-        System.out.println("set attribute: " + attri + ", value: " + value);
     }
     
     public String getAttribute(String attri) {

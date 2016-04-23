@@ -118,7 +118,7 @@ public final class GameScene {
         
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
-
+        
         //Clear Inputs
         input.clear();
     }

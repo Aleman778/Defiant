@@ -332,7 +332,6 @@ public class GameObject implements Comparator<GameObject> {
         if (scene != null) {
             List<GameObject> objects = scene.getAllGameObjects();
             for (GameObject object: objects) {
-                System.out.println(object.getTag());
                 if (object.getTag().equals(tag)) {
                     return object;
                 }
