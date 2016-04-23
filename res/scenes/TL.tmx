@@ -91,7 +91,7 @@
   <object id="20" x="2144" y="0" width="96" height="640"/>
   <object id="21" x="1984" y="352" width="128" height="64"/>
   <object id="22" x="2112" y="288" width="32" height="64"/>
-  <object id="23" x="1984" y="224" width="32" height="64"/>
+  <object id="23" x="1984" y="224" width="64" height="64"/>
   <object id="30" x="1888" y="128" width="96" height="96"/>
   <object id="39" x="1856" y="384" width="64" height="32"/>
   <object id="47" x="64" y="32" width="2080" height="32"/>
@@ -122,7 +122,7 @@
     <property name="Tag" value="enemy"/>
    </properties>
   </object>
-  <object id="28" gid="25" x="2016" y="192" width="100" height="53">
+  <object id="28" gid="25" x="1568" y="448" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
     <property name="Tag" value="enemy"/>
