@@ -117,28 +117,24 @@
     <property name="Tag" value="player"/>
    </properties>
   </object>
-  <object id="25" gid="25" x="224" y="768" width="100" height="53">
+  <object id="25" gid="25" x="224" y="800" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
-  <object id="26" gid="25" x="640" y="768" width="100" height="53">
+  <object id="26" gid="25" x="640" y="800" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
   <object id="27" gid="25" x="416" y="128" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
-  <object id="28" gid="25" x="1632" y="736" width="100" height="53">
+  <object id="28" gid="25" x="1600" y="736" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
   <object id="23" x="0" y="0">
@@ -147,28 +143,24 @@
     <property name="Depth" value="-999"/>
    </properties>
   </object>
-  <object id="41" gid="25" x="960" y="416" width="100" height="53">
+  <object id="41" gid="25" x="992" y="448" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
   <object id="42" gid="25" x="2016" y="640" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
-  <object id="49" gid="25" x="736" y="416" width="100" height="53">
+  <object id="49" gid="25" x="768" y="448" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
-  <object id="50" gid="25" x="1092" y="152" width="100" height="53">
+  <object id="50" gid="25" x="1120" y="128" width="100" height="53">
    <properties>
     <property name="Blueprint" value="blueprints/entities/Ant.blueprint"/>
-    <property name="Tag" value="enemy"/>
    </properties>
   </object>
  </objectgroup>
