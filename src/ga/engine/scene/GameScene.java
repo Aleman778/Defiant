@@ -140,9 +140,12 @@ public final class GameScene {
     }
     
     public void checkState() {
-        List enemies = GameObject.findObjectsWithTag("enemy");
-        if (enemies.size() == 1 && ((GameObject) enemies.get(0)).isBeingDestroyed()) {
-            Application.proceed();
+        List<GameObject> enemies = GameObject.findObjectsWithTag("enemy");
+        for (GameObject object : enemies) {
+            if (!object.isBeingDestroyed()) {
+                return;
+            }
         }
+        Application.proceed();
     }
 }
