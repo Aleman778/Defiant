@@ -231,6 +231,7 @@ public class WeaponController extends GameComponent {
         for (KeyCode k : keys.keySet()) {
             if (Input.getKeyPressed(k)) {
                 selected = weapons.get(keys.get(k));
+                index = keys.get(k);
             }
         }
     }
