@@ -40,15 +40,17 @@ public class WeaponController extends GameComponent {
     public PlayerController player;
     private double playerSpeed, playerSpeedLimit;
     private AudioController audioController;
-    private Map<KeyCode, Integer> keys = new HashMap<KeyCode, Integer>() { {
-        put(KeyCode.DIGIT1, 0);
-        put(KeyCode.DIGIT2, 1);
-        put(KeyCode.DIGIT3, 2);
-        put(KeyCode.DIGIT4, 3);
-        put(KeyCode.DIGIT5, 4);
-        put(KeyCode.DIGIT6, 5);
-        put(KeyCode.DIGIT7, 6);
-    }};
+    private Map<KeyCode, Integer> keys = new HashMap<KeyCode, Integer>() {
+        {
+            put(KeyCode.DIGIT1, 0);
+            put(KeyCode.DIGIT2, 1);
+            put(KeyCode.DIGIT3, 2);
+            put(KeyCode.DIGIT4, 3);
+            put(KeyCode.DIGIT5, 4);
+            put(KeyCode.DIGIT6, 5);
+            put(KeyCode.DIGIT7, 6);
+        }
+    };
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -107,7 +109,7 @@ public class WeaponController extends GameComponent {
             shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
             if (!(getSelected().type.equals("flamethrower") || getSelected().type.equals("nitrogenthrower"))) {
                 shell.fire(shells);
-                
+
             }
             switch (getSelected().type) {
                 case "shotgun":
@@ -232,6 +234,13 @@ public class WeaponController extends GameComponent {
             if (Input.getKeyPressed(k)) {
                 selected = weapons.get(keys.get(k));
                 index = keys.get(k);
+                selected = weapons.get(index);
+                Transform2D t = spark.transform;
+                spark = selected.spark;
+                shell = selected.shell;
+                spark.transform = t;
+                gameobject.parent.queueComponent(spark);
+                gameobject.parent.queueComponent(shell);
             }
         }
     }
