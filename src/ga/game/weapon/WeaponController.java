@@ -19,10 +19,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -111,16 +109,20 @@ public class WeaponController extends GameComponent {
                 shell.fire(shells);
 
             }
-            switch (getSelected().type) {
-                case "shotgun":
-                    audioController.play("weapon_shotgun");
-                    break;
-                case "flamethrower":
-                    break;
-                case "nitrogenthrower":
-                    break;
-                default:
-                    audioController.play("weapon_default");
+            if (index == 4) {
+                audioController.play("weapon_shotgun");
+            } else {
+                switch (getSelected().type) {
+                    case "shotgun":
+                        audioController.play("weapon_shotgun");
+                        break;
+                    case "flamethrower":
+                        break;
+                    case "nitrogenthrower":
+                        break;
+                    default:
+                        audioController.play("weapon_default");
+                }
             }
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
