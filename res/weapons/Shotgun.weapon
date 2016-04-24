@@ -3,7 +3,7 @@
     <sprite>textures/player/Arm_Shotgun.png</sprite>
     <type>shotgun</type>
     <pellets>5</pellets>
-    <damage>10</damage>
+    <damage>8</damage>
     <clip>4</clip>
     <ammo>8</ammo>
     <spread>5</spread>

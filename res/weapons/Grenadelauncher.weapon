@@ -2,7 +2,7 @@
 <Weapon>
     <sprite>textures/player/Arm_grenade_launcher.png</sprite>
     <type>grenade_launcher</type>
-    <damage>50</damage>
+    <damage>80</damage>
     <radius>50</radius>
     <clip>1</clip>
     <ammo>3</ammo>
