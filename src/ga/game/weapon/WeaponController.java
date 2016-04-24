@@ -18,8 +18,11 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -37,6 +40,15 @@ public class WeaponController extends GameComponent {
     public PlayerController player;
     private double playerSpeed, playerSpeedLimit;
     private AudioController audioController;
+    private Map<KeyCode, Integer> keys = new HashMap<KeyCode, Integer>() { {
+        put(KeyCode.DIGIT1, 0);
+        put(KeyCode.DIGIT2, 1);
+        put(KeyCode.DIGIT3, 2);
+        put(KeyCode.DIGIT4, 3);
+        put(KeyCode.DIGIT5, 4);
+        put(KeyCode.DIGIT6, 5);
+        put(KeyCode.DIGIT7, 6);
+    }};
 
     private List<Weapon> weapons = new ArrayList<Weapon>() {
         {
@@ -215,6 +227,11 @@ public class WeaponController extends GameComponent {
                 selected.spareAmmo -= ammoToLoad;
             }
             selected.ammo += ammoToLoad;
+        }
+        for (KeyCode k : keys.keySet()) {
+            if (Input.getKeyPressed(k)) {
+                selected = weapons.get(keys.get(k));
+            }
         }
     }
 

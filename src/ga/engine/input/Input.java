@@ -104,6 +104,10 @@ public class Input {
         return keysReleased.contains(key);
     }
     
+    public static Set<KeyCode> getKeysPressed() {
+        return keysPressed;
+    }
+    
     public static boolean getKey(KeyCode key) {
         return keys.contains(key);
     }
