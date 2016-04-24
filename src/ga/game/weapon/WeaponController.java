@@ -43,7 +43,7 @@ public class WeaponController extends GameComponent {
             add(Weapon.loadXML("weapons/Pistol.weapon"));
             add(Weapon.loadXML("weapons/SMG.weapon"));
             add(Weapon.loadXML("weapons/Flamethrower.weapon"));
-            add(Weapon.loadXML("weapons/CR.weapon"));
+            add(Weapon.loadXML("weapons/Shotgun.weapon"));
             add(Weapon.loadXML("weapons/GEP.weapon"));
             add(Weapon.loadXML("weapons/Grenadelauncher.weapon"));
             add(Weapon.loadXML("weapons/Nitrogenthrower.weapon"));
