@@ -24,6 +24,7 @@ public class Application extends javafx.application.Application {
             add("scenes/Tutorial.tmx");
             add("scenes/TL.tmx");
             add("scenes/TestScene3.tmx");
+            add("scenes/Andlev1");
         }
     };
     public static int levelIndex = -1;
