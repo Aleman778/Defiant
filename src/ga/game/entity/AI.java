@@ -112,7 +112,8 @@ public class AI extends GameComponent {
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
             body.setVelocity(new Vector2D(body.SPEED_LIMIT * Math.signum(body.getVelocity().x), body.getVelocity().y));
         }
-        if ((distToPlayer.y < -64 || (Math.abs(body.getVelocity().x) < 0.00000001 && distToPlayer.x > 10)) && body.isGrounded() && timeSinceLastJump > 65) {
+        System.out.println(Math.abs(body.getVelocity().x));
+        if ((distToPlayer.y < -64 || (Math.abs(body.getVelocity().x) < 0.00000001 && Math.abs(distToPlayer.x) > 10)) && body.isGrounded() && timeSinceLastJump > 65) {
             body.setVelocity(body.getVelocity().add(new Vector2D(0, -jumpHeight)));
             timeSinceLastJump = 0;
         }
