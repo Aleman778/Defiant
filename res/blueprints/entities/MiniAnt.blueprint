@@ -16,7 +16,7 @@
         <attribute type="Sprite Width" value="50"/>
         <attribute type="Sprite Height" value="27"/>
         <attribute type="Mass" value="1.25"/>
-        <attribute type="Body ID" value="3"/>
+        <attribute type="Body ID" value="4"/>
         <attribute type="Friction" value="0.1"/>
         <attribute type="Softness" value="0"/>
         <attribute type="AI Speed" value="0.1"/>
