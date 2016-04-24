@@ -10,11 +10,11 @@
         <component type="AudioController"/>
     </components>
     <attributes>
-        <attribute type="Sprite Filepath" value="textures/AntWalkAnimation.png"/>
+        <attribute type="Sprite Filepath" value="textures/MiniAntWalkAnimation.png"/>
         <attribute type="Sprite OffsetX" value="0"/>
         <attribute type="Sprite OffsetY" value="0"/>
-        <attribute type="Sprite Width" value="100"/>
-        <attribute type="Sprite Height" value="53"/>
+        <attribute type="Sprite Width" value="50"/>
+        <attribute type="Sprite Height" value="27"/>
         <attribute type="Mass" value="1.25"/>
         <attribute type="Body ID" value="3"/>
         <attribute type="Friction" value="0.1"/>
@@ -22,7 +22,7 @@
         <attribute type="AI Speed" value="0.1"/>
         <attribute type="AI Jump Height" value="5"/>
         <attribute type="AI Follow Distance" value="5"/>
-        <attribute type="Health" value="80"/>
+        <attribute type="Health" value="20"/>
         <attribute type="Audio Effects" value="damaged:audio/effects/anthit.wav;death:audio/effects/antsquish1.mp3,audio/effects/antsquish2.mp3,audio/effects/antsquish3.mp3"/>
     </attributes>
 </blueprint>
