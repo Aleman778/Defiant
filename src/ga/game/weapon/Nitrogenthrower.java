@@ -47,6 +47,7 @@ public class Nitrogenthrower extends Weapon {
         w.spark.setConfig(ParticleEmitter.loadXMLConfig("particles/systems/Ice.psystem"));
         w.spark.noCollide.remove((Object) 3);
         w.spark.collide.add(3);
+        w.spark.collide.add(4);
         w.spark.physics(true);
         w.spark.physicsEvent = true;
         w.spark.id = 5;
