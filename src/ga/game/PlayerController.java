@@ -35,7 +35,7 @@ public class PlayerController extends GameComponent {
     private AnimationController AC;
     private ParticleEmitter landEmitter;
     private GameScene scene;
-    private final double walkArea = 0.8;
+    private final double walkArea = 0.6;
     private AudioController audioController;
 
     @Override
