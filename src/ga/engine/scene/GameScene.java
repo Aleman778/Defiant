@@ -32,6 +32,7 @@ public final class GameScene {
     public static Vector2D gravity = new Vector2D(0, 0.2);
     public Media backgroundMusic;
     private MediaPlayer player;
+    private int enemies;
 
     /**
      * Constructs a Scene from filepath scene.<br/>
@@ -64,7 +65,7 @@ public final class GameScene {
     public void setHeight(double height) {
         canvas.setHeight(height);
     }
-    
+
     public void start() {
         for (GameObject object: getAllGameObjects()) {
             for (GameComponent component: object.getAllComponents()) {
@@ -78,7 +79,7 @@ public final class GameScene {
             player.play();
         }
     }
-    
+
     public void end() {
         root.clearChildren();
         for (GameObject object: getAllGameObjects()) {
@@ -115,10 +116,10 @@ public final class GameScene {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g.setFill(background);
         g.fillRect(-10, -10, canvas.getWidth() + 10, canvas.getHeight() + 10);
-        
+
         //Render objects
         JavaFXCanvasRenderer.renderAll(canvas, getAllGameObjects());
-        
+
         //Clear Inputs
         input.clear();
     }
@@ -138,14 +139,24 @@ public final class GameScene {
     public GameObject getRoot() {
         return root;
     }
-    
+
+    public int getEnemies() {
+        return enemies;
+    }
+
     public void checkState() {
         List<GameObject> enemies = GameObject.findObjectsWithTag("enemy");
+        boolean hasEnemies = false;
+        int count = 0;
         for (GameObject object : enemies) {
             if (!object.isBeingDestroyed()) {
-                return;
+                hasEnemies = true;
+                count++;
             }
         }
-        Application.proceed();
+        this.enemies = count;
+        if (!hasEnemies) {
+            Application.proceed();
+        }
     }
 }

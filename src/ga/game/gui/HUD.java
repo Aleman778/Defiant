@@ -37,6 +37,7 @@ public class HUD extends GameComponent {
         } else {
             throw new NullPointerException("HUD: There is no GameObject with tag Player");
         }
+        Application.getScene().checkState();
     }
 
     @Override
@@ -46,11 +47,13 @@ public class HUD extends GameComponent {
             g.setFill(new Color(0, 0.6, 0.9, 0.4));
             g.setGlobalAlpha(1);
             g.fillRect(10, Application.getHeight() - 110, 275, 65);
+            g.fillRect(10, Application.getHeight() - 140, 125, 25);
             g.setFill(Color.BLACK);
             g.setFont(fontLarge);
             g.fillText(String.valueOf(weaponController.getSelected().ammo), 20, Application.getHeight() - 50 - 25);
             g.fillText((int) health.getHealth() + " / " + (int) health.getMaxHealth(), 120, Application.getHeight() - 50 - 25 + 12);
             g.setFont(fontSmall);
+            g.fillText("Enemies left: " + Application.getScene().getEnemies(), 12, Application.getHeight() - 120, 125);
             g.setFill(new Color(0, 0, 0, 0.75));
             if (weaponController.getSelected().spareAmmo == -1) {
                 g.fillText("Unlimited", 20, Application.getHeight() - 50 - 25 + 22);
