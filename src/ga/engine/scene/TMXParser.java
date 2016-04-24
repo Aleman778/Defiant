@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import org.xml.sax.Attributes;
 
 public class TMXParser extends XMLReader {
@@ -129,6 +130,9 @@ public class TMXParser extends XMLReader {
                 GameObject object = new GameObject(tag == null ? "untagged" : tag);
                 object.addComponent(((Layer) data).tilemap);
                 setupGameObject(object, 0, 0, 0, 0);
+                if (data.get("Music") != null) {
+                    scene.backgroundMusic = ResourceManager.getMedia(data.get("Music"));
+                }
                 data = null;
                 break;
             case "object":
