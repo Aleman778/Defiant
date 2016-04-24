@@ -2,8 +2,8 @@
 <Weapon>
     <sprite>textures/player/Arm_nitrogenthrower.png</sprite>
     <type>nitrogenthrower</type>
-    <damage>0.0003</damage>
-    <clip>1000</clip>
+    <damage>0.0001</damage>
+    <clip>500</clip>
     <ammo>0</ammo>
     <spread>0</spread>
     <recoil>0</recoil>

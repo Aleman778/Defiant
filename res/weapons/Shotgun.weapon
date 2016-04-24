@@ -4,8 +4,8 @@
     <type>shotgun</type>
     <pellets>5</pellets>
     <damage>10</damage>
-    <clip>3</clip>
-    <ammo>30</ammo>
+    <clip>4</clip>
+    <ammo>8</ammo>
     <spread>5</spread>
     <recoil>5</recoil>
     <cooldown>500</cooldown>
