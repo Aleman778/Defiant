@@ -7,7 +7,6 @@ import ga.engine.core.Application;
 import ga.engine.physics.Body;
 import ga.engine.physics.Vector2D;
 import ga.engine.rendering.SpriteRenderer;
-import ga.engine.resource.ResourceManager;
 import ga.engine.scene.GameComponent;
 import ga.engine.scene.GameObject;
 import java.util.ArrayList;
@@ -55,27 +54,17 @@ public class AI extends GameComponent {
         AC = (AnimationController) getComponent(AnimationController.class);
         audioController = (AudioController) getComponent(AudioController.class);
         health = (HealthComponent) getComponent(HealthComponent.class);
-        Animation idleAnim = new Animation(0) {
-
-            @Override
-            public void animate(int frame) {
-                renderable.setOffsetX(0);
-                renderable.setOffsetY(0);
-                renderable.setSprite(ResourceManager.getImage("textures/Ant.png"));
-            }
-        };
+        gameobject.setAABB(0, 0, renderable.getWidth(), renderable.getHeight());
         Animation walkAnim = new Animation(12, 0.1) {
 
             @Override
             public void animate(int frame) {
                 setSpeed(Math.abs(body.getVelocity().x) / 3);
                 setSpeed(getSpeed() * body.velocity.normalize().x * transform.scale.x);
-                renderable.setOffsetX(100 * frame);
+                renderable.setOffsetX(renderable.getWidth() * frame);
                 renderable.setOffsetY(0);
-                renderable.setSprite(ResourceManager.getImage("textures/AntWalkAnimation.png"));
             }
         };
-        AC.addAnimation("idle", idleAnim);
         AC.addAnimation("walking", walkAnim);
     }
 
