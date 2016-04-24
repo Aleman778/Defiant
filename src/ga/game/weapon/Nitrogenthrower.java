@@ -32,10 +32,10 @@ public class Nitrogenthrower extends Weapon {
                         body.setVelocity(body.getVelocity().mul(0.5));
                     }
                     if (id != 1 && otherBody.SPEED > 0.02) {
-                        otherBody.SPEED -= 0.001;
+                        otherBody.SPEED -= 0.002;
                     }
-                    if (otherBody.SPEED_LIMIT > 1) {
-                        otherBody.SPEED_LIMIT -= 0.0001;
+                    if (otherBody.SPEED_LIMIT > 0.5) {
+                        otherBody.SPEED_LIMIT -= 0.0002;
                     }
                     HealthComponent otherHealth = (HealthComponent) otherBody.gameobject.getComponent(HealthComponent.class);
                     if (otherHealth != null) {
