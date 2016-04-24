@@ -20,6 +20,6 @@
         <attribute type="Friction" value="0.1"/>
         <attribute type="Softness" value="0"/>
         <attribute type="Health" value="100"/>
-        <attribute type="Audio Effects" value="weapon:audio/effects/gunshot1.wav"/>
+        <attribute type="Audio Effects" value="weapon_default:audio/effects/gunshot1.wav;weapon_shotgun:audio/effects/gunshot2.wav"/>
     </attributes>
 </blueprint>

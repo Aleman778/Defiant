@@ -95,7 +95,18 @@ public class WeaponController extends GameComponent {
             shell.object.transform.position = shell.object.transform.position.mul(new Vector2D(1 / 1.4, 1)).sub(new Vector2D(0, 5));
             if (!(getSelected().type.equals("flamethrower") || getSelected().type.equals("nitrogenthrower"))) {
                 shell.fire(shells);
-                audioController.play("weapon");
+                
+            }
+            switch (getSelected().type) {
+                case "shotgun":
+                    audioController.play("weapon_shotgun");
+                    break;
+                case "flamethrower":
+                    break;
+                case "nitrogenthrower":
+                    break;
+                default:
+                    audioController.play("weapon_default");
             }
             gameobject.transform.rotation -= (10 + w.spread) * gameobject.transform.scale.x;
             Point p = MouseInfo.getPointerInfo().getLocation();
