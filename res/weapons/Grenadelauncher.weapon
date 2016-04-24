@@ -9,6 +9,6 @@
     <spread>5</spread>
     <recoil>1</recoil>
     <cooldown>300</cooldown>
-    <reload>2000</reload>
+    <reload>1000</reload>
     <sights>true</sights>
 </Weapon>
