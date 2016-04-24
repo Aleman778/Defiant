@@ -98,12 +98,10 @@ public class AI extends GameComponent {
                 if (body.isGrounded()) {
                     velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(speed));
                 }
-            } else {
-                if (!body.isGrounded()) {
+            } else if (!body.isGrounded()) {
                 velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED));
             } else {
                 velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(speed));
-            }
             }
             body.setVelocity(body.getVelocity().add(velocity));
         } else {
@@ -112,7 +110,6 @@ public class AI extends GameComponent {
         if (Math.abs(body.getVelocity().x) > body.SPEED_LIMIT) {
             body.setVelocity(new Vector2D(body.SPEED_LIMIT * Math.signum(body.getVelocity().x), body.getVelocity().y));
         }
-        System.out.println(Math.abs(body.getVelocity().x));
         if ((distToPlayer.y < -64 || (Math.abs(body.getVelocity().x) < 0.00000001 && Math.abs(distToPlayer.x) > 10)) && body.isGrounded() && timeSinceLastJump > 65) {
             body.setVelocity(body.getVelocity().add(new Vector2D(0, -jumpHeight)));
             timeSinceLastJump = 0;
@@ -143,7 +140,11 @@ public class AI extends GameComponent {
         if (otherBody == player.getBody() && Application.now - lastDamage > 1000000000 / damageRate) {
             body.setVelocity(body.velocity.add(body.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : body.velocity.normalize().mul(new Vector2D(-3, 0))));
             otherBody.setVelocity(otherBody.velocity.add(otherBody.velocity.x < 0.001 ? new Vector2D(Math.signum(Math.random() - 0.5) * 3, 0) : otherBody.velocity.normalize().mul(new Vector2D(-3, 0))));
-            ((HealthComponent) otherBody.getComponent(HealthComponent.class)).damage(damage);
+            HealthComponent otherHealth = ((HealthComponent) otherBody.getComponent(HealthComponent.class));
+            otherHealth.damage(damage);
+            if (otherHealth.isAlive()) {
+                ((AudioController) otherBody.getComponent(AudioController.class)).play("damaged");
+            }
             lastDamage = Application.now;
         }
     }

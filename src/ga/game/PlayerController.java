@@ -3,6 +3,7 @@ package ga.game;
 import ga.game.weapon.WeaponController;
 import ga.engine.animation.Animation;
 import ga.engine.animation.AnimationController;
+import ga.engine.audio.AudioController;
 import ga.engine.core.Application;
 import ga.engine.input.Input;
 import ga.engine.physics.Body;
@@ -35,6 +36,7 @@ public class PlayerController extends GameComponent {
     private ParticleEmitter landEmitter;
     private GameScene scene;
     private final double walkArea = 0.8;
+    private AudioController audioController;
 
     @Override
     public void start() {
@@ -62,6 +64,7 @@ public class PlayerController extends GameComponent {
 
         renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
         AC = (AnimationController) getComponent(AnimationController.class);
+        audioController = (AudioController) getComponent(AudioController.class);
         Animation idleAnim = new Animation(0) {
 
             @Override
@@ -198,6 +201,11 @@ public class PlayerController extends GameComponent {
         landEmitter = ParticleEmitter.loadXML("particles/systems/LandEmitter.psystem");
         gameobject.addComponent(landEmitter);
         landEmitter.object.transform.position = new Vector2D(16, 50);
+    }
+
+    @Override
+    public void onDestroy() {
+        audioController.play("death");
     }
 
     @Override
