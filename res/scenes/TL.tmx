@@ -3,10 +3,6 @@
  <tileset firstgid="1" source="../tilesets/GA-tileset.tsx"/>
  <tileset firstgid="25" source="../tilesets/Ant.tsx"/>
  <tileset firstgid="26" source="../tilesets/Player.tsx"/>
- <tileset firstgid="27" source="../textures/door/Door_g.png"/>
- <tileset firstgid="28" name="Door_g" tilewidth="32" tileheight="32" tilecount="6" columns="2">
-  <image source="../textures/door/Door_g.png" width="64" height="96"/>
- </tileset>
  <layer name="BG" width="70" height="30">
   <properties>
    <property name="Depth" value="200"/>
