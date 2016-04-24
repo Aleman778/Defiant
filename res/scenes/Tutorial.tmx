@@ -225,7 +225,7 @@
   <object id="42" x="1536" y="544" width="128" height="32"/>
   <object id="43" x="1632" y="576" width="128" height="32"/>
   <object id="46" x="1728" y="608" width="832" height="32"/>
-  <object id="51" x="2016" y="352" width="32" height="256">
+  <object id="51" x="2144" y="352" width="32" height="256">
    <properties>
     <property name="Music" value="/audio/music/Fl2.m4a"/>
    </properties>
