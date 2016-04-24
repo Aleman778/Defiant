@@ -46,6 +46,7 @@ public class AI extends GameComponent {
         body = (Body) getComponent(Body.class);
         if (body != null) {
             body.addCollide(5);
+            body.addNoCollide(3, 4);
             body.SPEED = speed;
             body.INIT_SPEED = speed;
             body.singleEvent = false;
