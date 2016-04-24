@@ -28,7 +28,7 @@ public final class GameScene {
     private final Input input;
     private final Canvas canvas;
     private final GraphicsContext g;
-    private Color background = Color.web("#1e120c");
+    public Color background = Color.web("#1e120c");
     public static Vector2D gravity = new Vector2D(0, 0.2);
     public Media backgroundMusic;
     private MediaPlayer player;

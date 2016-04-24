@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import javafx.scene.paint.Color;
 import org.xml.sax.Attributes;
 
 public class TMXParser extends XMLReader {
@@ -132,6 +133,9 @@ public class TMXParser extends XMLReader {
                 setupGameObject(object, 0, 0, 0, 0);
                 if (data.get("Music") != null) {
                     scene.backgroundMusic = ResourceManager.getMedia(data.get("Music"));
+                }
+                if (data.get("Background") != null) {
+                    scene.background = Color.web(data.get("Background"));
                 }
                 data = null;
                 break;
