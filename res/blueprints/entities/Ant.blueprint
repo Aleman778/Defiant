@@ -19,7 +19,8 @@
         <attribute type="Body ID" value="3"/>
         <attribute type="Friction" value="0.1"/>
         <attribute type="Softness" value="0"/>
-        <attribute type="AI Speed" value="0.1"/>
+        <attribute type="AI Speed" value="0.05"/>
+        <attribute type="AI Speed Limit" value="2"/>
         <attribute type="AI Jump Height" value="5"/>
         <attribute type="AI Follow Distance" value="5"/>
         <attribute type="Health" value="80"/>

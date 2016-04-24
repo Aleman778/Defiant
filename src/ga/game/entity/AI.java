@@ -14,18 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 public class AI extends GameComponent {
-    
+
     private static final List<String> ATTRIBUTES = new ArrayList<>();
-    
+
     static {
         ATTRIBUTES.add("AI Speed");
+        ATTRIBUTES.add("AI Speed Limit");
         ATTRIBUTES.add("AI Jump Height");
         ATTRIBUTES.add("AI Follow Distance");
     }
     private GameObject player;
 
     private final double AIR_SPEED = 0.05;
-    protected double speed = 0.1;
+    protected double speed = 0.1, speedLimit = 3;
     protected double jumpHeight = 7;
     protected double followDistance = 5;
     protected double damageRate = 2;
@@ -48,8 +49,10 @@ public class AI extends GameComponent {
             body.SPEED = speed;
             body.INIT_SPEED = speed;
             body.singleEvent = false;
+            body.SPEED_LIMIT = speedLimit;
+            body.SPEED_LIMIT_INIT = speedLimit;
         }
-        
+
         renderable = (SpriteRenderer) getComponent(SpriteRenderer.class);
         AC = (AnimationController) getComponent(AnimationController.class);
         audioController = (AudioController) getComponent(AudioController.class);
@@ -78,7 +81,7 @@ public class AI extends GameComponent {
         if (player == null) {
             player = GameObject.findObjectWithTag("player");
         }
-        
+
         speed = body.SPEED;
         if (body.SPEED < body.INIT_SPEED) {
             body.SPEED += 0.0005;
@@ -97,10 +100,10 @@ public class AI extends GameComponent {
                 }
             } else {
                 if (!body.isGrounded()) {
-                    velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED));
-                } else {
-                    velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(speed));
-                }
+                velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(AIR_SPEED));
+            } else {
+                velocity = velocity.add(distToPlayer.mul(new Vector2D(1, 0)).normalize().mul(speed));
+            }
             }
             body.setVelocity(body.getVelocity().add(velocity));
         } else {
@@ -123,7 +126,7 @@ public class AI extends GameComponent {
             takingDamage = 0;
         }
         if (Math.abs(body.getVelocity().x) < 0.001) {
-         //   AC.setState("idle");
+            //   AC.setState("idle");
         } else {
             AC.setState("walking");
         }
@@ -154,8 +157,9 @@ public class AI extends GameComponent {
         speed = Double.parseDouble(attributes.get("AI Speed"));
         jumpHeight = Double.parseDouble(attributes.get("AI Jump Height"));
         followDistance = Double.parseDouble(attributes.get("AI Follow Distance"));
+        speedLimit = Double.parseDouble(attributes.get("AI Speed Limit"));
     }
-    
+
     @Override
     public GameComponent instantiate() {
         return new AI();
