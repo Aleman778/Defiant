@@ -3,7 +3,7 @@
     <sprite>textures/player/Arm_CR.png</sprite>
     <damage>3</damage>
     <clip>35</clip>
-    <ammo>35</ammo>
+    <ammo>70</ammo>
     <spread>2</spread>
     <recoil>5</recoil>
     <cooldown>75</cooldown>
