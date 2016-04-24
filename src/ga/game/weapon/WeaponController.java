@@ -115,6 +115,8 @@ public class WeaponController extends GameComponent {
         }
         if (selected.reload != 0 && selected.ammo == 0 && (selected.spareAmmo > 0 || selected.spareAmmo == -1) && !AC.getState().equals("reload")) {
             AC.setState("reload");
+            player.SPEED = playerSpeed;
+            player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit;
             selected.lastReload = Application.now;
             Input.mouseButtons.clear();
         }
@@ -183,6 +185,10 @@ public class WeaponController extends GameComponent {
                 Input.mouseButtons.remove(MouseButton.PRIMARY);
             }
         }
+        if (AC.getState().equals("idle")) {
+            player.SPEED = playerSpeed;
+            player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit;
+        }
         if (Input.getMouseButton(MouseButton.SECONDARY) && !AC.getState().equals("reload") && selected.sights == true) {
             AC.setState("aiming");
             player.SPEED = playerSpeed / 2;
@@ -194,6 +200,8 @@ public class WeaponController extends GameComponent {
         }
         if (Input.getKeyPressed(KeyCode.R) && selected.ammo != selected.clipSize && (selected.spareAmmo > 0 || selected.spareAmmo == -1)) {
             AC.setState("reload");
+            player.SPEED = playerSpeed;
+            player.gameobject.getBody().SPEED_LIMIT = playerSpeedLimit;
             selected.lastReload = Application.now;
             Input.mouseButtons.clear();
         }
